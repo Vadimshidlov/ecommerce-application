@@ -1,5 +1,5 @@
 import React from "react";
 
 export function Header() {
-    return <header>This is heading.</header>;
+    return <header>Merge conflict example.</header>;
 }
