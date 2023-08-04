@@ -23,6 +23,7 @@
     "eject": "react-scripts eject",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
+    "format": "prettier --write src/**/*.{ts,tsx,css,md,json} --config ./.prettierrc",
     "prepare": "husky install"
   },
   "eslintConfig": {
