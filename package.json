@@ -24,6 +24,7 @@
     "lint": "eslint . --color",
     "lint:fix": "eslint --fix .",
     "postinstall": "husky install"
+    "format": "prettier --write src/**/*.{ts,tsx,css,md,json} --config ./.prettierrc",
   },
   "eslintConfig": {
     "extends": [
