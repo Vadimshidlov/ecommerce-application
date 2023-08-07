@@ -38,30 +38,38 @@ The application is to be developed in teams of three:<br>
   
   ## Getting Started
   
-  ### Clone repository 
+  * ### Clone repository
+    use `git clone https://github.com/YOUR-USERNAME/YOUR-REPOSITORY`
+    
+  * ### install Node.js
+    use download link from https://nodejs.org/
+    
+
+  * ### run `yarn install`
+    to install `yarn` package manager that provides speed, consistency, stability, and security as an alternative to NPM. (https://yarnpkg.com/)
   
-  ### run `yarn` 
-  to install dependencies.
+  * ### run `yarn` 
+    to install dependencies.
   
-  ### run `yarn postinstall`
-  to install husky dependencies.
+  * ### run `yarn postinstall`
+    to install husky dependencies.
   
-  ### run `yarn start`
-  to run the app in the development mode.
+  * ### run `yarn start`
+    to run the app in the development mode.
   
   ## Scripts
   
-  ### `yarn build`
+  * ### `yarn build`
   Builds the app for production to the `build` folder.
   
-  ### `yarn test`
+  * ### `yarn test`
   Launches the test runner in the interactive watch mode.
   
-  ### `yarn format`
+  * ### `yarn format`
   Runs the prettier (an opinionated code formatter).
   
-  ### `yarn lint`
+  * ### `yarn lint`
   Runs the ESLint (helps you find problems with code).
   
-  ### `yarn lint:fix`
+  * ### `yarn lint:fix`
   Runs the ESLint in fixing mode.
