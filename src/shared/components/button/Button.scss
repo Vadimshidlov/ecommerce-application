@@ -1,0 +1,45 @@
+@import url(commonStyle/variables.scss);
+
+.button {
+    padding: 19px 55px;
+    background-color: $button-color;
+    color: $button-text-color;
+    cursor: pointer;
+    border: none;
+    border-radius: 6px;
+    text-align: center;
+    white-space: nowrap;
+    font-family: "SpaceGrotesk";
+    transition: transform 0.3s;
+    &:active {
+        transform: scale(0.95);
+    }
+}
+
+.fz-3xl {
+    font-size: 26px;
+}
+
+.fz-2xl {
+    font-size: 22px;
+}
+
+.fz-xl {
+    font-size: 20px;
+}
+
+.fz-l {
+    font-size: 18px;
+}
+
+.fz-m {
+    font-size: 16px;
+}
+
+.fz-s {
+    font-size: 14px;
+}
+
+.fz-xs {
+    font-size: 12px;
+}
