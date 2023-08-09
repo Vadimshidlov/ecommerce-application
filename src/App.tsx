@@ -1,10 +1,10 @@
 import React from "react";
-import Header from "view/app-components/Header/Header";
+import MainPage from "view/app-components/MainPage/mainPage";
 
 function App() {
     return (
         <div>
-            <Header />
+            <MainPage />
             <h1>Hello,React!!!!</h1>
         </div>
     );
