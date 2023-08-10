@@ -5,11 +5,35 @@ import { Routes, Route } from "react-router-dom";
 function App() {
     return (
         <div>
-            <Header />
+            {/* <Header /> */}
             <Routes>
-                <Route path="/" element={<Header />} />
-                <Route path="about" element={<Header />} />
-                <Route path="contact" element={<Header />} />
+                <Route
+                    path="/"
+                    element={
+                        <>
+                            <Header />
+                            Main page
+                        </>
+                    }
+                />
+                <Route
+                    path="login"
+                    element={
+                        <>
+                            <Header />
+                            Login page
+                        </>
+                    }
+                />
+                <Route
+                    path="registration"
+                    element={
+                        <>
+                            <Header />
+                            Registration page
+                        </>
+                    }
+                />
             </Routes>
             <h1>Hello,React!!!!</h1>
         </div>
