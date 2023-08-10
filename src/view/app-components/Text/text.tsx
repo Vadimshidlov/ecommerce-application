@@ -17,6 +17,6 @@ type PropsType = {
     classes: string[];
 };
 
-export default function Text({ children, classes }: PropsType) {
-    return <span className={classes.join(" ")}>{children}</span>;
+export default function Text({ children: text, classes }: PropsType) {
+    return <span className={classes.join(" ")}>{text}</span>;
 }
