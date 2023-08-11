@@ -1,0 +1,12 @@
+// .customer-buttons >* {
+//     margin-right: 1rem;
+// }
+
+// .customer-buttons >*:last-child {
+//     margin-right: 0;
+// }
+
+.customer-buttons {
+    display: flex;
+    align-items: center;
+}
