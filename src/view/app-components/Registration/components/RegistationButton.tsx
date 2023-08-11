@@ -1,6 +1,6 @@
 import React from "react";
 
-interface IButtonProps {
+interface IButtonProps extends React.ComponentPropsWithRef<"button"> {
     className: string;
     buttonText: string;
 }

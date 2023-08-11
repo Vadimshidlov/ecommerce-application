@@ -1,24 +1,73 @@
 .registration__block{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 32px;
+  margin: 0px auto;
+  width: 45%;
+
   .registration__title {
-    font-family: Space Grotesk;
+    margin-bottom: 24px;
+    font-family: "SpaceGrotesk";
     font-size: 40px;
     font-style: normal;
     font-weight: 500;
-    line-height: 44px;
+    line-height: 44px; /* 110% */
   }
 
-  .registration__button {
-    width: 588px;
-    height: 72px;
-    padding: 19px 44px;
-    border-radius: 6px;
-    background: #121212;
-    font-family: Space Grotesk;
-    font-size: 22px;
+  .registration__subtitle {
+    margin-bottom: 32px;
+    color: #121212;
+    text-align: center;
+    font-family: Inter;
+    font-size: 16px;
     font-style: normal;
-    font-weight: 500;
-    line-height: 34px;
-    color: #FFF;
+    font-weight: 400;
+    line-height: 26px;
+
+    .registration__link{
+      font-family: Inter;
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 600;
+      line-height: 26px;
+    }
+  }
+
+  .registration__form{
+    .registration__error {
+      //display: block;
+      //width: 40%;
+      font-family: "SpaceGrotesk";
+      font-size: 18px;
+      color: #e61010;
+    }
+
+    .registration__button {
+      width: 588px;
+      height: 72px;
+      padding: 19px 44px;
+      border-radius: 6px;
+      background: #121212;
+      font-family: "SpaceGrotesk";
+      font-size: 22px;
+      font-style: normal;
+      font-weight: 500;
+      line-height: 34px;
+      color: #FFF;
+      cursor: pointer;
+    }
+    .registration__input{
+      font-size: 20px;
+      //padding-top: 13px;
+      //padding-bottom: 13px;
+      padding: 13px 10px 13px 10px;
+      width: 100%;
+      border: none;
+      border-bottom: 1px solid #CBCBCB;
+      margin-bottom: 32px;
+      outline: none;
+    }
   }
 }
 

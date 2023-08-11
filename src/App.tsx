@@ -4,7 +4,6 @@ import RegistrationPage from "view/app-components/Registration/components/Regist
 function App() {
     return (
         <div>
-            <h1>Hello,React!!!!</h1>
             <RegistrationPage />
         </div>
     );
