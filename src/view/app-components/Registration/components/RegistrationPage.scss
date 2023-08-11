@@ -76,7 +76,7 @@
       font-family: Inter;
       font-size: 16px;
       font-style: normal;
-      color: #A7A7A7;
+      //color: #A7A7A7;
     }
 
     .registration__birthday-input{
@@ -97,6 +97,66 @@
         font-size: 16px;
         font-style: normal;
       }
+    }
+
+    .block-address_title{
+      font-size: 18px;
+      margin-bottom: 20px;
+    }
+
+    .billing__country{
+      display: flex;
+      margin-left: 10px;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+      //display: inline-block;
+      font-size: 14px;
+      color: #888;
+      margin-bottom: 20px;
+
+      &::after {
+        content: '';
+        border-width: 5px;
+        border-style: solid;
+        border-color: transparent;
+        border-top-color: #222;
+        display: inline-block;
+        position: absolute;
+        right: 10px;
+        bottom: 10px;
+        border-radius: 2px;
+      }
+
+
+      //h3{
+      //  font-family: Inter;
+      //  font-size: 16px;
+      //  font-style: normal;
+      //  font-weight: 400;
+      //  color:#CBCBCB;
+      //}
+
+      select {
+        min-height: 35px;
+        background: #cbe7ff;
+        border-radius: 3px;
+        border: 2px solid #2196f3;
+        appearance: none;
+        outline: none;
+        padding: 0 10px;
+        width: 250px;
+        cursor: pointer;
+        margin-top: 5px;
+      }
+    }
+
+    .billing_countries {
+      margin-left: 10px;
+      font-family: Inter;
+      font-size: 16px;
+      font-style: normal;
+      color: #A7A7A7;
     }
   }
 }

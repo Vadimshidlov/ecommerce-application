@@ -11,6 +11,14 @@ interface ISignUpForm {
     email: string;
     password: string;
     date: string;
+    billingStreet: string;
+    billingCity: string;
+    billingPostalCode: string;
+    billingCountry: string;
+    shippingStreet: string;
+    shippingCity: string;
+    shippingPostalCode: string;
+    shippingCountry: string;
 }
 
 interface IStateErrors {
@@ -19,6 +27,14 @@ interface IStateErrors {
     password: string;
     date: string;
     email: string;
+    billingStreet: string;
+    billingCity: string;
+    billingPostalCode: string;
+    billingCountry: string;
+    shippingStreet: string;
+    shippingCity: string;
+    shippingPostalCode: string;
+    shippingCountry: string;
 }
 
 const nowDate = new Date(Date.now());
@@ -26,7 +42,6 @@ const currYear = nowDate.toLocaleString("default", { year: "numeric" });
 const currMonth = nowDate.toLocaleString("default", { month: "2-digit" });
 const currDay = nowDate.toLocaleString("default", { day: "2-digit" });
 const validFormatCurrentDate = `${currYear}-${currMonth}-${currDay}`;
-console.log(validFormatCurrentDate);
 
 const userScheme = yup.object({
     firstname: yup
@@ -50,27 +65,109 @@ const userScheme = yup.object({
         .string()
         .required()
         .matches(/^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/),
+    billingStreet: yup
+        .string()
+        .required("Street is required field")
+        .min(1, "Must contain at least one character")
+        .max(25, "Value is very big"),
+    billingCity: yup
+        .string()
+        .required("City is required field")
+        .min(1, "Must contain at least one character")
+        .max(25, "Value is very big")
+        .matches(/^[A-Za-z0-9 ]+$/, "No special characters or numbers!"),
+    billingPostalCode: yup
+        .string()
+        .required("Postal code is required field")
+        .test("custom-post-code", "Invalid post code", (val) => {
+            const regexpForUseCode = /^[0-9]{6}$/;
+            const regexpForRussiaCode = /^[0-9]{5}$/;
+            const regexpForBelarusCode = /^\\d{6}$/;
+
+            if (regexpForUseCode.test(val)) {
+                return true;
+            }
+
+            if (regexpForRussiaCode.test(val)) {
+                return true;
+            }
+
+            return regexpForBelarusCode.test(val);
+        }),
+    billingCountry: yup
+        .string()
+        .required("Country is required field")
+        .oneOf(["USA", "Belarus", "Russia"], "This country not supported by our service"),
+    shippingStreet: yup
+        .string()
+        .required("Street is required field")
+        .min(1, "Must contain at least one character")
+        .max(25, "Value is very big"),
+    shippingCity: yup
+        .string()
+        .required("City is required field")
+        .min(1, "Must contain at least one character")
+        .max(25, "Value is very big")
+        .matches(/^[A-Za-z0-9 ]+$/, "No special characters or numbers!"),
+    shippingPostalCode: yup
+        .string()
+        .required("Postal code is required field")
+        .test("custom-post-code", "Invalid post code", (val) => {
+            const regexpForUseCode = /^[0-9]{6}$/;
+            const regexpForRussiaCode = /^[0-9]{5}$/;
+            const regexpForBelarusCode = /^\\d{6}$/;
+
+            if (regexpForUseCode.test(val)) {
+                return true;
+            }
+
+            if (regexpForRussiaCode.test(val)) {
+                return true;
+            }
+
+            return regexpForBelarusCode.test(val);
+        }),
+    shippingCountry: yup
+        .string()
+        .required("Country is required field")
+        .oneOf(["USA", "Belarus", "Russia"], "This country not supported by our service"),
 });
 
 function RegistrationPage() {
-    const [validationError, setValidationError] = useState<IStateErrors>({
-        firstname: "",
-        lastname: "",
-        date: "",
-        email: "",
-        password: "",
-    });
-
     const [formData, setFormData] = useState<ISignUpForm>({
         firstname: "",
         lastname: "",
         date: `${validFormatCurrentDate}`,
         email: "",
         password: "",
+        billingStreet: "",
+        billingCity: "",
+        billingPostalCode: "",
+        billingCountry: "",
+        shippingStreet: "",
+        shippingCity: "",
+        shippingPostalCode: "",
+        shippingCountry: "",
+    });
+
+    const [validationError, setValidationError] = useState<IStateErrors>({
+        firstname: "",
+        lastname: "",
+        date: "",
+        email: "",
+        password: "",
+        billingStreet: "",
+        billingCity: "",
+        billingPostalCode: "",
+        billingCountry: "",
+        shippingStreet: "",
+        shippingCity: "",
+        shippingPostalCode: "",
+        shippingCountry: "",
     });
 
     const inputTextHandler = async (
-        e: React.ChangeEvent<HTMLInputElement>,
+        e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>,
         key: keyof RegisterFormDataType,
     ) => {
         const { value } = e.target;
@@ -78,7 +175,6 @@ function RegistrationPage() {
     };
 
     const onFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-        console.log("formSubmit");
         e.preventDefault();
         try {
             await userScheme.validate(formData, { abortEarly: false });
@@ -90,6 +186,14 @@ function RegistrationPage() {
                     date: "",
                     email: "",
                     password: "",
+                    billingStreet: "",
+                    billingCity: "",
+                    billingPostalCode: "",
+                    billingCountry: "",
+                    shippingStreet: "",
+                    shippingCity: "",
+                    shippingPostalCode: "",
+                    shippingCountry: "",
                 };
 
                 err.inner.forEach((error) => {
@@ -101,9 +205,6 @@ function RegistrationPage() {
                         stateErrors[error.path] = error.message;
                     }
                 });
-                console.log(stateErrors);
-                console.log(stateErrors.password, `password`);
-                console.log(stateErrors.password.length, `password length`);
 
                 setValidationError((prevState) => ({ ...prevState, ...stateErrors }));
             }
@@ -120,6 +221,7 @@ function RegistrationPage() {
                 </a>
             </div>
             <form className="registration__form" onSubmit={onFormSubmit}>
+                <p className="block-address_title">Personal data:</p>
                 <div>
                     {validationError.firstname ? (
                         <span className="registration__error">{validationError.firstname}</span>
@@ -222,6 +324,158 @@ function RegistrationPage() {
                             placeholder="Password"
                         />
                     </label>
+                </div>
+                <div className="registration__adress-block block-adress">
+                    <div className="block-adress_billing">
+                        <p className="block-address_title">Billing address:</p>
+                        <label htmlFor="billing_country">
+                            <p className="billing_countries">Country:</p>
+                            {validationError.billingCountry ? (
+                                <div className="registration__error">
+                                    {validationError.billingCountry}
+                                </div>
+                            ) : null}
+                            <input
+                                onChange={(e) => {
+                                    inputTextHandler(e, "billingCountry");
+                                }}
+                                className="registration__input"
+                                type="text"
+                                name="billing_country"
+                                id="billing_country"
+                                value={formData.billingCountry}
+                                placeholder="Available countries: USA, Russia, Belarus"
+                            />
+                        </label>
+                        {validationError.billingStreet ? (
+                            <div className="registration__error">
+                                {validationError.billingStreet}
+                            </div>
+                        ) : null}
+                        <label htmlFor="billing_street">
+                            <input
+                                onChange={(e) => {
+                                    inputTextHandler(e, "billingStreet");
+                                }}
+                                className="registration__input"
+                                type="text"
+                                name="billing_street"
+                                id="billing_street"
+                                value={formData.billingStreet}
+                                placeholder="street"
+                            />
+                        </label>
+                        {validationError.billingCity ? (
+                            <div className="registration__error">{validationError.billingCity}</div>
+                        ) : null}
+                        <label htmlFor="billing_city">
+                            <input
+                                onChange={(e) => {
+                                    inputTextHandler(e, "billingCity");
+                                }}
+                                className="registration__input"
+                                type="text"
+                                name="billing_city"
+                                id="billing_city"
+                                value={formData.billingCity}
+                                placeholder="city"
+                            />
+                        </label>
+                        {validationError.billingPostalCode ? (
+                            <div className="registration__error">
+                                {validationError.billingPostalCode}
+                            </div>
+                        ) : null}
+                        <label htmlFor="billing_postal_code">
+                            <input
+                                onChange={(e) => {
+                                    inputTextHandler(e, "billingPostalCode");
+                                }}
+                                className="registration__input"
+                                type="text"
+                                name="billing_postal_code"
+                                id="billing_postal_code"
+                                value={formData.billingPostalCode}
+                                placeholder="Postal code"
+                            />
+                        </label>
+                    </div>
+                    <div className="block-adress_shipping">
+                        <p className="block-address_title">Shipping address:</p>
+                        <label htmlFor="shipping_country">
+                            <p className="billing_countries">Country:</p>
+                            {validationError.shippingCountry ? (
+                                <div className="registration__error">
+                                    {validationError.shippingCountry}
+                                </div>
+                            ) : null}
+                            <input
+                                onChange={(e) => {
+                                    inputTextHandler(e, "shippingCountry");
+                                }}
+                                className="registration__input"
+                                type="text"
+                                name="shipping_country"
+                                id="shipping_country"
+                                value={formData.shippingCountry}
+                                placeholder="Available countries: USA, Russia, Belarus"
+                            />
+                        </label>
+                        <label htmlFor="shipping_city">
+                            {validationError.shippingCity ? (
+                                <div className="registration__error">
+                                    {validationError.shippingCity}
+                                </div>
+                            ) : null}
+                            <input
+                                onChange={(e) => {
+                                    inputTextHandler(e, "shippingCity");
+                                }}
+                                className="registration__input"
+                                type="text"
+                                name="shipping_city"
+                                id="shipping_city"
+                                value={formData.shippingCity}
+                                placeholder="city"
+                            />
+                        </label>
+                        <label htmlFor="shipping_street">
+                            {validationError.shippingStreet ? (
+                                <div className="registration__error">
+                                    {validationError.shippingStreet}
+                                </div>
+                            ) : null}
+                            <input
+                                onChange={(e) => {
+                                    inputTextHandler(e, "shippingStreet");
+                                }}
+                                className="registration__input"
+                                type="text"
+                                name="shipping_street"
+                                id="shipping_street"
+                                value={formData.shippingStreet}
+                                placeholder="street"
+                            />
+                        </label>
+                        <label htmlFor="shipping_postal_code">
+                            {validationError.shippingPostalCode ? (
+                                <div className="registration__error">
+                                    {validationError.shippingPostalCode}
+                                </div>
+                            ) : null}
+                            <input
+                                onChange={(e) => {
+                                    inputTextHandler(e, "shippingPostalCode");
+                                }}
+                                className="registration__input"
+                                type="text"
+                                name="shipping_postal_code"
+                                id="shipping_postal_code"
+                                value={formData.shippingPostalCode}
+                                placeholder="Postal code"
+                            />
+                        </label>
+                    </div>
                 </div>
                 <RegistrationButton
                     className="registration__button"
