@@ -1,61 +1,62 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-// import React, { useState, FocusEvent, FormEvent } from "react";
-import React, { useState, FocusEvent } from "react";
+import React, { useState } from "react";
 import RegistrationButton from "view/app-components/Registration/components/RegistationButton";
 import * as yup from "yup";
 import { ValidationError } from "yup";
 import { RegisterFormDataType } from "view/app-components/Registration/components/getRegisterFormData";
+import { PasswordError } from "view/app-components/Registration/components/PasswordError";
 
 interface ISignUpForm {
     firstname: string;
     lastname: string;
     email: string;
     password: string;
-}
-
-interface IValidateError extends Error {
-    errors: string[];
+    date: string;
 }
 
 interface IStateErrors {
     firstname: string;
     lastname: string;
     password: string;
+    date: string;
     email: string;
 }
 
+const nowDate = new Date(Date.now());
+const currYear = nowDate.toLocaleString("default", { year: "numeric" });
+const currMonth = nowDate.toLocaleString("default", { month: "2-digit" });
+const currDay = nowDate.toLocaleString("default", { day: "2-digit" });
+const validFormatCurrentDate = `${currYear}-${currMonth}-${currDay}`;
+console.log(validFormatCurrentDate);
+
 const userScheme = yup.object({
-    firstname: yup.string().required().min(4).max(25),
-    lastname: yup.string().required().min(4).max(25),
-    email: yup.string().required().email(),
+    firstname: yup
+        .string()
+        .required("Firstname is required field")
+        .min(4, "Very short firstname")
+        .max(25, "Very large firstname"),
+    lastname: yup
+        .string()
+        .required("Lastname is required field")
+        .min(4, "Very short lastname")
+        .max(25, "Very large lastname"),
+    email: yup.string().required("Email is required field").email("Please, write correct email"),
+    date: yup
+        .date()
+        .typeError("Please enter a valid date")
+        .required("Date is required field")
+        .min("1900-01-01", "Date is too early")
+        .max(validFormatCurrentDate, "Date is too late"),
     password: yup
         .string()
         .required()
         .matches(/^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/),
 });
 
-const validateEmailSсheme = yup.object({
-    email: yup.string().email(),
-});
-
-const PASSWORD_CONFIGURE_ERROR_MESSAGE = `
-Passwords should contain three of the four character types:
-Uppercase letters: A-Z,
-Lowercase letters: a-z,
-Numbers: 0-9,
-Symbols: ~\`!@#$%^&*()_-+={[}]|\\:;"'<,>.?/
-`;
-
-type StateErrorsType = "firstname" | "lastname" | "email" | "password" | string;
-
 function RegistrationPage() {
-    /* const [password, setPassword] = useState("");
-    const [email, setEmail] = useState("");
-    const [firstname, setFirstname] = useState("");
-    const [lastname, setLastname] = useState(""); */
     const [validationError, setValidationError] = useState<IStateErrors>({
         firstname: "",
         lastname: "",
+        date: "",
         email: "",
         password: "",
     });
@@ -63,6 +64,7 @@ function RegistrationPage() {
     const [formData, setFormData] = useState<ISignUpForm>({
         firstname: "",
         lastname: "",
+        date: `${validFormatCurrentDate}`,
         email: "",
         password: "",
     });
@@ -73,22 +75,6 @@ function RegistrationPage() {
     ) => {
         const { value } = e.target;
         setFormData({ ...formData, [key]: value });
-
-        // if (e.target.name === "firstname") {
-        //     setFirstname(e.target.value);
-        // }
-        //
-        // if (e.target.name === "lastname") {
-        //     setLastname(e.target.value);
-        // }
-        //
-        // if (e.target.name === "email") {
-        //     setEmail(e.target.value);
-        // }
-        //
-        // if (e.target.name === "password") {
-        //     setPassword(e.target.value);
-        // }
     };
 
     const onFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -98,10 +84,10 @@ function RegistrationPage() {
             await userScheme.validate(formData, { abortEarly: false });
         } catch (err) {
             if (err instanceof ValidationError) {
-                // const stateErrors: { [key: string]: string } = {
                 const stateErrors: { [key: string]: string } = {
                     firstname: "",
                     lastname: "",
+                    date: "",
                     email: "",
                     password: "",
                 };
@@ -128,7 +114,7 @@ function RegistrationPage() {
         <section className="registration__block">
             <h2 className="registration__title">Sign up</h2>
             <div className="registration__subtitle">
-                Already have an account?
+                <p>Already have an account?</p>
                 <a className="registration__link" href="#">
                     Sign in
                 </a>
@@ -140,10 +126,6 @@ function RegistrationPage() {
                     ) : null}
                     <label htmlFor="firstname">
                         <input
-                            // onBlur={blurHandler}
-                            // onChange={(e) => {
-                            //     inputTextHandler(e);
-                            // }}
                             onChange={(e) => {
                                 inputTextHandler(e, "firstname");
                             }}
@@ -152,7 +134,6 @@ function RegistrationPage() {
                             name="firstname"
                             id="fname"
                             value={formData.firstname}
-                            // required
                             placeholder="Your name"
                         />
                     </label>
@@ -165,7 +146,6 @@ function RegistrationPage() {
                     </span>
                     <label htmlFor="lastname">
                         <input
-                            // onBlur={blurHandler}
                             onChange={(e) => {
                                 inputTextHandler(e, "lastname");
                             }}
@@ -180,39 +160,57 @@ function RegistrationPage() {
                     </label>
                 </div>
                 <div>
+                    {validationError.date ? (
+                        <span className="registration__error">{validationError.date}</span>
+                    ) : null}
+                    <div className="registration__birthday-input">
+                        <span>Birthday: </span>
+                        <label htmlFor="birthday">
+                            <input
+                                className="registration__input"
+                                type="date"
+                                id="birthday"
+                                name="birthday"
+                                onChange={(e) => {
+                                    inputTextHandler(e, "date");
+                                }}
+                                value={formData.date}
+                            />
+                        </label>
+                    </div>
+                </div>
+
+                <div>
                     <label htmlFor="email">
                         {validationError.email && (
-                            <span className="registration__error">{validationError.email}</span>
+                            <span className="registration__error">
+                                {validationError.email[0].toUpperCase() +
+                                    validationError.email.slice(1)}
+                            </span>
                         )}
                         <input
-                            // onBlur={blurHandler}
                             onChange={(e) => {
                                 inputTextHandler(e, "email");
                             }}
                             className="registration__input"
-                            // type="email"
                             name="email"
                             id="email"
                             value={formData.email}
                             placeholder="Email address"
-                            // required
                         />
                     </label>
                 </div>
                 <div>
                     {validationError.password ? (
-                        <span className="registration__error">
-                            {validationError.password.length > 28
-                                ? PASSWORD_CONFIGURE_ERROR_MESSAGE
-                                : validationError.password}
-                        </span>
+                        <div className="registration__error">
+                            {PasswordError(
+                                validationError.password[0].toUpperCase() +
+                                    validationError.password.slice(1),
+                            )}
+                        </div>
                     ) : null}
                     <label htmlFor="password">
-                        {/* {validationError.password && (
-                            <div style={{ color: "red" }}>{validationError.password}</div>
-                        )} */}
                         <input
-                            // onBlur={blurHandler}
                             onChange={(e) => {
                                 inputTextHandler(e, "password");
                             }}
@@ -221,7 +219,6 @@ function RegistrationPage() {
                             name="password"
                             id="password"
                             value={formData.password}
-                            // required
                             placeholder="Password"
                         />
                     </label>
