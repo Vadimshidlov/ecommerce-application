@@ -3,7 +3,7 @@ import RegistrationPage from "view/app-components/Registration/components/Regist
 import Header from "view/app-components/Header/Header";
 import { Routes, Route } from "react-router-dom";
 import MainPage from "view/app-components/MainPage/mainPage";
-import Text from "view/app-components/Text/text";
+// import Text from "view/app-components/Text/text";
 import PageNotFound from "view/app-components/PageNotFound/pageNotFound";
 
 function App() {
@@ -31,9 +31,8 @@ function App() {
                 />
                 <Route path="*" element={<PageNotFound />} />
             </Routes>
-
-            <h1>Hello,React!!!!</h1>
-            <Text classes={["example", "dark", "fz-5rem", "fw-500"]}>text with classes</Text>
+            {/* <h1>Hello,React!!!!</h1>
+            <Text classes={["example", "dark", "fz-5rem", "fw-500"]}>text with classes</Text> */}
         </div>
     );
 }

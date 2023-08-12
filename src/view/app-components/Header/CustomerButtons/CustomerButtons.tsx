@@ -12,7 +12,7 @@ export function CustomerButtons() {
     return (
         <div className="customer-buttons">
             <SearchButton />
-            <NavLink to="/login">
+            <NavLink to="/registration">
                 <UserButton />
             </NavLink>
             <LogoutButton />

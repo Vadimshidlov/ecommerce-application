@@ -4,6 +4,7 @@ import * as yup from "yup";
 import { ValidationError } from "yup";
 import { RegisterFormDataType } from "view/app-components/Registration/components/getRegisterFormData";
 import { PasswordError } from "view/app-components/Registration/components/PasswordError";
+import { useNavigate } from "react-router-dom";
 
 interface ISignUpForm {
     firstname: string;
@@ -166,6 +167,17 @@ function RegistrationPage() {
         shippingCountry: "",
     });
 
+    const [defaultAddress, setDefaultAddress] = useState(false);
+
+    const handleDefaultAddress = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setDefaultAddress(event.target.checked);
+
+        console.log(event.target);
+        console.log(event.target.checked);
+    };
+
+    const navigate = useNavigate();
+
     const inputTextHandler = async (
         e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>,
         key: keyof RegisterFormDataType,
@@ -216,9 +228,13 @@ function RegistrationPage() {
             <h2 className="registration__title">Sign up</h2>
             <div className="registration__subtitle">
                 <p>Already have an account?</p>
-                <a className="registration__link" href="#">
+                <button
+                    type="button"
+                    onClick={() => navigate("/login")}
+                    className="registration__link"
+                >
                     Sign in
-                </a>
+                </button>
             </div>
             <form className="registration__form" onSubmit={onFormSubmit}>
                 <p className="block-address_title">Personal data:</p>
@@ -230,6 +246,10 @@ function RegistrationPage() {
                         <input
                             onChange={(e) => {
                                 inputTextHandler(e, "firstname");
+                            }}
+                            onFocus={() => {
+                                console.log("Firstname onfocus");
+                                setValidationError({ ...validationError, firstname: "" });
                             }}
                             className="registration__input"
                             type="text"
@@ -257,7 +277,6 @@ function RegistrationPage() {
                             id="lname"
                             value={formData.lastname}
                             placeholder="Your lastname"
-                            // required
                         />
                     </label>
                 </div>
@@ -281,7 +300,6 @@ function RegistrationPage() {
                         </label>
                     </div>
                 </div>
-
                 <div>
                     <label htmlFor="email">
                         {validationError.email && (
@@ -400,11 +418,24 @@ function RegistrationPage() {
                             />
                         </label>
                     </div>
+                    <div className="registration__default-address">
+                        <p>Make default address for billing and shipping address</p>
+                        <input
+                            name="defaultAddress"
+                            type="checkbox"
+                            checked={defaultAddress}
+                            onChange={handleDefaultAddress}
+                        />
+                    </div>
                     <div className="block-adress_shipping">
-                        <p className="block-address_title">Shipping address:</p>
+                        <p className="block-address_title" hidden={!!defaultAddress}>
+                            Shipping address:
+                        </p>
                         <label htmlFor="shipping_country">
-                            <p className="billing_countries">Country:</p>
-                            {validationError.shippingCountry ? (
+                            <p className="billing_countries" hidden={!!defaultAddress}>
+                                Country:
+                            </p>
+                            {validationError.shippingCountry && !defaultAddress ? (
                                 <div className="registration__error">
                                     {validationError.shippingCountry}
                                 </div>
@@ -419,10 +450,11 @@ function RegistrationPage() {
                                 id="shipping_country"
                                 value={formData.shippingCountry}
                                 placeholder="Available countries: USA, Russia, Belarus"
+                                hidden={!!defaultAddress}
                             />
                         </label>
                         <label htmlFor="shipping_city">
-                            {validationError.shippingCity ? (
+                            {validationError.shippingCity && !defaultAddress ? (
                                 <div className="registration__error">
                                     {validationError.shippingCity}
                                 </div>
@@ -437,10 +469,11 @@ function RegistrationPage() {
                                 id="shipping_city"
                                 value={formData.shippingCity}
                                 placeholder="city"
+                                hidden={!!defaultAddress}
                             />
                         </label>
                         <label htmlFor="shipping_street">
-                            {validationError.shippingStreet ? (
+                            {validationError.shippingStreet && !defaultAddress ? (
                                 <div className="registration__error">
                                     {validationError.shippingStreet}
                                 </div>
@@ -455,10 +488,11 @@ function RegistrationPage() {
                                 id="shipping_street"
                                 value={formData.shippingStreet}
                                 placeholder="street"
+                                hidden={!!defaultAddress}
                             />
                         </label>
                         <label htmlFor="shipping_postal_code">
-                            {validationError.shippingPostalCode ? (
+                            {validationError.shippingPostalCode && !defaultAddress ? (
                                 <div className="registration__error">
                                     {validationError.shippingPostalCode}
                                 </div>
@@ -473,15 +507,12 @@ function RegistrationPage() {
                                 id="shipping_postal_code"
                                 value={formData.shippingPostalCode}
                                 placeholder="Postal code"
+                                hidden={!!defaultAddress}
                             />
                         </label>
                     </div>
                 </div>
-                <RegistrationButton
-                    className="registration__button"
-                    buttonText="Registration"
-                    // onClick={handleSubmit}
-                />
+                <RegistrationButton className="registration__button" buttonText="Registration" />
             </form>
         </section>
     );
