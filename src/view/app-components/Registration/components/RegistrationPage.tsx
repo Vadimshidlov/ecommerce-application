@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { FocusEvent, useState } from "react";
 import RegistrationButton from "view/app-components/Registration/components/RegistationButton";
 import * as yup from "yup";
 import { ValidationError } from "yup";
 import { RegisterFormDataType } from "view/app-components/Registration/components/getRegisterFormData";
 import { PasswordError } from "view/app-components/Registration/components/PasswordError";
 import { useNavigate } from "react-router-dom";
+import { TextInput } from "view/app-components/Registration/components/TextInput";
+import TextValidationError from "view/app-components/Registration/components/TextValidationError";
 
 interface ISignUpForm {
     firstname: string;
@@ -98,7 +100,8 @@ const userScheme = yup.object({
     billingCountry: yup
         .string()
         .required("Country is required field")
-        .oneOf(["USA", "Belarus", "Russia"], "This country not supported by our service"),
+        .oneOf(["USA", "Belarus", "Russia"], "Please, write valid country"),
+    // .oneOf(["USA", "Belarus", "Russia"], "This country not supported by our service"),
     shippingStreet: yup
         .string()
         .required("Street is required field")
@@ -131,7 +134,7 @@ const userScheme = yup.object({
     shippingCountry: yup
         .string()
         .required("Country is required field")
-        .oneOf(["USA", "Belarus", "Russia"], "This country not supported by our service"),
+        .oneOf(["USA", "Belarus", "Russia"], "Please, write valid country"),
 });
 
 function RegistrationPage() {
@@ -184,6 +187,10 @@ function RegistrationPage() {
     ) => {
         const { value } = e.target;
         setFormData({ ...formData, [key]: value });
+    };
+
+    const inputOnFocusHandler = (e: FocusEvent, key: string) => {
+        setValidationError({ ...validationError, [key]: "" });
     };
 
     const onFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -239,17 +246,17 @@ function RegistrationPage() {
             <form className="registration__form" onSubmit={onFormSubmit}>
                 <p className="block-address_title">Personal data:</p>
                 <div>
-                    {validationError.firstname ? (
+                    {/* {validationError.firstname ? (
                         <span className="registration__error">{validationError.firstname}</span>
-                    ) : null}
-                    <label htmlFor="firstname">
+                    ) : null} */}
+                    <TextValidationError errorMessage={validationError.firstname} />
+                    {/* <label htmlFor="firstname">
                         <input
                             onChange={(e) => {
                                 inputTextHandler(e, "firstname");
                             }}
-                            onFocus={() => {
-                                console.log("Firstname onfocus");
-                                setValidationError({ ...validationError, firstname: "" });
+                            onFocus={(e: FocusEvent) => {
+                                inputOnFocusHandler(e, "firstname");
                             }}
                             className="registration__input"
                             type="text"
@@ -258,18 +265,36 @@ function RegistrationPage() {
                             value={formData.firstname}
                             placeholder="Your name"
                         />
-                    </label>
+                    </label> */}
+                    <TextInput
+                        type="text"
+                        name="firstname"
+                        onChangeHandler={(e: React.ChangeEvent<HTMLInputElement>) =>
+                            inputTextHandler(e, "firstname")
+                        }
+                        onFocusHandler={(e: FocusEvent) => {
+                            inputOnFocusHandler(e, "firstname");
+                        }}
+                        className="registration__input"
+                        id="fname"
+                        value={formData.firstname}
+                        placeHolder="Your name"
+                    />
                 </div>
                 <div>
                     <span>
-                        {validationError.lastname ? (
+                        <TextValidationError errorMessage={validationError.lastname} />
+                        {/* {validationError.lastname ? (
                             <span className="registration__error">{validationError.lastname}</span>
-                        ) : null}
+                        ) : null} */}
                     </span>
-                    <label htmlFor="lastname">
+                    {/* <label htmlFor="lastname">
                         <input
                             onChange={(e) => {
                                 inputTextHandler(e, "lastname");
+                            }}
+                            onFocus={(e: FocusEvent) => {
+                                inputOnFocusHandler(e, "lastname");
                             }}
                             className="registration__input"
                             type="text"
@@ -278,12 +303,27 @@ function RegistrationPage() {
                             value={formData.lastname}
                             placeholder="Your lastname"
                         />
-                    </label>
+                    </label> */}
+                    <TextInput
+                        type="text"
+                        name="lastname"
+                        onChangeHandler={(e: React.ChangeEvent<HTMLInputElement>) =>
+                            inputTextHandler(e, "lastname")
+                        }
+                        onFocusHandler={(e: FocusEvent) => {
+                            inputOnFocusHandler(e, "lastname");
+                        }}
+                        className="registration__input"
+                        id="lname"
+                        value={formData.lastname}
+                        placeHolder="Your lastname"
+                    />
                 </div>
                 <div>
-                    {validationError.date ? (
+                    {/* {validationError.date ? (
                         <span className="registration__error">{validationError.date}</span>
-                    ) : null}
+                    ) : null} */}
+                    <TextValidationError errorMessage={validationError.date} />
                     <div className="registration__birthday-input">
                         <span>Birthday: </span>
                         <label htmlFor="birthday">
@@ -295,14 +335,18 @@ function RegistrationPage() {
                                 onChange={(e) => {
                                     inputTextHandler(e, "date");
                                 }}
+                                onFocus={(e: FocusEvent) => {
+                                    inputOnFocusHandler(e, "date");
+                                }}
                                 value={formData.date}
                             />
                         </label>
                     </div>
                 </div>
                 <div>
-                    <label htmlFor="email">
-                        {validationError.email && (
+                    <TextValidationError errorMessage={validationError.email} />
+                    {/* <label htmlFor="email">
+                         {validationError.email && (
                             <span className="registration__error">
                                 {validationError.email[0].toUpperCase() +
                                     validationError.email.slice(1)}
@@ -312,13 +356,30 @@ function RegistrationPage() {
                             onChange={(e) => {
                                 inputTextHandler(e, "email");
                             }}
+                            onFocus={(e: FocusEvent) => {
+                                inputOnFocusHandler(e, "email");
+                            }}
                             className="registration__input"
                             name="email"
                             id="email"
                             value={formData.email}
                             placeholder="Email address"
                         />
-                    </label>
+                    </label> */}
+                    <TextInput
+                        type="text"
+                        name="email"
+                        onChangeHandler={(e: React.ChangeEvent<HTMLInputElement>) =>
+                            inputTextHandler(e, "email")
+                        }
+                        onFocusHandler={(e: FocusEvent) => {
+                            inputOnFocusHandler(e, "email");
+                        }}
+                        className="registration__input"
+                        id="lname"
+                        value={formData.email}
+                        placeHolder="Email address"
+                    />
                 </div>
                 <div>
                     {validationError.password ? (
@@ -329,10 +390,13 @@ function RegistrationPage() {
                             )}
                         </div>
                     ) : null}
-                    <label htmlFor="password">
+                    {/* <label htmlFor="password">
                         <input
                             onChange={(e) => {
                                 inputTextHandler(e, "password");
+                            }}
+                            onFocus={(e: FocusEvent) => {
+                                inputOnFocusHandler(e, "password");
                             }}
                             className="registration__input"
                             type="password"
@@ -341,21 +405,41 @@ function RegistrationPage() {
                             value={formData.password}
                             placeholder="Password"
                         />
-                    </label>
+                    </label> */}
+                    <TextInput
+                        type="password"
+                        name="password"
+                        onChangeHandler={(e: React.ChangeEvent<HTMLInputElement>) =>
+                            inputTextHandler(e, "password")
+                        }
+                        onFocusHandler={(e: FocusEvent) => {
+                            inputOnFocusHandler(e, "password");
+                        }}
+                        className="registration__input"
+                        id="lname"
+                        value={formData.password}
+                        placeHolder="Password"
+                    />
                 </div>
                 <div className="registration__adress-block block-adress">
                     <div className="block-adress_billing">
                         <p className="block-address_title">Billing address:</p>
-                        <label htmlFor="billing_country">
+                        <div>
                             <p className="billing_countries">Country:</p>
-                            {validationError.billingCountry ? (
+                            <TextValidationError errorMessage={validationError.billingCountry} />
+                            {/* {validationError.billingCountry ? (
                                 <div className="registration__error">
                                     {validationError.billingCountry}
                                 </div>
-                            ) : null}
+                            ) : null} */}
+                            {/*
+                        <label htmlFor="billing_country">
                             <input
                                 onChange={(e) => {
                                     inputTextHandler(e, "billingCountry");
+                                }}
+                                onFocus={(e: FocusEvent) => {
+                                    inputOnFocusHandler(e, "billingCountry");
                                 }}
                                 className="registration__input"
                                 type="text"
@@ -365,58 +449,136 @@ function RegistrationPage() {
                                 placeholder="Available countries: USA, Russia, Belarus"
                             />
                         </label>
-                        {validationError.billingStreet ? (
-                            <div className="registration__error">
-                                {validationError.billingStreet}
-                            </div>
-                        ) : null}
-                        <label htmlFor="billing_street">
-                            <input
-                                onChange={(e) => {
-                                    inputTextHandler(e, "billingStreet");
+                            */}
+                            <TextInput
+                                type="text"
+                                name="billingCountry"
+                                onChangeHandler={(e: React.ChangeEvent<HTMLInputElement>) =>
+                                    inputTextHandler(e, "billingCountry")
+                                }
+                                onFocusHandler={(e: FocusEvent) => {
+                                    inputOnFocusHandler(e, "billingCountry");
                                 }}
                                 className="registration__input"
+                                id="billingCountry"
+                                value={formData.billingCountry}
+                                placeHolder="Available countries: USA, Russia, Belarus"
+                            />
+                        </div>
+                        <div>
+                            {/* {validationError.billingStreet ? (
+                                <div className="registration__error">
+                                    {validationError.billingStreet}
+                                </div>
+                            ) : null} */}
+                            <TextValidationError errorMessage={validationError.billingStreet} />
+                            {/* <label htmlFor="billing_street">
+                                <input
+                                    onChange={(e) => {
+                                        inputTextHandler(e, "billingStreet");
+                                    }}
+                                    onFocus={(e: FocusEvent) => {
+                                        inputOnFocusHandler(e, "billingStreet");
+                                    }}
+                                    className="registration__input"
+                                    type="text"
+                                    name="billing_street"
+                                    id="billing_street"
+                                    value={formData.billingStreet}
+                                    placeholder="Street"
+                                />
+                            </label> */}
+                            <TextInput
                                 type="text"
-                                name="billing_street"
-                                id="billing_street"
+                                name="billingStreet"
+                                onChangeHandler={(e: React.ChangeEvent<HTMLInputElement>) =>
+                                    inputTextHandler(e, "billingStreet")
+                                }
+                                onFocusHandler={(e: FocusEvent) => {
+                                    inputOnFocusHandler(e, "billingStreet");
+                                }}
+                                className="registration__input"
+                                id="billingCountry"
                                 value={formData.billingStreet}
-                                placeholder="street"
+                                placeHolder="Street"
                             />
-                        </label>
-                        {validationError.billingCity ? (
-                            <div className="registration__error">{validationError.billingCity}</div>
-                        ) : null}
-                        <label htmlFor="billing_city">
-                            <input
-                                onChange={(e) => {
-                                    inputTextHandler(e, "billingCity");
+                        </div>
+                        <div>
+                            {/* {validationError.billingCity ? (
+                                <div className="registration__error">
+                                    {validationError.billingCity}
+                                </div>
+                            ) : null} */}
+                            <TextValidationError errorMessage={validationError.billingCity} />
+                            {/* <label htmlFor="billing_city">
+                                <input
+                                    onChange={(e) => {
+                                        inputTextHandler(e, "billingCity");
+                                    }}
+                                    onFocus={(e: FocusEvent) => {
+                                        inputOnFocusHandler(e, "billingCity");
+                                    }}
+                                    className="registration__input"
+                                    type="text"
+                                    name="billing_city"
+                                    id="billing_city"
+                                    value={formData.billingCity}
+                                    placeholder="city"
+                                />
+                            </label> */}
+                            <TextInput
+                                type="text"
+                                name="billingCity"
+                                onChangeHandler={(e: React.ChangeEvent<HTMLInputElement>) =>
+                                    inputTextHandler(e, "billingCity")
+                                }
+                                onFocusHandler={(e: FocusEvent) => {
+                                    inputOnFocusHandler(e, "billingCity");
                                 }}
                                 className="registration__input"
-                                type="text"
-                                name="billing_city"
-                                id="billing_city"
+                                id="billingCity"
                                 value={formData.billingCity}
-                                placeholder="city"
+                                placeHolder="City"
                             />
-                        </label>
-                        {validationError.billingPostalCode ? (
-                            <div className="registration__error">
-                                {validationError.billingPostalCode}
-                            </div>
-                        ) : null}
-                        <label htmlFor="billing_postal_code">
-                            <input
-                                onChange={(e) => {
-                                    inputTextHandler(e, "billingPostalCode");
+                        </div>
+                        <div>
+                            {/* {validationError.billingPostalCode ? (
+                                <div className="registration__error">
+                                    {validationError.billingPostalCode}
+                                </div>
+                            ) : null} */}
+                            <TextValidationError errorMessage={validationError.billingPostalCode} />
+                            {/* <label htmlFor="billing_postal_code">
+                                <input
+                                    onChange={(e) => {
+                                        inputTextHandler(e, "billingPostalCode");
+                                    }}
+                                    onFocus={(e: FocusEvent) => {
+                                        inputOnFocusHandler(e, "billingPostalCode");
+                                    }}
+                                    className="registration__input"
+                                    type="text"
+                                    name="billing_postal_code"
+                                    id="billing_postal_code"
+                                    value={formData.billingPostalCode}
+                                    placeholder="Postal code"
+                                />
+                            </label> */}
+                            <TextInput
+                                type="text"
+                                name="billingPostalCode"
+                                onChangeHandler={(e: React.ChangeEvent<HTMLInputElement>) =>
+                                    inputTextHandler(e, "billingPostalCode")
+                                }
+                                onFocusHandler={(e: FocusEvent) => {
+                                    inputOnFocusHandler(e, "billingPostalCode");
                                 }}
                                 className="registration__input"
-                                type="text"
-                                name="billing_postal_code"
-                                id="billing_postal_code"
+                                id="billingPostalCode"
                                 value={formData.billingPostalCode}
-                                placeholder="Postal code"
+                                placeHolder="Postal code"
                             />
-                        </label>
+                        </div>
                     </div>
                     <div className="registration__default-address">
                         <p>Make default address for billing and shipping address</p>
@@ -427,89 +589,188 @@ function RegistrationPage() {
                             onChange={handleDefaultAddress}
                         />
                     </div>
-                    <div className="block-adress_shipping">
-                        <p className="block-address_title" hidden={!!defaultAddress}>
-                            Shipping address:
-                        </p>
-                        <label htmlFor="shipping_country">
-                            <p className="billing_countries" hidden={!!defaultAddress}>
-                                Country:
-                            </p>
-                            {validationError.shippingCountry && !defaultAddress ? (
-                                <div className="registration__error">
-                                    {validationError.shippingCountry}
-                                </div>
-                            ) : null}
-                            <input
-                                onChange={(e) => {
-                                    inputTextHandler(e, "shippingCountry");
+                    <div className="block-adress_shipping" hidden={!!defaultAddress}>
+                        <p className="block-address_title">Shipping address:</p>
+
+                        {/* {validationError.shippingCountry && !defaultAddress ? (
+                            <div className="registration__error">
+                                {validationError.shippingCountry}
+                            </div>
+                        ) : null} */}
+                        <div>
+                            <p className="billing_countries">Country:</p>
+                            <TextValidationError
+                                errorMessage={
+                                    validationError.shippingCountry && !defaultAddress
+                                        ? validationError.shippingCountry
+                                        : ""
+                                }
+                            />
+                            {/* <label htmlFor="shipping_country">
+                                <input
+                                    onChange={(e) => {
+                                        inputTextHandler(e, "shippingCountry");
+                                    }}
+                                    onFocus={(e: FocusEvent) => {
+                                        inputOnFocusHandler(e, "shippingCountry");
+                                    }}
+                                    className="registration__input"
+                                    type="text"
+                                    name="shipping_country"
+                                    id="shipping_country"
+                                    value={formData.shippingCountry}
+                                    placeholder="Available countries: USA, Russia, Belarus"
+                                />
+                            </label> */}
+                            <TextInput
+                                type="text"
+                                name="shippingCountry"
+                                onChangeHandler={(e: React.ChangeEvent<HTMLInputElement>) =>
+                                    inputTextHandler(e, "shippingCountry")
+                                }
+                                onFocusHandler={(e: FocusEvent) => {
+                                    inputOnFocusHandler(e, "shippingCountry");
                                 }}
                                 className="registration__input"
-                                type="text"
-                                name="shipping_country"
-                                id="shipping_country"
+                                id="shippingCountry"
                                 value={formData.shippingCountry}
-                                placeholder="Available countries: USA, Russia, Belarus"
-                                hidden={!!defaultAddress}
+                                placeHolder="Available countries: USA, Russia, Belarus"
                             />
-                        </label>
-                        <label htmlFor="shipping_city">
-                            {validationError.shippingCity && !defaultAddress ? (
+                        </div>
+                        <div>
+                            {/* {validationError.shippingCity && !defaultAddress ? (
                                 <div className="registration__error">
                                     {validationError.shippingCity}
                                 </div>
-                            ) : null}
-                            <input
-                                onChange={(e) => {
-                                    inputTextHandler(e, "shippingCity");
+                            ) : null} */}
+                            <TextValidationError
+                                errorMessage={
+                                    validationError.shippingCity && !defaultAddress
+                                        ? validationError.shippingCity
+                                        : ""
+                                }
+                            />
+                            {/* <label htmlFor="shipping_city">
+                                <input
+                                    onChange={(e) => {
+                                        inputTextHandler(e, "shippingCity");
+                                    }}
+                                    onFocus={(e: FocusEvent) => {
+                                        inputOnFocusHandler(e, "shippingCity");
+                                    }}
+                                    className="registration__input"
+                                    type="text"
+                                    name="shipping_city"
+                                    id="shipping_city"
+                                    value={formData.shippingCity}
+                                    placeholder="city"
+                                />
+                            </label> */}
+                            <TextInput
+                                type="text"
+                                name="shippingCity"
+                                onChangeHandler={(e: React.ChangeEvent<HTMLInputElement>) =>
+                                    inputTextHandler(e, "shippingCity")
+                                }
+                                onFocusHandler={(e: FocusEvent) => {
+                                    inputOnFocusHandler(e, "shippingCity");
                                 }}
                                 className="registration__input"
-                                type="text"
-                                name="shipping_city"
-                                id="shipping_city"
+                                id="shippingCity"
                                 value={formData.shippingCity}
-                                placeholder="city"
-                                hidden={!!defaultAddress}
+                                placeHolder="City"
                             />
-                        </label>
-                        <label htmlFor="shipping_street">
-                            {validationError.shippingStreet && !defaultAddress ? (
+                        </div>
+                        <div>
+                            {/* {validationError.shippingStreet && !defaultAddress ? (
                                 <div className="registration__error">
                                     {validationError.shippingStreet}
                                 </div>
-                            ) : null}
-                            <input
-                                onChange={(e) => {
-                                    inputTextHandler(e, "shippingStreet");
+                            ) : null} */}
+                            <TextValidationError
+                                errorMessage={
+                                    validationError.shippingStreet && !defaultAddress
+                                        ? validationError.shippingStreet
+                                        : ""
+                                }
+                            />
+                            {/* <label htmlFor="shipping_street">
+                                <input
+                                    onChange={(e) => {
+                                        inputTextHandler(e, "shippingStreet");
+                                    }}
+                                    onFocus={(e: FocusEvent) => {
+                                        inputOnFocusHandler(e, "shippingStreet");
+                                    }}
+                                    className="registration__input"
+                                    type="text"
+                                    name="shipping_street"
+                                    id="shipping_street"
+                                    value={formData.shippingStreet}
+                                    placeholder="street"
+                                    hidden={!!defaultAddress}
+                                />
+                            </label> */}
+                            <TextInput
+                                type="text"
+                                name="shippingStreet"
+                                onChangeHandler={(e: React.ChangeEvent<HTMLInputElement>) =>
+                                    inputTextHandler(e, "shippingStreet")
+                                }
+                                onFocusHandler={(e: FocusEvent) => {
+                                    inputOnFocusHandler(e, "shippingStreet");
                                 }}
                                 className="registration__input"
-                                type="text"
-                                name="shipping_street"
-                                id="shipping_street"
+                                id="shippingStreet"
                                 value={formData.shippingStreet}
-                                placeholder="street"
-                                hidden={!!defaultAddress}
+                                placeHolder="Street"
                             />
-                        </label>
-                        <label htmlFor="shipping_postal_code">
-                            {validationError.shippingPostalCode && !defaultAddress ? (
+                        </div>
+                        <div>
+                            {/* {validationError.shippingPostalCode && !defaultAddress ? (
                                 <div className="registration__error">
                                     {validationError.shippingPostalCode}
                                 </div>
-                            ) : null}
-                            <input
-                                onChange={(e) => {
-                                    inputTextHandler(e, "shippingPostalCode");
+                            ) : null} */}
+                            <TextValidationError
+                                errorMessage={
+                                    validationError.shippingPostalCode && !defaultAddress
+                                        ? validationError.shippingPostalCode
+                                        : ""
+                                }
+                            />
+                            {/* <label htmlFor="shipping_postal_code">
+                                <input
+                                    onChange={(e) => {
+                                        inputTextHandler(e, "shippingPostalCode");
+                                    }}
+                                    onFocus={(e: FocusEvent) => {
+                                        inputOnFocusHandler(e, "shippingPostalCode");
+                                    }}
+                                    className="registration__input"
+                                    type="text"
+                                    name="shipping_postal_code"
+                                    id="shipping_postal_code"
+                                    value={formData.shippingPostalCode}
+                                    placeholder="Postal code"
+                                    hidden={!!defaultAddress}
+                                />
+                            </label> */}
+                            <TextInput
+                                type="text"
+                                name="shippingPostalCode"
+                                onChangeHandler={(e: React.ChangeEvent<HTMLInputElement>) =>
+                                    inputTextHandler(e, "shippingPostalCode")
+                                }
+                                onFocusHandler={(e: FocusEvent) => {
+                                    inputOnFocusHandler(e, "shippingPostalCode");
                                 }}
                                 className="registration__input"
-                                type="text"
-                                name="shipping_postal_code"
-                                id="shipping_postal_code"
+                                id="shippingPostalCode"
                                 value={formData.shippingPostalCode}
-                                placeholder="Postal code"
-                                hidden={!!defaultAddress}
+                                placeHolder="Postal code"
                             />
-                        </label>
+                        </div>
                     </div>
                 </div>
                 <RegistrationButton className="registration__button" buttonText="Registration" />
