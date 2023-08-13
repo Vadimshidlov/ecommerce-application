@@ -14,6 +14,7 @@ import {
     validFormatCurrentDate,
 } from "shared/utils/getInitialFormData";
 import { getInitialFormErrorsData, IStateErrors } from "shared/utils/getInitialFormErrorsData";
+import { AuthService } from "service/AuthService";
 
 export type RegisterFormDataType = {
     firstname: string;
@@ -164,8 +165,16 @@ function RegistrationPage() {
         }
     };
 
+    const getToken = async () => {
+        const AuthServiceApi = new AuthService();
+        AuthServiceApi.createAnonymousToken();
+    };
+
     return (
         <section className="registration__block">
+            <button type="button" onClick={getToken}>
+                Token
+            </button>
             <h2 className="registration__title">Sign up</h2>
             <div className="registration__subtitle">
                 <p>Already have an account?</p>
