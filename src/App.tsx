@@ -12,10 +12,11 @@ import { AuthDataStore } from "service/AuthDataStore";
 function App() {
     useEffect(() => {
         (async () => {
-            const tokenStoreApi = AuthDataStore.getAuthDataStore();
-            const isToken = tokenStoreApi.getAnonymousToken();
-
-            if (!isToken) {
+            try {
+                const tokenStoreApi = AuthDataStore.getAuthDataStore();
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                const isToken = tokenStoreApi.getAnonymousToken();
+            } catch (error) {
                 const AuthServiceApi = new AuthService();
                 await AuthServiceApi.createAnonymousToken();
             }

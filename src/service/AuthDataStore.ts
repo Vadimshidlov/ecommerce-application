@@ -13,7 +13,17 @@ export class AuthDataStore {
         localStorage.setItem("anonymousToken", value);
     }
 
-    public getAnonymousToken(): string | null {
-        return localStorage.getItem("anonymousToken");
+    public setAnonymousRefreshToken(value: string): void {
+        localStorage.setItem("anonymousRefreshToken", value);
+    }
+
+    public getAnonymousToken(): string {
+        const anonymoustoken = localStorage.getItem("anonymousToken");
+
+        if (!anonymoustoken) {
+            throw new Error("Anonymous token was fallen");
+        }
+
+        return anonymoustoken;
     }
 }

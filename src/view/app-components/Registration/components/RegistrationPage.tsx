@@ -15,6 +15,7 @@ import {
 } from "shared/utils/getInitialFormData";
 import { getInitialFormErrorsData, IStateErrors } from "shared/utils/getInitialFormErrorsData";
 import { AuthService } from "service/AuthService";
+import { RegistrationService } from "service/RegistrationService";
 
 export type RegisterFormDataType = {
     firstname: string;
@@ -130,8 +131,29 @@ function RegistrationPage() {
         getInitialFormErrorsData(),
     );
     const [defaultAddress, setDefaultAddress] = useState(false);
+
     const handleDefaultAddress = (event: React.ChangeEvent<HTMLInputElement>) => {
         setDefaultAddress(event.target.checked);
+
+        if (event.target.checked) {
+            const defaultAdrdresses = {
+                shippingCity: formData.billingCity,
+                shippingCountry: formData.billingCountry,
+                shippingStreet: formData.billingStreet,
+                shippingPostalCode: formData.billingPostalCode,
+            };
+
+            setFormData({ ...formData, ...defaultAdrdresses });
+        } else {
+            const defaultAdrdresses = {
+                shippingCity: "",
+                shippingCountry: "",
+                shippingStreet: "",
+                shippingPostalCode: "",
+            };
+
+            setFormData({ ...formData, ...defaultAdrdresses });
+        }
     };
 
     const navigate = useNavigate();
@@ -152,6 +174,8 @@ function RegistrationPage() {
         e.preventDefault();
         try {
             await userScheme.validate(formData, { abortEarly: false });
+            const registrationApi = new RegistrationService();
+            registrationApi.createCustomer(formData);
 
             console.log(formData, "formData");
         } catch (err) {
