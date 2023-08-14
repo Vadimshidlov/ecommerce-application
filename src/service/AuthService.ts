@@ -22,9 +22,9 @@ export class AuthService {
 
     private readonly CTP_PROJECT_KEY = "uwoc_ecm-app";
 
-    private readonly CTP_CLIENT_SECRET = "y032J9wD2H8uGq-teCj3JKufLemXvh0p";
+    private readonly CTP_CLIENT_SECRET = "6x4a7bsRL81dJoq1vsQ81yf3C0BiJrYH";
 
-    private readonly CTP_CLIENT_ID = "AQQJMS72dVvIXZ8egyoOukZU";
+    private readonly CTP_CLIENT_ID = "OLQF6DvQqgu9NiEaNj5l-ngD";
 
     private readonly ANON_TOKEN_CONTENT_TYPE = "application/x-www-form-urlencoded";
 
@@ -39,7 +39,7 @@ export class AuthService {
             const tokenRequest = await this.requestApi.post<TokenResponseType>({
                 params: {
                     grant_type: "client_credentials",
-                    scope: `view_published_products:uwoc_ecm-app manage_customers:uwoc_ecm-app manage_my_profile:uwoc_ecm-app manage_my_orders:uwoc_ecm-app create_anonymous_token:uwoc_ecm-app`,
+                    scope: `manage_project:uwoc_ecm-app view_audit_log:uwoc_ecm-app manage_api_clients:uwoc_ecm-app`,
                     // scope: `view_published_products:${this.CTP_PROJECT_KEY}`,
                 },
                 headers: {
@@ -51,6 +51,8 @@ export class AuthService {
             });
 
             const tokenResponse: TokenResponseType = await tokenRequest.data;
+            console.log(tokenResponse, `tokenResponse`);
+
             const anonymousToken = tokenResponse.access_token;
             const anonymousRefreshToken = tokenResponse.refresh_token;
 

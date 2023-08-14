@@ -5,7 +5,8 @@ class AxiosAuthApi {
 
     private readonly CTP_PROJECT_KEY = "uwoc_ecm-app";
 
-    private readonly API_URL = "https://api.europe-west1.gcp.commercetools.com/";
+    private readonly API_URL =
+        "https://api.europe-west1.gcp.commercetools.com/uwoc_ecm-app/me/signup";
 
     constructor() {
         this.request = axios.create({
@@ -14,11 +15,11 @@ class AxiosAuthApi {
     }
 
     public post<D>(
-        urlParams: string,
+        // urlParams: string,
         config: AxiosRequestConfig | undefined,
-        data: object | undefined = {},
+        data: object | undefined,
     ): Promise<AxiosResponse<D>> {
-        const url = this.API_URL + urlParams;
+        const url = this.API_URL;
 
         return this.request.post(url, data, config);
     }

@@ -10,6 +10,8 @@ export class AuthDataStore {
     }
 
     public setAnonymousToken(value: string): void {
+        console.log("Anon token to localStorge", value);
+
         localStorage.setItem("anonymousToken", value);
     }
 
@@ -25,5 +27,15 @@ export class AuthDataStore {
         }
 
         return anonymoustoken;
+    }
+
+    public getAnonymousRefreshToken(): string {
+        const anonymousRefreshtoken = localStorage.getItem("anonymousRefreshToken");
+
+        if (!anonymousRefreshtoken) {
+            throw new Error("Anonymous token was fallen");
+        }
+
+        return anonymousRefreshtoken;
     }
 }

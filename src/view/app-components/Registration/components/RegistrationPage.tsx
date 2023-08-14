@@ -87,8 +87,10 @@ const userScheme = yup.object({
         }),
     billingCountry: yup
         .string()
+        .lowercase()
         .required("Country is required field")
-        .oneOf(["USA", "Belarus", "Russia"], "Please, write valid country"),
+        .oneOf(["usa", "belarus", "russia"], "Please, write valid country"),
+    // .oneOf(["USA", "Belarus", "Russia"], "Please, write valid country"),
     // .oneOf(["USA", "Belarus", "Russia"], "This country not supported by our service"),
     shippingStreet: yup
         .string()
@@ -121,8 +123,10 @@ const userScheme = yup.object({
         }),
     shippingCountry: yup
         .string()
+        .lowercase()
         .required("Country is required field")
-        .oneOf(["USA", "Belarus", "Russia"], "Please, write valid country"),
+        .oneOf(["usa", "belarus", "russia"], "Please, write valid country"),
+    // .oneOf(["USA", "Belarus", "Russia"], "Please, write valid country"),
 });
 
 function RegistrationPage() {
@@ -163,6 +167,7 @@ function RegistrationPage() {
         key: keyof RegisterFormDataType,
     ) => {
         const { value } = e.target;
+
         setFormData({ ...formData, [key]: value });
     };
 
@@ -172,6 +177,7 @@ function RegistrationPage() {
 
     const onFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+
         try {
             await userScheme.validate(formData, { abortEarly: false });
             const registrationApi = new RegistrationService();
