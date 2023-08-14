@@ -87,9 +87,9 @@ const userScheme = yup.object({
         }),
     billingCountry: yup
         .string()
-        .lowercase()
+        .uppercase()
         .required("Country is required field")
-        .oneOf(["usa", "belarus", "russia"], "Please, write valid country"),
+        .oneOf(["US", "BE", "RU"], "Please, write valid country"),
     // .oneOf(["USA", "Belarus", "Russia"], "Please, write valid country"),
     // .oneOf(["USA", "Belarus", "Russia"], "This country not supported by our service"),
     shippingStreet: yup
@@ -123,9 +123,9 @@ const userScheme = yup.object({
         }),
     shippingCountry: yup
         .string()
-        .lowercase()
+        .uppercase()
         .required("Country is required field")
-        .oneOf(["usa", "belarus", "russia"], "Please, write valid country"),
+        .oneOf(["US", "BE", "RU"], "Please, write valid country"),
     // .oneOf(["USA", "Belarus", "Russia"], "Please, write valid country"),
 });
 

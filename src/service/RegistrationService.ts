@@ -1,4 +1,4 @@
-// import { AxiosResponse } from "axios";
+import { AxiosResponse } from "axios";
 import AxiosAuthApi from "service/ApiAxios";
 import { ISignUpForm } from "shared/utils/getInitialFormData";
 import { AuthDataStore } from "service/AuthDataStore";
@@ -16,8 +16,8 @@ export type CustomerDataType = {
     lastName: string;
     password: string;
     addresses: CutomerAddressType[];
-    // shippingAddresses: string[];
-    // billingAddresses: string[];
+    shippingAddresses: number[];
+    billingAddresses: number[];
 };
 
 export class RegistrationService {
@@ -54,50 +54,45 @@ export class RegistrationService {
                     streetName: formData.billingStreet,
                     postalCode: formData.billingPostalCode,
                     city: formData.billingCity,
-                    country: "US",
-                    // country: formData.billingCountry,
+                    country: formData.billingCountry,
                 },
                 {
                     streetName: formData.shippingStreet,
                     postalCode: formData.shippingPostalCode,
                     city: formData.shippingCity,
-                    // country: formData.shippingCountry,
-                    country: "US",
+                    country: formData.shippingCountry,
                 },
             ],
-            // shippingAddresses: ["1"],
-            // billingAddresses: ["0"],
+            shippingAddresses: [1],
+            billingAddresses: [0],
         };
 
         try {
-            // const response = await this.requestApi.post<AxiosResponse>(
-            //     // urlParams,
-            //     {},
+            const response = await this.requestApi.post<AxiosResponse>(
+                // urlParams,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                },
+                customerData,
+            );
+
+            // const fetchResponse = await fetch(
+            //     "https://api.europe-west1.gcp.commercetools.com/uwoc_ecm-app/customers",
             //     {
+            //         method: "POST",
             //         headers: {
             //             Authorization: `Bearer ${token}`,
             //             "Content-Type": "application/json",
             //         },
-            //         data: customerData,
-            //         // data: { ...customerData },
+            //         body: JSON.stringify(customerData),
             //     },
             // );
 
-            const fetchResponse = await fetch(
-                "https://api.europe-west1.gcp.commercetools.com/uwoc_ecm-app/customers",
-                {
-                    method: "POST",
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify(customerData),
-                },
-            );
+            // console.log(fetchResponse, `RESPONSE From FETCH`);
 
-            console.log(fetchResponse, `RESPONSE From FETCH`);
-
-            // console.log(response);
+            console.log(response);
         } catch (error) {
             console.log(error);
         }

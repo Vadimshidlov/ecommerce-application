@@ -10,7 +10,7 @@ class AxiosAuthApi {
 
     constructor() {
         this.request = axios.create({
-            url: `${this.API_URL}`,
+            baseURL: `${this.API_URL}`,
         });
     }
 
@@ -18,10 +18,9 @@ class AxiosAuthApi {
         // urlParams: string,
         config: AxiosRequestConfig | undefined,
         data: object | undefined,
+        queryParams = "",
     ): Promise<AxiosResponse<D>> {
-        const url = this.API_URL;
-
-        return this.request.post(url, data, config);
+        return this.request.post(queryParams, data, config);
     }
 }
 
