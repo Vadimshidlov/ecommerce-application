@@ -1,15 +1,16 @@
 import React from "react";
+import Text from "view/app-components/Text/text";
 
-interface IButton {
+interface IButton extends React.ComponentPropsWithRef<"button"> {
     text: string;
-    fontSize: string;
-    callback: () => void;
+    textClasses: string[];
+    buttonClasses: string;
 }
 
-export function Button({ text, fontSize, callback }: IButton) {
+export function Button({ type = "button", text, textClasses, buttonClasses, ...rest }: IButton) {
     return (
-        <button type="button" className={`button ${fontSize}`} onClick={callback}>
-            {text}
+        <button type={type} className={buttonClasses} {...rest}>
+            <Text classes={textClasses}>{text}</Text>
         </button>
     );
 }
