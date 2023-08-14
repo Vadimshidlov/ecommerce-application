@@ -5,7 +5,7 @@ export function PasswordError(passwordError: string) {
     const lengthMessage = message.length;
     const symbolsString = "Symbols: ~\\`!@#$%^&*()_-+={[}]|\\\\:;\"'<,>.?/";
 
-    return lengthMessage > 28 ? (
+    return lengthMessage > 42 ? (
         <span>
             Passwords should contain three of the four character types: <br />
             Uppercase letters: A-Z, <br />

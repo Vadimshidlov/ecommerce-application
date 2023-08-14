@@ -53,6 +53,7 @@ const userScheme = yup.object({
     password: yup
         .string()
         .required()
+        .min(8, "Password should be more than 8 characters")
         .matches(/^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/),
     billingStreet: yup
         .string()
