@@ -1,7 +1,9 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { AxiosResponse } from "axios";
-import AxiosAuthApi from "service/ApiAxios";
 import { ISignUpForm } from "shared/utils/getInitialFormData";
 import { AuthDataStore } from "service/AuthDataStore";
+import AxiosSignUpAuth from "service/AxiosSignUpAuth";
+import LoginService from "service/LoginService";
 
 export type CutomerAddressType = {
     streetName: string;
@@ -20,6 +22,11 @@ export type CustomerDataType = {
     billingAddresses: number[];
 };
 
+export type AuthCustomerDataType = {
+    email: string;
+    password: string;
+};
+
 export class RegistrationService {
     private readonly CTP_AUTH_URL = "https://auth.europe-west1.gcp.commercetools.com";
 
@@ -31,7 +38,9 @@ export class RegistrationService {
 
     private readonly CTP_CLIENT_ID = "XF0rGB0-e3-TD42FR9KX9DJq";
 
-    private readonly requestApi = AxiosAuthApi;
+    private readonly requestApi = AxiosSignUpAuth;
+
+    private readonly loginServiceApi = new LoginService();
 
     private readonly AuthDataStoreApi = AuthDataStore.getAuthDataStore();
 
@@ -40,7 +49,7 @@ export class RegistrationService {
 
         // const urlParams = `${this.CTP_PROJECT_KEY}/customers`;
 
-        const token = this.AuthDataStoreApi.getAnonymousToken();
+        const token = this.AuthDataStoreApi.getAnonymousAccessToken();
 
         console.log(token, `TOKEN FROM REGISTRATION`);
 
@@ -54,13 +63,13 @@ export class RegistrationService {
                     streetName: formData.billingStreet,
                     postalCode: formData.billingPostalCode,
                     city: formData.billingCity,
-                    country: formData.billingCountry,
+                    country: formData.billingCountry.toUpperCase(),
                 },
                 {
                     streetName: formData.shippingStreet,
                     postalCode: formData.shippingPostalCode,
                     city: formData.shippingCity,
-                    country: formData.shippingCountry,
+                    country: formData.shippingCountry.toUpperCase(),
                 },
             ],
             shippingAddresses: [1],
@@ -93,6 +102,38 @@ export class RegistrationService {
             // console.log(fetchResponse, `RESPONSE From FETCH`);
 
             console.log(response);
+
+            const authCustomerData: AuthCustomerDataType = {
+                email: customerData.email,
+                password: customerData.password,
+            };
+
+            /* const authResponseOneStep = await this.loginServiceApi.getAuthToken(authCustomerData);
+            console.log(authCustomerData);
+            const authResponseTwoStep = await this.loginServiceApi.authenticateCustomer(
+                authCustomerData,
+            ); */
+
+            this.loginServiceApi.getAuthToken(authCustomerData).then((res) => {
+                console.log(res, `step1`);
+                this.loginServiceApi.authenticateCustomer(authCustomerData).then((data) => {
+                    console.log(data, `step2`);
+                });
+            });
+            // console.log(authCustomerData);
+
+            // console.log(authResponseOneStep);
+            // console.log(authResponseTwoStep);
+
+            // const authResponse = await this.requestApi.post<AxiosResponse>(
+            //     // urlParams,
+            //     {
+            //         headers: {
+            //             Authorization: `Bearer ${token}`,
+            //         },
+            //     },
+            //     authCustomerData,
+            // );
         } catch (error) {
             console.log(error);
         }

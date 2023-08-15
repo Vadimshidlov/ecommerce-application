@@ -6,8 +6,8 @@ import { Routes, Route } from "react-router-dom";
 import MainPage from "view/app-components/MainPage/mainPage";
 // import Text from "view/app-components/Text/text";
 import PageNotFound from "view/app-components/PageNotFound/pageNotFound";
-import { AuthService } from "service/AuthService";
 import { AuthDataStore } from "service/AuthDataStore";
+import { AuthService } from "service/AuthService";
 
 function App() {
     useEffect(() => {
@@ -15,7 +15,7 @@ function App() {
             try {
                 const tokenStoreApi = AuthDataStore.getAuthDataStore();
                 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                const isToken = tokenStoreApi.getAnonymousToken();
+                const isToken = tokenStoreApi.getAnonymousAccessToken();
             } catch (error) {
                 const AuthServiceApi = new AuthService();
                 await AuthServiceApi.createAnonymousToken();

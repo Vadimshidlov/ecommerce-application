@@ -14,8 +14,8 @@ import {
     validFormatCurrentDate,
 } from "shared/utils/getInitialFormData";
 import { getInitialFormErrorsData, IStateErrors } from "shared/utils/getInitialFormErrorsData";
-import { AuthService } from "service/AuthService";
 import { RegistrationService } from "service/RegistrationService";
+import { AuthService } from "service/AuthService";
 
 export type RegisterFormDataType = {
     firstname: string;
@@ -224,10 +224,10 @@ function RegistrationPage() {
                     <TextInput
                         type="text"
                         name="firstname"
-                        onChangeHandler={(e: React.ChangeEvent<HTMLInputElement>) =>
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                             inputTextHandler(e, "firstname")
                         }
-                        onFocusHandler={(e: FocusEvent) => {
+                        onFocus={(e: FocusEvent) => {
                             inputOnFocusHandler(e, "firstname");
                         }}
                         className="registration__input"
@@ -241,10 +241,10 @@ function RegistrationPage() {
                     <TextInput
                         type="text"
                         name="lastname"
-                        onChangeHandler={(e: React.ChangeEvent<HTMLInputElement>) =>
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                             inputTextHandler(e, "lastname")
                         }
-                        onFocusHandler={(e: FocusEvent) => {
+                        onFocus={(e: FocusEvent) => {
                             inputOnFocusHandler(e, "lastname");
                         }}
                         className="registration__input"
@@ -276,10 +276,10 @@ function RegistrationPage() {
                     <TextInput
                         type="text"
                         name="email"
-                        onChangeHandler={(e: React.ChangeEvent<HTMLInputElement>) =>
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                             inputTextHandler(e, "email")
                         }
-                        onFocusHandler={(e: FocusEvent) => {
+                        onFocus={(e: FocusEvent) => {
                             inputOnFocusHandler(e, "email");
                         }}
                         className="registration__input"
@@ -300,10 +300,10 @@ function RegistrationPage() {
                     <TextInput
                         type="password"
                         name="password"
-                        onChangeHandler={(e: React.ChangeEvent<HTMLInputElement>) =>
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                             inputTextHandler(e, "password")
                         }
-                        onFocusHandler={(e: FocusEvent) => {
+                        onFocus={(e: FocusEvent) => {
                             inputOnFocusHandler(e, "password");
                         }}
                         className="registration__input"
@@ -321,10 +321,10 @@ function RegistrationPage() {
                             <TextInput
                                 type="text"
                                 name="billingCountry"
-                                onChangeHandler={(e: React.ChangeEvent<HTMLInputElement>) =>
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                                     inputTextHandler(e, "billingCountry")
                                 }
-                                onFocusHandler={(e: FocusEvent) => {
+                                onFocus={(e: FocusEvent) => {
                                     inputOnFocusHandler(e, "billingCountry");
                                 }}
                                 className="registration__input"
@@ -338,10 +338,10 @@ function RegistrationPage() {
                             <TextInput
                                 type="text"
                                 name="billingStreet"
-                                onChangeHandler={(e: React.ChangeEvent<HTMLInputElement>) =>
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                                     inputTextHandler(e, "billingStreet")
                                 }
-                                onFocusHandler={(e: FocusEvent) => {
+                                onFocus={(e: FocusEvent) => {
                                     inputOnFocusHandler(e, "billingStreet");
                                 }}
                                 className="registration__input"
@@ -355,10 +355,10 @@ function RegistrationPage() {
                             <TextInput
                                 type="text"
                                 name="billingCity"
-                                onChangeHandler={(e: React.ChangeEvent<HTMLInputElement>) =>
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                                     inputTextHandler(e, "billingCity")
                                 }
-                                onFocusHandler={(e: FocusEvent) => {
+                                onFocus={(e: FocusEvent) => {
                                     inputOnFocusHandler(e, "billingCity");
                                 }}
                                 className="registration__input"
@@ -372,10 +372,10 @@ function RegistrationPage() {
                             <TextInput
                                 type="text"
                                 name="billingPostalCode"
-                                onChangeHandler={(e: React.ChangeEvent<HTMLInputElement>) =>
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                                     inputTextHandler(e, "billingPostalCode")
                                 }
-                                onFocusHandler={(e: FocusEvent) => {
+                                onFocus={(e: FocusEvent) => {
                                     inputOnFocusHandler(e, "billingPostalCode");
                                 }}
                                 className="registration__input"
@@ -408,10 +408,10 @@ function RegistrationPage() {
                             <TextInput
                                 type="text"
                                 name="shippingCountry"
-                                onChangeHandler={(e: React.ChangeEvent<HTMLInputElement>) =>
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                                     inputTextHandler(e, "shippingCountry")
                                 }
-                                onFocusHandler={(e: FocusEvent) => {
+                                onFocus={(e: FocusEvent) => {
                                     inputOnFocusHandler(e, "shippingCountry");
                                 }}
                                 className="registration__input"
@@ -431,10 +431,10 @@ function RegistrationPage() {
                             <TextInput
                                 type="text"
                                 name="shippingCity"
-                                onChangeHandler={(e: React.ChangeEvent<HTMLInputElement>) =>
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                                     inputTextHandler(e, "shippingCity")
                                 }
-                                onFocusHandler={(e: FocusEvent) => {
+                                onFocus={(e: FocusEvent) => {
                                     inputOnFocusHandler(e, "shippingCity");
                                 }}
                                 className="registration__input"
@@ -454,10 +454,10 @@ function RegistrationPage() {
                             <TextInput
                                 type="text"
                                 name="shippingStreet"
-                                onChangeHandler={(e: React.ChangeEvent<HTMLInputElement>) =>
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                                     inputTextHandler(e, "shippingStreet")
                                 }
-                                onFocusHandler={(e: FocusEvent) => {
+                                onFocus={(e: FocusEvent) => {
                                     inputOnFocusHandler(e, "shippingStreet");
                                 }}
                                 className="registration__input"
@@ -477,10 +477,10 @@ function RegistrationPage() {
                             <TextInput
                                 type="text"
                                 name="shippingPostalCode"
-                                onChangeHandler={(e: React.ChangeEvent<HTMLInputElement>) =>
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                                     inputTextHandler(e, "shippingPostalCode")
                                 }
-                                onFocusHandler={(e: FocusEvent) => {
+                                onFocus={(e: FocusEvent) => {
                                     inputOnFocusHandler(e, "shippingPostalCode");
                                 }}
                                 className="registration__input"

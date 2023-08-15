@@ -1,7 +1,5 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
+import AxiosApi from "service/AxiosAnonymousApi";
 import { AuthDataStore } from "service/AuthDataStore";
-import axios from "axios";
-import AxiosApi from "service/Axios";
 
 type TokenResponseType = {
     access_token: string;
@@ -10,9 +8,6 @@ type TokenResponseType = {
     scope: string;
     refresh_token: string;
 };
-
-type GetAnonTokenType =
-    `anonymous/token?grant_type=client_credentials&scope=view_published_products`;
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export class AuthService {
@@ -30,34 +25,38 @@ export class AuthService {
 
     private readonly ANON_PRODUCTS_CONTENT_TYPE = "application/json";
 
-    private AuthDataStore = AuthDataStore.getAuthDataStore();
+    private AuthDataStoreApi = AuthDataStore.getAuthDataStore();
+
+    private readonly API_ANON_AUTH_URL = `${this.CTP_AUTH_URL}/oauth/${this.CTP_PROJECT_KEY}/anonymous/token`;
 
     private requestApi = AxiosApi;
 
     public async createAnonymousToken(): Promise<void> {
         try {
-            const tokenRequest = await this.requestApi.post<TokenResponseType>({
-                params: {
-                    grant_type: "client_credentials",
-                    scope: `manage_project:uwoc_ecm-app view_audit_log:uwoc_ecm-app manage_api_clients:uwoc_ecm-app`,
-                    // scope: `view_published_products:${this.CTP_PROJECT_KEY}`,
+            const tokenRequest = await this.requestApi.post<TokenResponseType>(
+                this.API_ANON_AUTH_URL,
+                {
+                    params: {
+                        grant_type: "client_credentials",
+                        scope: `manage_project:uwoc_ecm-app view_audit_log:uwoc_ecm-app manage_api_clients:uwoc_ecm-app`,
+                        // scope: `view_published_products:${this.CTP_PROJECT_KEY}`,
+                    },
+                    headers: {
+                        Authorization: `Basic ${btoa(
+                            `${this.CTP_CLIENT_ID}:${this.CTP_CLIENT_SECRET}`,
+                        )}`,
+                        "Content-Type": this.ANON_TOKEN_CONTENT_TYPE,
+                    },
                 },
-                headers: {
-                    Authorization: `Basic ${btoa(
-                        `${this.CTP_CLIENT_ID}:${this.CTP_CLIENT_SECRET}`,
-                    )}`,
-                    "Content-Type": this.ANON_TOKEN_CONTENT_TYPE,
-                },
-            });
+            );
 
             const tokenResponse: TokenResponseType = await tokenRequest.data;
             console.log(tokenResponse, `tokenResponse`);
 
-            const anonymousToken = tokenResponse.access_token;
+            const anonymousAccessToken = tokenResponse.access_token;
             const anonymousRefreshToken = tokenResponse.refresh_token;
 
-            this.AuthDataStore.setAnonymousToken(anonymousToken);
-            this.AuthDataStore.setAnonymousRefreshToken(anonymousRefreshToken);
+            this.AuthDataStoreApi.setAnonymousTokens(anonymousAccessToken, anonymousRefreshToken);
         } catch (e) {
             console.log(e);
         }

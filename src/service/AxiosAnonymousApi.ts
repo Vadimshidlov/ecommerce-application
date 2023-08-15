@@ -1,6 +1,6 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
 
-class AxiosAuthApi {
+class AxiosAnonymousApi {
     public request: AxiosInstance;
 
     private readonly CTP_PROJECT_KEY = "uwoc_ecm-app";
@@ -11,16 +11,17 @@ class AxiosAuthApi {
 
     constructor() {
         this.request = axios.create({
-            url: `https://auth.europe-west1.gcp.commercetools.com/oauth/${this.CTP_PROJECT_KEY}/anonymous/token`,
+            // url: `https://auth.europe-west1.gcp.commercetools.com/oauth/${this.CTP_PROJECT_KEY}/anonymous/token`,
         });
     }
 
     public post<D>(
+        url: string,
         config: AxiosRequestConfig | undefined,
         data: object | undefined = {},
     ): Promise<AxiosResponse<D>> {
-        return this.request.post(this.API_URL, data, config);
+        return this.request.post(url, data, config);
     }
 }
 
-export default new AxiosAuthApi();
+export default new AxiosAnonymousApi();
