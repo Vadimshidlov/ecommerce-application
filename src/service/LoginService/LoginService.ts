@@ -1,4 +1,5 @@
 import axios, { AxiosResponse } from "axios";
+import { AuthDataStore } from "service/AuthDataStore";
 
 type CustomerType = {
     customer: {
@@ -50,23 +51,25 @@ type LoginType = {
 };
 
 export default class LoginService {
-    private readonly AUTH_URL = "https://auth.europe-west1.gcp.commercetools.com";
+    private readonly AUTH_DATA_STORE: AuthDataStore = new AuthDataStore();
 
-    private readonly API_URL = "https://api.europe-west1.gcp.commercetools.com";
+    private readonly AUTH_URL: string = "https://auth.europe-west1.gcp.commercetools.com";
 
-    private readonly PROJECT_KEY = "uwoc_ecm-app";
+    private readonly API_URL: string = "https://api.europe-west1.gcp.commercetools.com";
 
-    private readonly CLIENT_SECRET = "E8AYLzgyU7V1edyQweQ9yCxpr2luFops";
+    private readonly PROJECT_KEY: string = "uwoc_ecm-app";
 
-    private readonly CLIENT_ID = "DzC-BvkGRO8l_GPzpNcR2pzI";
+    private readonly CLIENT_SECRET: string = "E8AYLzgyU7V1edyQweQ9yCxpr2luFops";
 
-    private readonly SCOPES = "manage_project:uwoc_ecm-app";
+    private readonly CLIENT_ID: string = "DzC-BvkGRO8l_GPzpNcR2pzI";
 
-    private ACCESS_TOKEN = "";
-
-    private REFRESH_TOKEN = "";
+    private readonly SCOPES: string = "manage_project:uwoc_ecm-app";
 
     private IS_AUTHORIZED = false;
+
+    public getAuthFlag(): boolean {
+        return this.IS_AUTHORIZED;
+    }
 
     public async getAuthToken({ email, password }: LoginType): Promise<void> {
         const response: AxiosResponse<DataResponseType> = await axios({
@@ -84,17 +87,17 @@ export default class LoginService {
         }
 
         const { data } = response;
-        this.ACCESS_TOKEN = data.access_token;
-        this.REFRESH_TOKEN = data.refresh_token;
+        this.AUTH_DATA_STORE.setAuthTokens(data.access_token, data.refresh_token);
     }
 
     public async authenticateCustomer({ email, password }: LoginType): Promise<void> {
+        const ACCESS_TOKEN = this.AUTH_DATA_STORE.getAccessAuthToken();
         const response: AxiosResponse<CustomerType> = await axios({
             url: `${this.API_URL}/${this.PROJECT_KEY}/login`,
             method: "POST",
             data: { email, password },
             headers: {
-                Authorization: `Bearer ${this.ACCESS_TOKEN}`,
+                Authorization: `Bearer ${ACCESS_TOKEN}`,
                 "Content-Type": "application/json",
             },
         });
@@ -106,25 +109,5 @@ export default class LoginService {
         const { customer } = response.data;
 
         console.log(customer);
-        // return customer;
     }
-
-    // public async authenticateCustomer({ email, password }: LoginType): Promise<CustomerType> {
-    //     const URL: string = `${this.API_URL}/${this.PROJECT_KEY}/login`;
-    //     const BODY: LoginType = { email, password };
-
-    //     const response = await fetch(URL, {
-    //         method: "POST",
-    //         headers: {
-    //             Authorization: `Bearer ${this.ACCESS_TOKEN}`,
-    //             "Content-Type": "application/json",
-    //         },
-    //         body: JSON.stringify(BODY),
-    //     });
-
-    //     const customer: CustomerType = await response.json();
-
-    //     console.log(customer);
-    //     return customer;
-    // }
 }

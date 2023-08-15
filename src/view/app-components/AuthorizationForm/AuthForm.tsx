@@ -84,7 +84,7 @@ export function AuthForm() {
                         value={password}
                         id="password"
                         type={inputType}
-                        className="registration__input"
+                        className="registration__input btn-full-width"
                         onInput={() => setPassError("")}
                         onChange={(event) => setPassword(event.target.value)}
                     />
