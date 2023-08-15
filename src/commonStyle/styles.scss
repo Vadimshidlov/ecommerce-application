@@ -1,7 +1,8 @@
 @import "index.scss";
 @import "colors.scss";
 @import "fonts.scss";
-@import "variables.scss";
 @import "shared/components/button/Button.scss";
+@import "shared/components/ButtonIcon/ButtonIcon.scss";
 @import "shared/components/TextInput/TextInput.scss";
-
+@import "view/app-components/AuthorizationForm/AuthForm.scss";
+@import "view/app-components/LoginPage/LoginPage.scss";
