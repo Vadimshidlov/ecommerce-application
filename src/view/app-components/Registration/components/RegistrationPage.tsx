@@ -140,23 +140,23 @@ function RegistrationPage() {
         setDefaultAddress(event.target.checked);
 
         if (event.target.checked) {
-            const defaultAdrdresses = {
+            const defaultAddresses = {
                 shippingCity: formData.billingCity,
                 shippingCountry: formData.billingCountry,
                 shippingStreet: formData.billingStreet,
                 shippingPostalCode: formData.billingPostalCode,
             };
 
-            setFormData({ ...formData, ...defaultAdrdresses });
+            setFormData({ ...formData, ...defaultAddresses });
         } else {
-            const defaultAdrdresses = {
+            const defaultAddresses = {
                 shippingCity: "",
                 shippingCountry: "",
                 shippingStreet: "",
                 shippingPostalCode: "",
             };
 
-            setFormData({ ...formData, ...defaultAdrdresses });
+            setFormData({ ...formData, ...defaultAddresses });
         }
     };
 
