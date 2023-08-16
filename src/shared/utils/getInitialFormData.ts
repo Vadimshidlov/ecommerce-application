@@ -20,7 +20,7 @@ const currMonth = nowDate.toLocaleString("default", { month: "2-digit" });
 const currDay = nowDate.toLocaleString("default", { day: "2-digit" });
 export const validFormatCurrentDate = `${currYear}-${currMonth}-${currDay}`;
 
-export const getInitialFormData = (shippingAdress: string): ISignUpForm => ({
+export const getInitialFormData = (): ISignUpForm => ({
     firstname: "",
     lastname: "",
     birthdayDate: `${validFormatCurrentDate}`,
@@ -29,9 +29,9 @@ export const getInitialFormData = (shippingAdress: string): ISignUpForm => ({
     billingStreet: "",
     billingCity: "",
     billingPostalCode: "",
-    billingCountry: "",
+    billingCountry: "BE",
     shippingStreet: "",
     shippingCity: "",
     shippingPostalCode: "",
-    shippingCountry: shippingAdress,
+    shippingCountry: "BE",
 });

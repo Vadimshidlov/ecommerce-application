@@ -20,6 +20,8 @@ export type CustomerDataType = {
     addresses: CutomerAddressType[];
     shippingAddresses: number[];
     billingAddresses: number[];
+    defaultBillingAddress?: number;
+    defaultShippingAddress?: number;
 };
 
 export type AuthCustomerDataType = {
@@ -44,7 +46,11 @@ export class RegistrationService {
 
     private readonly AuthDataStoreApi = AuthDataStore.getAuthDataStore();
 
-    public async createCustomer(formData: ISignUpForm): Promise<void> {
+    public async createCustomer(
+        formData: ISignUpForm,
+        defaultBillingAddress: boolean,
+        defaultShippingAddress: boolean,
+    ): Promise<void> {
         console.log(formData, `from createCustomer`);
 
         // const urlParams = `${this.CTP_PROJECT_KEY}/customers`;
@@ -74,7 +80,18 @@ export class RegistrationService {
             ],
             shippingAddresses: [1],
             billingAddresses: [0],
+            // defaultBillingAddress: defaultBillingAddress ? [0] : [],
+            // defaultShippingAddress: defaultShippingAddress ? [1] : [],
         };
+
+        if (defaultBillingAddress && defaultShippingAddress) {
+            customerData.defaultBillingAddress = 0;
+            customerData.defaultShippingAddress = 1;
+        } else if (defaultBillingAddress) {
+            customerData.defaultBillingAddress = 0;
+        } else if (defaultShippingAddress) {
+            customerData.defaultShippingAddress = 1;
+        }
 
         try {
             const response = await this.requestApi.post<AxiosResponse>(

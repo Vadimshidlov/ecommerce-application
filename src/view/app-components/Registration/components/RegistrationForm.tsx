@@ -1,4 +1,5 @@
-import React, { FocusEvent, useState } from "react";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import React, { FocusEvent, useEffect, useState } from "react";
 import RegistrationButton from "view/app-components/Registration/components/RegistationButton";
 import * as yup from "yup";
 import { ValidationError } from "yup";
@@ -128,19 +129,29 @@ const userScheme = yup.object({
 });
 
 export type OnSubmitSignInDataType = {
-    onSubmitSignInData: (formData: ISignUpForm) => Promise<void>;
+    onSubmitSignInData: (
+        formData: ISignUpForm,
+        defaultBillingAddress: boolean,
+        defaultShippingAddress: boolean,
+    ) => Promise<void>;
 };
 
 export default function RegistrationForm({ onSubmitSignInData }: OnSubmitSignInDataType) {
-    const [shippingCountry, setShippingCountry] = useState("US");
-    const [formData, setFormData] = useState<ISignUpForm>(getInitialFormData(shippingCountry));
+    // const [shippingCountrySelect, setShippingCountrySelect] = useState("BE");
+    const [formData, setFormData] = useState<ISignUpForm>(getInitialFormData());
     const [validationError, setValidationError] = useState<IStateErrors>(
         getInitialFormErrorsData(),
     );
-    const [defaultAddress, setDefaultAddress] = useState(false);
+    const [oneAddress, setOneAddress] = useState(false);
+    const [defaultBillingAddress, setDefaultBillingAddress] = useState(false);
+    const [defaultShippingAddress, setDefaultShippingAddress] = useState(false);
+
+    // useEffect(() => {
+    //     console.log(formData, `formData`);
+    // }, [formData]);
 
     const handleDefaultAddress = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setDefaultAddress(event.target.checked);
+        setOneAddress(event.target.checked);
 
         if (event.target.checked) {
             const defaultAddresses = {
@@ -184,11 +195,7 @@ export default function RegistrationForm({ onSubmitSignInData }: OnSubmitSignInD
         try {
             await userScheme.validate(formData, { abortEarly: false });
 
-            onSubmitSignInData(formData);
-            // const registrationApi = new RegistrationService();
-            // registrationApi.createCustomer(formData);
-
-            console.log(formData, "formData");
+            await onSubmitSignInData(formData, defaultBillingAddress, defaultShippingAddress);
         } catch (err) {
             if (err instanceof ValidationError) {
                 const errorsList = [...err.inner];
@@ -200,11 +207,6 @@ export default function RegistrationForm({ onSubmitSignInData }: OnSubmitSignInD
             }
         }
     };
-
-    // const getToken = async () => {
-    //     const AuthServiceApi = new AuthService();
-    //     AuthServiceApi.createAnonymousToken();
-    // };
 
     return (
         <section className="registration__block">
@@ -320,10 +322,30 @@ export default function RegistrationForm({ onSubmitSignInData }: OnSubmitSignInD
                 <div className="registration__adress-block block-adress">
                     <div className="block-adress_billing">
                         <p className="block-address_title">Billing address:</p>
-                        <div>
+                        <div className="registration__default-address">
+                            <p>Make as shipping address</p>
+                            <input
+                                name="defaultAddress"
+                                type="checkbox"
+                                checked={oneAddress}
+                                onChange={handleDefaultAddress}
+                            />
+                        </div>
+                        <div className="registration__default-address">
+                            <p>Make as default billing address</p>
+                            <input
+                                name="defaultBillingAddress"
+                                type="checkbox"
+                                checked={defaultBillingAddress}
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                                    setDefaultBillingAddress(e.target.checked)
+                                }
+                            />
+                        </div>
+                        <div className="billing_countries__select-block">
                             <p className="billing_countries">Country:</p>
                             <TextValidationError errorMessage={validationError.billingCountry} />
-                            <TextInput
+                            {/* <TextInput
                                 type="text"
                                 name="billingCountry"
                                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -336,7 +358,24 @@ export default function RegistrationForm({ onSubmitSignInData }: OnSubmitSignInD
                                 id="billingCountry"
                                 value={formData.billingCountry}
                                 placeHolder="Available countries: USA, Russia, Belarus"
-                            />
+                            /> */}
+                            <select
+                                value={formData.billingCountry}
+                                className="block-adress_select"
+                                name="billingCountry"
+                                id="billingCountry"
+                                onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+                                    const { value } = e.target;
+                                    setFormData((prevState) => ({
+                                        ...prevState,
+                                        billingCountry: value,
+                                    }));
+                                }}
+                            >
+                                <option value="US">USA</option>
+                                <option value="RU">Russia</option>
+                                <option value="BE">Belarus</option>
+                            </select>
                         </div>
                         <div>
                             <TextValidationError errorMessage={validationError.billingStreet} />
@@ -390,45 +429,39 @@ export default function RegistrationForm({ onSubmitSignInData }: OnSubmitSignInD
                             />
                         </div>
                     </div>
-                    <div className="registration__default-address">
-                        <p>Make default address for billing and shipping address</p>
-                        <input
-                            name="defaultAddress"
-                            type="checkbox"
-                            checked={defaultAddress}
-                            onChange={handleDefaultAddress}
-                        />
-                    </div>
-                    <div className="block-adress_shipping" hidden={!!defaultAddress}>
+                    <div className="block-adress_shipping" hidden={!!oneAddress}>
                         <p className="block-address_title">Shipping address:</p>
+                        <div className="registration__default-address">
+                            <p>Make as default shipping address</p>
+                            <input
+                                name="defaultShippingAdress"
+                                type="checkbox"
+                                checked={defaultShippingAddress}
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                                    setDefaultShippingAddress(e.target.checked)
+                                }
+                            />
+                        </div>
                         <div className="billing_countries__select-block">
                             <p className="billing_countries">Country:</p>
                             <TextValidationError
                                 errorMessage={
-                                    validationError.shippingCountry && !defaultAddress
+                                    validationError.shippingCountry && !oneAddress
                                         ? validationError.shippingCountry
                                         : ""
                                 }
                             />
                             <select
+                                value={formData.shippingCountry}
                                 className="block-adress_select"
                                 name="shippingCountry"
                                 id="shippingCountry"
-                                value={shippingCountry}
                                 onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
                                     const { value } = e.target;
-                                    setShippingCountry(value);
-                                    /* const shippingCountryProp = {
+                                    setFormData((prevState) => ({
+                                        ...prevState,
                                         shippingCountry: value,
-                                    }; */
-                                    /* setFormData((prevState) => ({{
-                                        ...prevState, ...shippingCountryProp
-                                    }})) */
-                                    console.log(formData);
-                                    // inputTextHandler(e, "shippingCountry");
-                                }}
-                                onFocus={(e: FocusEvent) => {
-                                    inputOnFocusHandler(e, "shippingCountry");
+                                    }));
                                 }}
                             >
                                 <option value="US">USA</option>
@@ -453,7 +486,7 @@ export default function RegistrationForm({ onSubmitSignInData }: OnSubmitSignInD
                         <div>
                             <TextValidationError
                                 errorMessage={
-                                    validationError.shippingCity && !defaultAddress
+                                    validationError.shippingCity && !oneAddress
                                         ? validationError.shippingCity
                                         : ""
                                 }
@@ -476,7 +509,7 @@ export default function RegistrationForm({ onSubmitSignInData }: OnSubmitSignInD
                         <div>
                             <TextValidationError
                                 errorMessage={
-                                    validationError.shippingStreet && !defaultAddress
+                                    validationError.shippingStreet && !oneAddress
                                         ? validationError.shippingStreet
                                         : ""
                                 }
@@ -499,7 +532,7 @@ export default function RegistrationForm({ onSubmitSignInData }: OnSubmitSignInD
                         <div>
                             <TextValidationError
                                 errorMessage={
-                                    validationError.shippingPostalCode && !defaultAddress
+                                    validationError.shippingPostalCode && !oneAddress
                                         ? validationError.shippingPostalCode
                                         : ""
                                 }
