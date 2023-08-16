@@ -103,10 +103,10 @@ export class RegistrationService {
 
             console.log(response);
 
-            const authCustomerData: AuthCustomerDataType = {
-                email: customerData.email,
-                password: customerData.password,
-            };
+            // const authCustomerData: AuthCustomerDataType = {
+            //     email: customerData.email,
+            //     password: customerData.password,
+            // };
 
             /* const authResponseOneStep = await this.loginServiceApi.getAuthToken(authCustomerData);
             console.log(authCustomerData);
@@ -114,12 +114,12 @@ export class RegistrationService {
                 authCustomerData,
             ); */
 
-            this.loginServiceApi.getAuthToken(authCustomerData).then((res) => {
-                console.log(res, `step1`);
-                this.loginServiceApi.authenticateCustomer(authCustomerData).then((data) => {
-                    console.log(data, `step2`);
-                });
-            });
+            // this.loginServiceApi.getAuthToken(authCustomerData).then((res) => {
+            //     console.log(res, `step1`);
+            //     this.loginServiceApi.authenticateCustomer(authCustomerData).then((data) => {
+            //         console.log(data, `step2`);
+            //     });
+            // });
             // console.log(authCustomerData);
 
             // console.log(authResponseOneStep);
