@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { AxiosResponse } from "axios";
+import axios, { AxiosError, AxiosResponse } from "axios";
 import { ISignUpForm } from "shared/utils/getInitialFormData";
 import { AuthDataStore } from "service/AuthDataStore";
 import AxiosSignUpAuth from "service/AxiosSignUpAuth";
@@ -93,66 +93,29 @@ export class RegistrationService {
             customerData.defaultShippingAddress = 1;
         }
 
-        try {
-            const response = await this.requestApi.post<AxiosResponse>(
-                // urlParams,
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
+        // try {
+        const response = await this.requestApi.post<AxiosResponse>(
+            // urlParams,
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`,
                 },
-                customerData,
-            );
+            },
+            customerData,
+        );
 
-            // const fetchResponse = await fetch(
-            //     "https://api.europe-west1.gcp.commercetools.com/uwoc_ecm-app/customers",
-            //     {
-            //         method: "POST",
-            //         headers: {
-            //             Authorization: `Bearer ${token}`,
-            //             "Content-Type": "application/json",
-            //         },
-            //         body: JSON.stringify(customerData),
-            //     },
-            // );
+        console.log(response);
+        // } catch (error) {
+        // if (axios.isAxiosError(error)) {
+        /* if (error instanceof AxiosError) {
+                console.log(error.response?.data.message, `error`);
+            } else if (error instanceof Error) {
+                console.log(error.message);
+            } */
 
-            // console.log(fetchResponse, `RESPONSE From FETCH`);
-
-            console.log(response);
-
-            // const authCustomerData: AuthCustomerDataType = {
-            //     email: customerData.email,
-            //     password: customerData.password,
-            // };
-
-            /* const authResponseOneStep = await this.loginServiceApi.getAuthToken(authCustomerData);
-            console.log(authCustomerData);
-            const authResponseTwoStep = await this.loginServiceApi.authenticateCustomer(
-                authCustomerData,
-            ); */
-
-            // this.loginServiceApi.getAuthToken(authCustomerData).then((res) => {
-            //     console.log(res, `step1`);
-            //     this.loginServiceApi.authenticateCustomer(authCustomerData).then((data) => {
-            //         console.log(data, `step2`);
-            //     });
-            // });
-            // console.log(authCustomerData);
-
-            // console.log(authResponseOneStep);
-            // console.log(authResponseTwoStep);
-
-            // const authResponse = await this.requestApi.post<AxiosResponse>(
-            //     // urlParams,
-            //     {
-            //         headers: {
-            //             Authorization: `Bearer ${token}`,
-            //         },
-            //     },
-            //     authCustomerData,
-            // );
-        } catch (error) {
-            console.log(error);
+        if (response.status !== 200) {
+            throw Error("Error from customer registration service");
         }
+        // }
     }
 }

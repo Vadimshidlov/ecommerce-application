@@ -6,6 +6,7 @@ import RegistrationForm from "view/app-components/Registration/components/Regist
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { useNavigate } from "react-router-dom";
 import { AuthDataStore } from "service/AuthDataStore";
+import { AxiosError } from "axios";
 
 function RegistrationPage() {
     // const getToken = async () => {
@@ -20,6 +21,8 @@ function RegistrationPage() {
     const handleSuccessRegistration = () => {
         authDataStore.current.removeTokenFromStore("anonymousAccessToken");
         navigate("/");
+        //     TODO Add Logout Button
+        //     TODO Set flag to login - true with useContext
     };
 
     const onSubmitSignInDataCallBack = async (
@@ -43,7 +46,14 @@ function RegistrationPage() {
             await loginService.current.authenticateCustomer(authCustomerData);
             handleSuccessRegistration();
         } catch (error) {
-            console.log("Something error");
+            // TODO EMAIL ERROR HANDLING
+            if (error instanceof AxiosError) {
+                console.log(error);
+                console.log(error.response?.data.message, `error`);
+            } else if (error instanceof Error) {
+                console.log(error.message);
+            }
+            // console.log(error"Something error");
         }
     };
 
