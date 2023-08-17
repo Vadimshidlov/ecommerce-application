@@ -134,9 +134,15 @@ export type OnSubmitSignInDataType = {
         defaultBillingAddress: boolean,
         defaultShippingAddress: boolean,
     ) => Promise<void>;
+    registrationError: string;
+    errorHandler: (value: string) => void;
 };
 
-export default function RegistrationForm({ onSubmitSignInData }: OnSubmitSignInDataType) {
+export default function RegistrationForm({
+    onSubmitSignInData,
+    registrationError,
+    errorHandler,
+}: OnSubmitSignInDataType) {
     // const [shippingCountrySelect, setShippingCountrySelect] = useState("BE");
     const [formData, setFormData] = useState<ISignUpForm>(getInitialFormData());
     const [validationError, setValidationError] = useState<IStateErrors>(
@@ -152,8 +158,10 @@ export default function RegistrationForm({ onSubmitSignInData }: OnSubmitSignInD
 
     const handleDefaultAddress = (event: React.ChangeEvent<HTMLInputElement>) => {
         setOneAddress(event.target.checked);
+    };
 
-        if (event.target.checked) {
+    const changeFormByAddress = async (isOneAdress: boolean) => {
+        if (isOneAdress) {
             const defaultAddresses = {
                 shippingCity: formData.billingCity,
                 shippingCountry: formData.billingCountry,
@@ -187,12 +195,16 @@ export default function RegistrationForm({ onSubmitSignInData }: OnSubmitSignInD
 
     const inputOnFocusHandler = (e: FocusEvent, key: string) => {
         setValidationError({ ...validationError, [key]: "" });
+        if (e.target instanceof HTMLInputElement && e.target.name === "email") {
+            errorHandler("");
+        }
     };
 
     const onFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         try {
+            await changeFormByAddress(oneAddress);
             await userScheme.validate(formData, { abortEarly: false });
 
             await onSubmitSignInData(formData, defaultBillingAddress, defaultShippingAddress);
@@ -554,6 +566,7 @@ export default function RegistrationForm({ onSubmitSignInData }: OnSubmitSignInD
                         </div>
                     </div>
                 </div>
+                <TextValidationError errorMessage={registrationError} />
                 <RegistrationButton className="registration__button" buttonText="Registration" />
             </form>
         </section>

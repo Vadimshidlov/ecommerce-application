@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-catch */
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { ISignUpForm } from "shared/utils/getInitialFormData";
@@ -104,8 +105,10 @@ export class RegistrationService {
             customerData,
         );
 
-        console.log(response);
+        console.log(response, `response from Service`);
         // } catch (error) {
+        // throw error;
+
         // if (axios.isAxiosError(error)) {
         /* if (error instanceof AxiosError) {
                 console.log(error.response?.data.message, `error`);
@@ -113,9 +116,10 @@ export class RegistrationService {
                 console.log(error.message);
             } */
 
-        if (response.status !== 200) {
-            throw Error("Error from customer registration service");
-        }
+        // if (response.status !== 200) {
+        //     console.log(response, "response");
+        //     throw Error("Error from customer registration service");
+        // }
         // }
     }
 }

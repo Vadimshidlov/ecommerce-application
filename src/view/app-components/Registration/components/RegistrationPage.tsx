@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import LoginService from "service/LoginService";
 import { AuthCustomerDataType, RegistrationService } from "service/RegistrationService";
 import { ISignUpForm } from "shared/utils/getInitialFormData";
@@ -17,12 +17,17 @@ function RegistrationPage() {
     const loginService = useRef(new LoginService());
     const authDataStore = useRef(AuthDataStore.getAuthDataStore());
     const navigate = useNavigate();
+    const [registrationError, setRegistrationError] = useState("");
 
     const handleSuccessRegistration = () => {
         authDataStore.current.removeTokenFromStore("anonymousAccessToken");
         navigate("/");
         //     TODO Add Logout Button
         //     TODO Set flag to login - true with useContext
+    };
+
+    const registrationErrorHandler = (errorMessage: string) => {
+        setRegistrationError(errorMessage);
     };
 
     const onSubmitSignInDataCallBack = async (
@@ -48,16 +53,25 @@ function RegistrationPage() {
         } catch (error) {
             // TODO EMAIL ERROR HANDLING
             if (error instanceof AxiosError) {
-                console.log(error);
-                console.log(error.response?.data.message, `error`);
+                console.log(error, `AxiosError`);
+                console.log(error.response?.data.message, `AxiosError`);
+                registrationErrorHandler(error.response?.data.message);
             } else if (error instanceof Error) {
-                console.log(error.message);
+                console.log(error.message, `instanceof Error`);
             }
             // console.log(error"Something error");
         }
     };
 
-    return <RegistrationForm onSubmitSignInData={onSubmitSignInDataCallBack} />;
+    return (
+        <div>
+            <RegistrationForm
+                onSubmitSignInData={onSubmitSignInDataCallBack}
+                registrationError={registrationError}
+                errorHandler={registrationErrorHandler}
+            />
+        </div>
+    );
 }
 
 export default RegistrationPage;
