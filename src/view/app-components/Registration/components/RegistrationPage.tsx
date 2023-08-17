@@ -41,6 +41,7 @@ function RegistrationPage() {
             const authCustomerData: AuthCustomerDataType = {
                 email: formData.email,
                 password: formData.password,
+                // TODO anonymousCart
             };
 
             await loginService.current.getAuthToken(authCustomerData);

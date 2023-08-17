@@ -179,6 +179,7 @@ export default function RegistrationForm({
             const obj: ISignUpForm = { ...formData, ...defaultAddresses };
 
             // setFormData((prevState) => ({ ...prevState, ...defaultAddresses }));
+            // TODO Remove
             setFormData({ ...obj });
             return obj;
         }
@@ -210,6 +211,7 @@ export default function RegistrationForm({
 
         try {
             const finallyFormData = changeFormByAddress(oneAddress);
+            // TODO Set
             await userScheme.validate(finallyFormData, { abortEarly: false });
 
             await onSubmitSignInData(
