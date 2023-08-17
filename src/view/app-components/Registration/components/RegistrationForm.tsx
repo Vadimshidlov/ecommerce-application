@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import React, { FocusEvent, useEffect, useState } from "react";
+import React, { FocusEvent, useCallback, useEffect, useState } from "react";
 import RegistrationButton from "view/app-components/Registration/components/RegistationButton";
 import * as yup from "yup";
 import { ValidationError } from "yup";
@@ -138,12 +138,18 @@ export type OnSubmitSignInDataType = {
     errorHandler: (value: string) => void;
 };
 
+export type DefaultAddressType = {
+    shippingCity: string;
+    shippingCountry: string;
+    shippingStreet: string;
+    shippingPostalCode: string;
+};
+
 export default function RegistrationForm({
     onSubmitSignInData,
     registrationError,
     errorHandler,
 }: OnSubmitSignInDataType) {
-    // const [shippingCountrySelect, setShippingCountrySelect] = useState("BE");
     const [formData, setFormData] = useState<ISignUpForm>(getInitialFormData());
     const [validationError, setValidationError] = useState<IStateErrors>(
         getInitialFormErrorsData(),
@@ -152,16 +158,17 @@ export default function RegistrationForm({
     const [defaultBillingAddress, setDefaultBillingAddress] = useState(false);
     const [defaultShippingAddress, setDefaultShippingAddress] = useState(false);
 
-    // useEffect(() => {
-    //     console.log(formData, `formData`);
-    // }, [formData]);
-
     const handleDefaultAddress = (event: React.ChangeEvent<HTMLInputElement>) => {
         setOneAddress(event.target.checked);
+        setDefaultShippingAddress(false);
     };
 
-    const changeFormByAddress = async (isOneAdress: boolean) => {
-        if (isOneAdress) {
+    useEffect(() => {
+        setDefaultShippingAddress(false);
+    }, [oneAddress]);
+
+    const changeFormByAddress = (isOneAddress: boolean): ISignUpForm => {
+        if (isOneAddress) {
             const defaultAddresses = {
                 shippingCity: formData.billingCity,
                 shippingCountry: formData.billingCountry,
@@ -169,17 +176,15 @@ export default function RegistrationForm({
                 shippingPostalCode: formData.billingPostalCode,
             };
 
-            setFormData({ ...formData, ...defaultAddresses });
-        } else {
-            const defaultAddresses = {
-                shippingCity: "",
-                shippingCountry: "",
-                shippingStreet: "",
-                shippingPostalCode: "",
-            };
+            const obj: ISignUpForm = { ...formData, ...defaultAddresses };
 
-            setFormData({ ...formData, ...defaultAddresses });
+            // setFormData((prevState) => ({ ...prevState, ...defaultAddresses }));
+            setFormData({ ...obj });
+            return obj;
         }
+
+        return formData;
+        // setFormData((prevState) => ({ ...prevState }));
     };
 
     const navigate = useNavigate();
@@ -204,10 +209,14 @@ export default function RegistrationForm({
         e.preventDefault();
 
         try {
-            await changeFormByAddress(oneAddress);
-            await userScheme.validate(formData, { abortEarly: false });
+            const finallyFormData = changeFormByAddress(oneAddress);
+            await userScheme.validate(finallyFormData, { abortEarly: false });
 
-            await onSubmitSignInData(formData, defaultBillingAddress, defaultShippingAddress);
+            await onSubmitSignInData(
+                finallyFormData,
+                defaultBillingAddress,
+                defaultShippingAddress,
+            );
         } catch (err) {
             if (err instanceof ValidationError) {
                 const errorsList = [...err.inner];

@@ -9,10 +9,6 @@ import { AuthDataStore } from "service/AuthDataStore";
 import { AxiosError } from "axios";
 
 function RegistrationPage() {
-    // const getToken = async () => {
-    //     const AuthServiceApi = new AuthService();
-    //     AuthServiceApi.createAnonymousToken();
-    // };
     const registrationService = useRef(new RegistrationService());
     const loginService = useRef(new LoginService());
     const authDataStore = useRef(AuthDataStore.getAuthDataStore());
