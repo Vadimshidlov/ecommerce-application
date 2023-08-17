@@ -14,7 +14,7 @@ export default function LoginPage() {
                 </Text>
             </div>
             <div className="login-description">
-                <Text classes={["inter-400-font", "font-size_m"]}>Don’t have an accout yet?</Text>
+                <Text classes={["inter-400-font", "font-size_m"]}>Don’t have an account yet?</Text>
                 <NavLink to="/registration" className="inter-600-font font-size_m color_black">
                     Sign up
                 </NavLink>

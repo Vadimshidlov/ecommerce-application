@@ -65,12 +65,6 @@ export default class LoginService {
 
     private readonly SCOPES: string = "manage_project:uwoc_ecm-app";
 
-    private IS_AUTHORIZED = false;
-
-    public getAuthFlag(): boolean {
-        return this.IS_AUTHORIZED;
-    }
-
     public async getAuthToken({ email, password }: LoginType): Promise<void> {
         const response: AxiosResponse<DataResponseType> = await axios({
             url: `${this.AUTH_URL}/oauth/${this.PROJECT_KEY}/customers/token`,
@@ -102,8 +96,8 @@ export default class LoginService {
             },
         });
 
-        if (response.status === 200) {
-            this.IS_AUTHORIZED = true;
+        if (response.status !== 200) {
+            throw Error("User with such credentials was not found");
         }
 
         const { customer } = response.data;

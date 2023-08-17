@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 import LoginService from "service/LoginService/LoginService";
 import { Button } from "shared/components/button/Button";
@@ -6,45 +7,49 @@ import { ButtonIcon } from "shared/components/ButtonIcon/ButtonIcon";
 import { TextInput } from "shared/components/TextInput/TextInput";
 import closedEye from "assets/svg/closedEye.svg";
 import openEye from "assets/svg/openEye.svg";
+import { AxiosError } from "axios";
 
 export function AuthForm() {
-    const LOGIN_SERVICE = new LoginService();
+    const LOGIN_SERVICE: LoginService = new LoginService();
 
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [emailError, setEmailError] = useState("");
-    const [passError, setPassError] = useState("");
-    const [inputType, setInputType] = useState("password");
+    const [email, setEmail] = useState<string>("");
+    const [password, setPassword] = useState<string>("");
+    const [emailError, setEmailError] = useState<string>("");
+    const [passError, setPassError] = useState<string>("");
+    const [inputType, setInputType] = useState<string>("password");
 
-    const toggleHideButton = () => {
+    const toggleHideButton = (): void => {
         setInputType(inputType === "password" ? "text" : "password");
     };
+
+    const navigate = useNavigate();
 
     const schema = Yup.object({
         email: Yup.string()
             .email("Email must be in the format user@example.com")
             .required("Email is a required field"),
         password: Yup.string()
-            .matches(/(?=.*[A-Z])/, "The password must be received for one capital letter (AZ)")
-            .matches(/(?=.*[a-z])/, "Password must contain at least one lowercase letter (az)")
-            .matches(/(?=.*\d)/, "Password must contain at least one number (0-9)")
             .matches(
                 /(?=.*[!@#$%^&-])/,
                 "The password must contain at least one special character (for example, !@#$%^&-)",
             )
+            .matches(/(?=.*[A-Z])/, "The password must be received for one capital letter (AZ)")
+            .matches(/(?=.*[a-z])/, "Password must contain at least one lowercase letter (az)")
+            .matches(/(?=.*\d)/, "Password must contain at least one number (0-9)")
             .min(8, "Password must contain at least 8 characters")
             .required("Password is a required field"),
     });
 
-    const handleSubmit = async (event: React.FormEvent): Promise<void> => {
+    const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
 
         try {
             await schema.validate({ email, password }, { abortEarly: false });
 
-            LOGIN_SERVICE.getAuthToken({ email, password }).then(() =>
-                LOGIN_SERVICE.authenticateCustomer({ email, password }),
-            );
+            await LOGIN_SERVICE.getAuthToken({ email, password });
+            await LOGIN_SERVICE.authenticateCustomer({ email, password });
+
+            navigate("/");
         } catch (error) {
             if (error instanceof Yup.ValidationError) {
                 error.inner.forEach((err) => {
@@ -54,7 +59,9 @@ export function AuthForm() {
                         setPassError(err.message);
                     }
                 });
-                console.error("error~~", error);
+            } else if (error instanceof AxiosError && error.response?.status === 400) {
+                setEmailError(error.response.data.message);
+                setPassError(error.response.data.message);
             }
         }
     };
