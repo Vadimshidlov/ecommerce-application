@@ -15,6 +15,7 @@ import {
     validFormatCurrentDate,
 } from "shared/utils/getInitialFormData";
 import { getInitialFormErrorsData, IStateErrors } from "shared/utils/getInitialFormErrorsData";
+import { getChangeFormByAddressData } from "shared/utils/getFinallyFormData";
 
 export type RegisterFormDataType = {
     firstname: string;
@@ -167,27 +168,6 @@ export default function RegistrationForm({
         setDefaultShippingAddress(false);
     }, [oneAddress]);
 
-    const changeFormByAddress = (isOneAddress: boolean): ISignUpForm => {
-        if (isOneAddress) {
-            const defaultAddresses = {
-                shippingCity: formData.billingCity,
-                shippingCountry: formData.billingCountry,
-                shippingStreet: formData.billingStreet,
-                shippingPostalCode: formData.billingPostalCode,
-            };
-
-            const obj: ISignUpForm = { ...formData, ...defaultAddresses };
-
-            // setFormData((prevState) => ({ ...prevState, ...defaultAddresses }));
-            // TODO Remove
-            setFormData({ ...obj });
-            return obj;
-        }
-
-        return formData;
-        // setFormData((prevState) => ({ ...prevState }));
-    };
-
     const navigate = useNavigate();
 
     const inputTextHandler = async (
@@ -210,8 +190,11 @@ export default function RegistrationForm({
         e.preventDefault();
 
         try {
-            const finallyFormData = changeFormByAddress(oneAddress);
+            const finallyFormData = getChangeFormByAddressData(oneAddress, formData);
             // TODO Set
+
+            setFormData((prevState) => ({ ...prevState, ...finallyFormData }));
+
             await userScheme.validate(finallyFormData, { abortEarly: false });
 
             await onSubmitSignInData(

@@ -23,7 +23,8 @@ export class AuthDataStore {
         const anonymousAccessToken = localStorage.getItem("anonymousAccessToken");
 
         if (!anonymousAccessToken) {
-            throw new Error("Anonymous access token was fallen");
+            // throw new Error("Anonymous access token was fallen");
+            return "";
         }
 
         return anonymousAccessToken;
@@ -43,7 +44,7 @@ export class AuthDataStore {
         const accessAuthToken = localStorage.getItem("accessAuthToken");
 
         if (!accessAuthToken) {
-            throw new Error("Auth access token was fallen");
+            return "";
         }
 
         return accessAuthToken;

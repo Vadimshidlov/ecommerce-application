@@ -8,19 +8,31 @@ import MainPage from "view/app-components/MainPage/mainPage";
 import PageNotFound from "view/app-components/PageNotFound/pageNotFound";
 import { AuthDataStore } from "service/AuthDataStore";
 import { AuthService } from "service/AuthService";
+import { useAuth } from "auth-context";
 
 function App() {
+    const authContetxtApi = useAuth();
+    const AuthDataStoreApi = AuthDataStore.getAuthDataStore();
+
     useEffect(() => {
         (async () => {
             try {
                 const tokenStoreApi = AuthDataStore.getAuthDataStore();
                 // eslint-disable-next-line @typescript-eslint/no-unused-vars
                 const isToken = tokenStoreApi.getAnonymousAccessToken();
+
+                // TODO Start tokens logic
+
+                const authToken = AuthDataStoreApi.getAccessAuthToken();
+                if (!authToken) {
+                    authContetxtApi?.setIsAuth(false);
+                }
             } catch (error) {
                 const AuthServiceApi = new AuthService();
                 await AuthServiceApi.createAnonymousToken();
             }
         })();
+        // eslint-disable-next-line
     }, []);
 
     return (

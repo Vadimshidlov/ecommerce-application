@@ -7,6 +7,7 @@ import RegistrationForm from "view/app-components/Registration/components/Regist
 import { useNavigate } from "react-router-dom";
 import { AuthDataStore } from "service/AuthDataStore";
 import { AxiosError } from "axios";
+import { useAuth } from "auth-context";
 
 function RegistrationPage() {
     const registrationService = useRef(new RegistrationService());
@@ -14,10 +15,13 @@ function RegistrationPage() {
     const authDataStore = useRef(AuthDataStore.getAuthDataStore());
     const navigate = useNavigate();
     const [registrationError, setRegistrationError] = useState("");
+    const authContetxtApi = useAuth();
 
     const handleSuccessRegistration = () => {
         authDataStore.current.removeTokenFromStore("anonymousAccessToken");
         navigate("/");
+        authContetxtApi?.setIsAuth(true);
+        console.log(authContetxtApi?.isAuth, "<~~~~~authContetxtApi?.isAuth");
         //     TODO Add Logout Button
         //     TODO Set flag to login - true with useContext
     };
