@@ -1,16 +1,18 @@
 import { useAuth } from "auth-context";
 import React from "react";
-import { AuthDataStore } from "service/AuthDataStore";
+// import { AuthDataStore } from "service/AuthDataStore";
+import { AuthService } from "service/AuthService";
 import "view/app-components/Header/buttons/style.scss";
 
 export function LogoutButton() {
     const authContetxtApi = useAuth();
-    const AuthDataStoreApi = AuthDataStore.getAuthDataStore();
+    // const AuthDataStoreApi = AuthDataStore.getAuthDataStore();
+    const AuthServiceApi = new AuthService();
 
-    const logoutHandler = () => {
+    const logoutHandler = async () => {
         localStorage.clear();
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        AuthDataStoreApi.getAnonymousAccessToken();
+        await AuthServiceApi.createAnonymousToken();
         authContetxtApi?.setIsAuth(false);
     };
 

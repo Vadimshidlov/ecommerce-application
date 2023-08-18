@@ -15,15 +15,14 @@ function RegistrationPage() {
     const authDataStore = useRef(AuthDataStore.getAuthDataStore());
     const navigate = useNavigate();
     const [registrationError, setRegistrationError] = useState("");
-    const authContetxtApi = useAuth();
+    const { setIsAuth } = useAuth();
+    const { isAuth } = useAuth();
 
     const handleSuccessRegistration = () => {
         authDataStore.current.removeTokenFromStore("anonymousAccessToken");
         navigate("/");
-        authContetxtApi?.setIsAuth(true);
-        console.log(authContetxtApi?.isAuth, "<~~~~~authContetxtApi?.isAuth");
-        //     TODO Add Logout Button
-        //     TODO Set flag to login - true with useContext
+        setIsAuth(true);
+        console.log(isAuth, "<~~~~~authContetxtApi?.isAuth");
     };
 
     const registrationErrorHandler = (errorMessage: string) => {

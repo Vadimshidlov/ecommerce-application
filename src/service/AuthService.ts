@@ -51,7 +51,7 @@ export class AuthService {
             );
 
             const tokenResponse: TokenResponseType = await tokenRequest.data;
-            console.log(tokenResponse, `tokenResponse`);
+            // console.log(tokenResponse, `tokenResponse`);
 
             const anonymousAccessToken = tokenResponse.access_token;
             const anonymousRefreshToken = tokenResponse.refresh_token;

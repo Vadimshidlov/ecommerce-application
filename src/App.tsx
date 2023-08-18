@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect, useRef } from "react";
 import RegistrationPage from "view/app-components/Registration/components/RegistrationPage";
 import Header from "view/app-components/Header/Header";
 import { Routes, Route } from "react-router-dom";
@@ -11,29 +11,29 @@ import { AuthService } from "service/AuthService";
 import { useAuth } from "auth-context";
 
 function App() {
-    const authContetxtApi = useAuth();
-    const AuthDataStoreApi = AuthDataStore.getAuthDataStore();
+    // const AuthDataStoreApi = AuthDataStore.getAuthDataStore();
+    const { setIsAuth } = useAuth();
+    const AuthServiceApi = useRef(new AuthService());
+    const AuthDataStoreApi = useRef(AuthDataStore.getAuthDataStore());
 
     useEffect(() => {
         (async () => {
-            try {
-                const tokenStoreApi = AuthDataStore.getAuthDataStore();
-                // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                const isToken = tokenStoreApi.getAnonymousAccessToken();
+            // const AuthServiceApi = new AuthService();
 
-                // TODO Start tokens logic
+            const isAccessToken = AuthDataStoreApi.current.getAccessAuthToken();
+            const isAnonToken = AuthDataStoreApi.current.getAnonymousAccessToken();
 
-                const authToken = AuthDataStoreApi.getAccessAuthToken();
-                if (!authToken) {
-                    authContetxtApi?.setIsAuth(false);
+            if (!isAccessToken) {
+                setIsAuth(false);
+
+                if (!isAnonToken) {
+                    await AuthServiceApi.current.createAnonymousToken();
                 }
-            } catch (error) {
-                const AuthServiceApi = new AuthService();
-                await AuthServiceApi.createAnonymousToken();
+            } else {
+                setIsAuth(true);
             }
         })();
-        // eslint-disable-next-line
-    }, []);
+    }, [setIsAuth]);
 
     return (
         <div>
