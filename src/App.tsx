@@ -18,8 +18,6 @@ function App() {
 
     useEffect(() => {
         (async () => {
-            // const AuthServiceApi = new AuthService();
-
             const isAccessToken = AuthDataStoreApi.current.getAccessAuthToken();
             const isAnonToken = AuthDataStoreApi.current.getAnonymousAccessToken();
 
@@ -59,8 +57,6 @@ function App() {
                 />
                 <Route path="*" element={<PageNotFound />} />
             </Routes>
-            {/* <h1>Hello,React!!!!</h1>
-            <Text classes={["example", "dark", "fz-5rem", "fw-500"]}>text with classes</Text> */}
         </div>
     );
 }

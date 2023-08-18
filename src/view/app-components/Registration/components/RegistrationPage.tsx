@@ -3,7 +3,6 @@ import LoginService from "service/LoginService";
 import { AuthCustomerDataType, RegistrationService } from "service/RegistrationService";
 import { ISignUpForm } from "shared/utils/getInitialFormData";
 import RegistrationForm from "view/app-components/Registration/components/RegistrationForm";
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { useNavigate } from "react-router-dom";
 import { AuthDataStore } from "service/AuthDataStore";
 import { AxiosError } from "axios";
@@ -16,13 +15,11 @@ function RegistrationPage() {
     const navigate = useNavigate();
     const [registrationError, setRegistrationError] = useState("");
     const { setIsAuth } = useAuth();
-    const { isAuth } = useAuth();
 
     const handleSuccessRegistration = () => {
         authDataStore.current.removeTokenFromStore("anonymousAccessToken");
         navigate("/");
         setIsAuth(true);
-        console.log(isAuth, "<~~~~~authContetxtApi?.isAuth");
     };
 
     const registrationErrorHandler = (errorMessage: string) => {
@@ -44,14 +41,12 @@ function RegistrationPage() {
             const authCustomerData: AuthCustomerDataType = {
                 email: formData.email,
                 password: formData.password,
-                // TODO anonymousCart
             };
 
             await loginService.current.getAuthToken(authCustomerData);
             await loginService.current.authenticateCustomer(authCustomerData);
             handleSuccessRegistration();
         } catch (error) {
-            // TODO EMAIL ERROR HANDLING
             if (error instanceof AxiosError) {
                 console.log(error, `AxiosError`);
                 console.log(error.response?.data.message, `AxiosError`);

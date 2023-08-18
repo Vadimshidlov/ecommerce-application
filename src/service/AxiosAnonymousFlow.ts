@@ -1,6 +1,6 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
 
-class AxiosAnonymousApi {
+class AxiosAnonymousFlow {
     public request: AxiosInstance;
 
     private readonly CTP_PROJECT_KEY = "uwoc_ecm-app";
@@ -24,4 +24,4 @@ class AxiosAnonymousApi {
     }
 }
 
-export default new AxiosAnonymousApi();
+export default new AxiosAnonymousFlow();

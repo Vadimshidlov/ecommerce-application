@@ -3,7 +3,7 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { ISignUpForm } from "shared/utils/getInitialFormData";
 import { AuthDataStore } from "service/AuthDataStore";
-import AxiosSignUpAuth from "service/AxiosSignUpAuth";
+import AxiosSignUpAuth from "service/AxiosSignUpFlow";
 import LoginService from "service/LoginService";
 
 export type CutomerAddressType = {

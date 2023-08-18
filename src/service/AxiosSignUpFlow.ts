@@ -3,7 +3,7 @@ import { AuthDataStore } from "service/AuthDataStore";
 import LoginService from "service/LoginService";
 // import { AuthService } from "service/AuthService";
 
-class AxiosSignUpAuth {
+class AxiosSignUpFlow {
     public request: AxiosInstance;
 
     private readonly CTP_PROJECT_KEY = "uwoc_ecm-app";
@@ -48,4 +48,4 @@ class AxiosSignUpAuth {
     }
 }
 
-export default new AxiosSignUpAuth();
+export default new AxiosSignUpFlow();

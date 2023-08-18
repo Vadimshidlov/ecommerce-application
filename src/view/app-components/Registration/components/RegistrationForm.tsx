@@ -139,13 +139,6 @@ export type OnSubmitSignInDataType = {
     errorHandler: (value: string) => void;
 };
 
-export type DefaultAddressType = {
-    shippingCity: string;
-    shippingCountry: string;
-    shippingStreet: string;
-    shippingPostalCode: string;
-};
-
 export default function RegistrationForm({
     onSubmitSignInData,
     registrationError,
@@ -191,7 +184,6 @@ export default function RegistrationForm({
 
         try {
             const finallyFormData = getChangeFormByAddressData(oneAddress, formData);
-            // TODO Set
 
             setFormData((prevState) => ({ ...prevState, ...finallyFormData }));
 
@@ -216,9 +208,6 @@ export default function RegistrationForm({
 
     return (
         <section className="registration__block">
-            {/* <button type="button" onClick={getToken}>
-                Token
-            </button> */}
             <h2 className="registration__title">Sign up</h2>
             <div className="registration__subtitle">
                 <p>Already have an account?</p>
