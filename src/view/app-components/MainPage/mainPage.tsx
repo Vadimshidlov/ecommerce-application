@@ -1,6 +1,5 @@
 import React from "react";
 import "view/app-components/MainPage/style.scss";
-import Header from "view/app-components/Header/Header";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -8,7 +7,6 @@ export default function MainPage() {
     return (
         <div className="main-page">
             <div className="main-part">
-                <Header />
                 {/* some content start */}
                 <h2 style={{ textAlign: "center" }}>MainPage</h2>
                 <ToastContainer
@@ -40,7 +38,7 @@ export default function MainPage() {
                     textAlign: "center",
                     fontSize: "4rem",
                     border: "0.3rem solid black",
-                    maxWidth: "1440px",
+                    // maxWidth: "1440px",
                     margin: "0 auto",
                 }}
             >

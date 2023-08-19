@@ -1,6 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import React, { useCallback, useEffect, useRef } from "react";
-import RegistrationPage from "view/app-components/Registration/components/RegistrationPage";
 import Header from "view/app-components/Header/Header";
 import { Routes, Route } from "react-router-dom";
 import MainPage from "view/app-components/MainPage/mainPage";
@@ -10,6 +9,7 @@ import PageNotFound from "view/app-components/PageNotFound/pageNotFound";
 import { AuthDataStore } from "service/AuthDataStore";
 import { AuthService } from "service/AuthService";
 import { useAuth } from "auth-context";
+import RegistrationPage from "view/app-components/Registration/components/RegistrationPage";
 
 function App() {
     // const AuthDataStoreApi = AuthDataStore.getAuthDataStore();
@@ -37,6 +37,7 @@ function App() {
 
     return (
         <div>
+            <Header />
             {isAuth ? (
                 <Routes>
                     <Route path="/" element={<MainPage />} />
@@ -47,24 +48,8 @@ function App() {
             ) : (
                 <Routes>
                     <Route path="/" element={<MainPage />} />
-                    <Route
-                        path="login"
-                        element={
-                            <>
-                                <Header />
-                                Login page
-                            </>
-                        }
-                    />
-                    <Route
-                        path="registration"
-                        element={
-                            <>
-                                <Header />
-                                <RegistrationPage />
-                            </>
-                        }
-                    />
+                    <Route path="login" element={<LoginPage />} />
+                    <Route path="registration" element={<RegistrationPage />} />
                     <Route path="*" element={<PageNotFound />} />
                 </Routes>
             )}
