@@ -15,7 +15,7 @@ export function CustomerButtons() {
     return (
         <div className="customer-buttons">
             <SearchButton />
-            <NavLink to="/registration" hidden={!!authContetxtApi?.isAuth}>
+            <NavLink to="/login" hidden={!!authContetxtApi?.isAuth}>
                 <UserButton />
             </NavLink>
             <NavLink to="/" hidden={!authContetxtApi?.isAuth}>

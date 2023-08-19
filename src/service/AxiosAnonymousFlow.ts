@@ -11,6 +11,17 @@ class AxiosAnonymousFlow {
 
     constructor() {
         this.request = axios.create({});
+        // this.request.interceptors.use(
+        //     (res) => {},
+        //     (error) => {
+        //         if(axios.isAxiosError(error)){
+        //             if (error.response?.status === 401){
+        //             //   if(anonToken?) ---> resfresh
+        //             //     else (!anonToken)  ---> create
+        //             }
+        //         }
+        //     },
+        // )
     }
 
     public post<D>(

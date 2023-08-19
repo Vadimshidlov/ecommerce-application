@@ -1,6 +1,8 @@
 import React from "react";
 import "view/app-components/MainPage/style.scss";
 import Header from "view/app-components/Header/Header";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function MainPage() {
     return (
@@ -9,6 +11,18 @@ export default function MainPage() {
                 <Header />
                 {/* some content start */}
                 <h2 style={{ textAlign: "center" }}>MainPage</h2>
+                <ToastContainer
+                    position="top-center"
+                    autoClose={5000}
+                    hideProgressBar={false}
+                    newestOnTop={false}
+                    closeOnClick
+                    rtl={false}
+                    pauseOnFocusLoss
+                    draggable
+                    pauseOnHover
+                    theme="light"
+                />
                 <div className="some-contant" style={{ maxWidth: "40%", marginLeft: "3rem" }}>
                     <h4>New Arrivals</h4>
                     <h3>Create your dream shop instantly.</h3>

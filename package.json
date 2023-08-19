@@ -58,6 +58,7 @@
     "eslint-plugin-prettier": "^5.0.0",
     "husky": "^8.0.3",
     "prettier": "^3.0.0",
+    "react-toastify": "^9.1.3",
     "string-template-parser": "^1.2.6",
     "yup": "^1.2.0"
   }

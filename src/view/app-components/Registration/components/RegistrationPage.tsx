@@ -7,6 +7,10 @@ import { useNavigate } from "react-router-dom";
 import { AuthDataStore } from "service/AuthDataStore";
 import { AxiosError } from "axios";
 import { useAuth } from "auth-context";
+import "react-toastify/dist/ReactToastify.css";
+// import { errorRegistrationMessage, successRegistrationMessage } from "shared/utils/notifyMessages";
+import { errorRegistrationMessage, successRegistrationMessage } from "shared/utils/notifyMessages";
+import { ToastContainer } from "react-toastify";
 
 function RegistrationPage() {
     const registrationService = useRef(new RegistrationService());
@@ -17,6 +21,7 @@ function RegistrationPage() {
     const { setIsAuth } = useAuth();
 
     const handleSuccessRegistration = () => {
+        successRegistrationMessage();
         authDataStore.current.removeTokenFromStore("anonymousAccessToken");
         navigate("/");
         setIsAuth(true);
@@ -50,6 +55,7 @@ function RegistrationPage() {
             if (error instanceof AxiosError) {
                 console.log(error, `AxiosError`);
                 console.log(error.response?.data.message, `AxiosError`);
+                errorRegistrationMessage();
                 registrationErrorHandler(error.response?.data.message);
             } else if (error instanceof Error) {
                 console.log(error.message, `instanceof Error`);
@@ -59,6 +65,18 @@ function RegistrationPage() {
 
     return (
         <div>
+            <ToastContainer
+                position="top-center"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="light"
+            />
             <RegistrationForm
                 onSubmitSignInData={onSubmitSignInDataCallBack}
                 registrationError={registrationError}
