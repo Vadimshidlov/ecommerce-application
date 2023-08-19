@@ -1,0 +1,196 @@
+.registration__block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 32px;
+    margin: 0px auto;
+    width: 45%;
+    //height: 100%;
+    min-height: 1548px;
+
+    @media (max-width: 1150px) {
+        width: 60%;
+    }
+
+    @media (max-width: 900px) {
+        width: 70%;
+    }
+
+    .registration__title {
+        margin-bottom: 24px;
+        font-family: "SpaceGrotesk";
+        font-size: 40px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 44px; /* 110% */
+    }
+
+    .registration__subtitle {
+        display: flex;
+        column-gap: 10px;
+        margin-bottom: 32px;
+        color: #121212;
+        text-align: center;
+        font-family: Inter;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 26px;
+
+        .registration__link {
+            font-family: Inter;
+            font-size: 16px;
+            font-style: normal;
+            font-weight: 600;
+            line-height: 26px;
+        }
+    }
+
+    .registration__form {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        width: 100%;
+
+        .registration__error {
+            padding-top: 10px;
+            display: block;
+            width: 100%;
+            font-family: "SpaceGrotesk";
+            font-size: 18px;
+            color: #e61010;
+        }
+
+        .registration__button {
+            //width: 588px;
+            width: 90%;
+            align-self: center;
+            height: 72px;
+            padding: 19px 44px;
+            border-radius: 6px;
+            background: #121212;
+            font-family: "SpaceGrotesk";
+            font-size: 22px;
+            font-style: normal;
+            font-weight: 500;
+            line-height: 34px;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .registration__input {
+            font-size: 20px;
+            //padding-top: 13px;
+            //padding-bottom: 13px;
+            padding: 3px 10px 13px 10px;
+            width: 100%;
+            border: none;
+            border-bottom: 1px solid #cbcbcb;
+            margin-bottom: 32px;
+            outline: none;
+            font-family: Inter;
+            font-size: 16px;
+            font-style: normal;
+            //color: #A7A7A7;
+        }
+
+        .registration__birthday-input {
+            display: flex;
+            justify-content: space-between;
+            font-family: Inter;
+            font-size: 16px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 26px;
+            color: #a7a7a7;
+
+            span {
+                padding-top: 18px;
+                padding-left: 10px;
+                color: #a7a7a7;
+                font-family: Inter;
+                font-size: 16px;
+                font-style: normal;
+            }
+        }
+
+        .block-address_title {
+            font-size: 18px;
+            margin-bottom: 5px;
+        }
+
+        .billing_countries__select-block {
+            margin-top: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
+        }
+
+        .billing__country {
+            display: flex;
+            margin-left: 10px;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+            //display: inline-block;
+            font-size: 14px;
+            color: #888;
+            margin-bottom: 20px;
+
+            &::after {
+                content: "";
+                border-width: 5px;
+                border-style: solid;
+                border-color: transparent;
+                border-top-color: #222;
+                display: inline-block;
+                position: absolute;
+                right: 10px;
+                bottom: 10px;
+                border-radius: 2px;
+            }
+
+            //h3{
+            //  font-family: Inter;
+            //  font-size: 16px;
+            //  font-style: normal;
+            //  font-weight: 400;
+            //  color:#CBCBCB;
+            //}
+
+            select {
+                min-height: 35px;
+                background: #cbe7ff;
+                border-radius: 3px;
+                border: 2px solid #2196f3;
+                appearance: none;
+                outline: none;
+                padding: 0 10px;
+                width: 250px;
+                cursor: pointer;
+                margin-top: 5px;
+            }
+        }
+
+        .billing_countries {
+            margin-left: 10px;
+            font-family: Inter;
+            font-size: 16px;
+            font-style: normal;
+            color: #a7a7a7;
+        }
+
+        .block-adress_select {
+            padding: 5px;
+            font-size: 16px;
+        }
+
+        .registration__default-address {
+            display: flex;
+            justify-content: flex-end;
+            flex-direction: row-reverse;
+            column-gap: 20px;
+        }
+    }
+}
