@@ -1,0 +1,14 @@
+.login-title,
+.login-description {
+    text-align: center;
+}
+
+.login-description {
+    margin-top: 24px;
+    span {
+        padding: 0 5px;
+    }
+    a {
+        text-decoration: none;
+    }
+}

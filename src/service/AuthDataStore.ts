@@ -23,7 +23,6 @@ export class AuthDataStore {
         const anonymousAccessToken = localStorage.getItem("anonymousAccessToken");
 
         if (!anonymousAccessToken) {
-            // throw new Error("Anonymous access token was fallen");
             return "";
         }
 

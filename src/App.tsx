@@ -5,6 +5,7 @@ import Header from "view/app-components/Header/Header";
 import { Routes, Route } from "react-router-dom";
 import MainPage from "view/app-components/MainPage/mainPage";
 // import Text from "view/app-components/Text/text";
+import LoginPage from "view/app-components/LoginPage/LoginPage";
 import PageNotFound from "view/app-components/PageNotFound/pageNotFound";
 import { AuthDataStore } from "service/AuthDataStore";
 import { AuthService } from "service/AuthService";
