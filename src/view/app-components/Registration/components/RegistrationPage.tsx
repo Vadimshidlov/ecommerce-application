@@ -54,7 +54,6 @@ function RegistrationPage() {
             } else if (error instanceof Error) {
                 console.log(error.message, `instanceof Error`);
             }
-            // console.log(error"Something error");
         }
     };
 
