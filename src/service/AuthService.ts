@@ -60,6 +60,4 @@ export class AuthService {
             console.log(e);
         }
     }
-
-    private setAnonStorageToStore() {}
 }

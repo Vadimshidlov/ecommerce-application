@@ -10,9 +10,7 @@ class AxiosAnonymousFlow {
     private readonly API_URL = `${this.CTP_AUTH_URL}/oauth/${this.CTP_PROJECT_KEY}/anonymous/token`;
 
     constructor() {
-        this.request = axios.create({
-            // url: `https://auth.europe-west1.gcp.commercetools.com/oauth/${this.CTP_PROJECT_KEY}/anonymous/token`,
-        });
+        this.request = axios.create({});
     }
 
     public post<D>(
@@ -21,6 +19,10 @@ class AxiosAnonymousFlow {
         data: object | undefined = {},
     ): Promise<AxiosResponse<D>> {
         return this.request.post(url, data, config);
+    }
+
+    public get<D>(url: string, config: AxiosRequestConfig | undefined): Promise<AxiosResponse<D>> {
+        return this.request.get(url, config);
     }
 }
 

@@ -90,8 +90,6 @@ const userScheme = yup.object({
         .uppercase()
         .required("Country is required field")
         .oneOf(["US", "BE", "RU"], "Please, write valid country"),
-    // .oneOf(["USA", "Belarus", "Russia"], "Please, write valid country"),
-    // .oneOf(["USA", "Belarus", "Russia"], "This country not supported by our service"),
     shippingStreet: yup
         .string()
         .required("Street is required field")
@@ -126,7 +124,6 @@ const userScheme = yup.object({
         .uppercase()
         .required("Country is required field")
         .oneOf(["US", "BE", "RU"], "Please, write valid country"),
-    // .oneOf(["USA", "Belarus", "Russia"], "Please, write valid country"),
 });
 
 export type OnSubmitSignInDataType = {
@@ -174,6 +171,7 @@ export default function RegistrationForm({
 
     const inputOnFocusHandler = (e: FocusEvent, key: string) => {
         setValidationError({ ...validationError, [key]: "" });
+
         if (e.target instanceof HTMLInputElement && e.target.name === "email") {
             errorHandler("");
         }
@@ -340,20 +338,6 @@ export default function RegistrationForm({
                         <div className="billing_countries__select-block">
                             <p className="billing_countries">Country:</p>
                             <TextValidationError errorMessage={validationError.billingCountry} />
-                            {/* <TextInput
-                                type="text"
-                                name="billingCountry"
-                                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                                    inputTextHandler(e, "billingCountry")
-                                }
-                                onFocus={(e: FocusEvent) => {
-                                    inputOnFocusHandler(e, "billingCountry");
-                                }}
-                                className="registration__input"
-                                id="billingCountry"
-                                value={formData.billingCountry}
-                                placeHolder="Available countries: USA, Russia, Belarus"
-                            /> */}
                             <select
                                 value={formData.billingCountry}
                                 className="block-adress_select"
@@ -463,20 +447,6 @@ export default function RegistrationForm({
                                 <option value="RU">Russia</option>
                                 <option value="BE">Belarus</option>
                             </select>
-                            {/* <TextInput
-                                type="text"
-                                name="shippingCountry"
-                                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                                    inputTextHandler(e, "shippingCountry")
-                                }
-                                onFocus={(e: FocusEvent) => {
-                                    inputOnFocusHandler(e, "shippingCountry");
-                                }}
-                                className="registration__input"
-                                id="shippingCountry"
-                                value={formData.shippingCountry}
-                                placeHolder="Available countries: USA, Russia, Belarus"
-                            /> */}
                         </div>
                         <div>
                             <TextValidationError

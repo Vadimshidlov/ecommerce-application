@@ -1,13 +1,11 @@
 import React, { useMemo, useState } from "react";
 
 export type IsAuthType = boolean;
-
 export type AuthContextType = {
     isAuth: IsAuthType;
     setIsAuth: React.Dispatch<React.SetStateAction<boolean>>;
 };
 export type AuthDipatchContextType = React.Dispatch<React.SetStateAction<boolean>>;
-
 export type State = { isAuth: boolean };
 export type Action = { type: "login" } | { type: "logout" };
 export type Dispatch = (action: Action) => void;
@@ -25,9 +23,11 @@ function AuthStateProvider({ children }: AuthProviderProps) {
 
 function useAuth() {
     const context = React.useContext(AuthStateContext);
+
     if (!context) {
         throw new Error("useAuth must be used within a CountProvider");
     }
+
     return context;
 }
 

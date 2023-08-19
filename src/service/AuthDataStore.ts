@@ -62,6 +62,7 @@ export class AuthDataStore {
 
     public removeTokenFromStore(key: string): void {
         const token = localStorage.getItem(key);
+
         if (token) {
             localStorage.removeItem(key);
         }

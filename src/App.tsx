@@ -13,6 +13,7 @@ import { useAuth } from "auth-context";
 function App() {
     // const AuthDataStoreApi = AuthDataStore.getAuthDataStore();
     const { setIsAuth } = useAuth();
+    const { isAuth } = useAuth();
     const AuthServiceApi = useRef(new AuthService());
     const AuthDataStoreApi = useRef(AuthDataStore.getAuthDataStore());
 
@@ -35,28 +36,37 @@ function App() {
 
     return (
         <div>
-            <Routes>
-                <Route path="/" element={<MainPage />} />
-                <Route
-                    path="login"
-                    element={
-                        <>
-                            <Header />
-                            Login page
-                        </>
-                    }
-                />
-                <Route
-                    path="registration"
-                    element={
-                        <>
-                            <Header />
-                            <RegistrationPage />
-                        </>
-                    }
-                />
-                <Route path="*" element={<PageNotFound />} />
-            </Routes>
+            {isAuth ? (
+                <Routes>
+                    <Route path="/" element={<MainPage />} />
+                    <Route path="/registration" element={<MainPage />} />
+                    <Route path="/login" element={<MainPage />} />
+                    <Route path="*" element={<PageNotFound />} />
+                </Routes>
+            ) : (
+                <Routes>
+                    <Route path="/" element={<MainPage />} />
+                    <Route
+                        path="login"
+                        element={
+                            <>
+                                <Header />
+                                Login page
+                            </>
+                        }
+                    />
+                    <Route
+                        path="registration"
+                        element={
+                            <>
+                                <Header />
+                                <RegistrationPage />
+                            </>
+                        }
+                    />
+                    <Route path="*" element={<PageNotFound />} />
+                </Routes>
+            )}
         </div>
     );
 }
