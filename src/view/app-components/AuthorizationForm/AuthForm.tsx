@@ -8,6 +8,7 @@ import { TextInput } from "shared/components/TextInput/TextInput";
 import closedEye from "assets/svg/closedEye.svg";
 import openEye from "assets/svg/openEye.svg";
 import { AxiosError } from "axios";
+import { useAuth } from "auth-context";
 
 export function AuthForm() {
     const LOGIN_SERVICE: LoginService = new LoginService();
@@ -23,6 +24,7 @@ export function AuthForm() {
     };
 
     const navigate = useNavigate();
+    const { setIsAuth } = useAuth();
 
     const schema = Yup.object({
         email: Yup.string()
@@ -49,6 +51,7 @@ export function AuthForm() {
             await LOGIN_SERVICE.getAuthToken({ email, password });
             await LOGIN_SERVICE.authenticateCustomer({ email, password });
 
+            setIsAuth(true);
             navigate("/");
         } catch (error) {
             if (error instanceof Yup.ValidationError) {
