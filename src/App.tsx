@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import Header from "view/app-components/Header/Header";
+import Footer from "view/app-components/Footer/Footer";
 import { Routes, Route } from "react-router-dom";
 import MainPage from "view/app-components/MainPage/mainPage";
 import LoginPage from "view/app-components/LoginPage/LoginPage";
@@ -65,6 +66,7 @@ function App() {
                     <Route path="*" element={<PageNotFound />} />
                 </Routes>
             )}
+            <Footer />
         </div>
     );
 }

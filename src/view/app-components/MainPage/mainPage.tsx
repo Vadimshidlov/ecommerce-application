@@ -19,19 +19,6 @@ export default function MainPage() {
                     {/* some content end */}
                 </div>
             </div>
-            {/* some footer content start */}
-            <footer
-                style={{
-                    textAlign: "center",
-                    fontSize: "4rem",
-                    border: "0.3rem solid black",
-                    // maxWidth: "1440px",
-                    margin: "0 auto",
-                }}
-            >
-                Some footer
-            </footer>
-            {/* some footer end */}
         </div>
     );
 }

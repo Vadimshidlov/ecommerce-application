@@ -3,10 +3,9 @@ import RegistrationButton from "view/app-components/Registration/components/Regi
 import * as yup from "yup";
 import { ValidationError } from "yup";
 import { useNavigate } from "react-router-dom";
-import { TextInput } from "view/app-components/Registration/components/InputComponents/TextInput";
 import TextValidationError from "view/app-components/Registration/components/ErrorsComponents/TextValidationError";
 import { getValidationErrorsObject } from "shared/utils/getValidationErrorsObject";
-import { DateInput } from "view/app-components/Registration/components/InputComponents/DateInput";
+import { DateInput } from "shared/components/DateInput/DateInput";
 import {
     getInitialFormData,
     ISignUpForm,
@@ -14,6 +13,7 @@ import {
 } from "shared/utils/getInitialFormData";
 import { getInitialFormErrorsData, IStateErrors } from "shared/utils/getInitialFormErrorsData";
 import { getChangeFormByAddressData } from "shared/utils/getFinallyFormData";
+import { TextInput } from "shared/components/TextInput/TextInput";
 
 export type RegisterFormDataType = {
     firstname: string;
@@ -228,7 +228,6 @@ export default function RegistrationForm({
             <form className="registration__form" onSubmit={onFormSubmit}>
                 <p className="block-address_title">Personal data:</p>
                 <div>
-                    <TextValidationError errorMessage={validationError.firstname} />
                     <TextInput
                         type="text"
                         name="firstname"
@@ -242,10 +241,10 @@ export default function RegistrationForm({
                         id="fname"
                         value={formData.firstname}
                         placeHolder="Your name"
+                        validationError={validationError.firstname ? validationError.firstname : ""}
                     />
                 </div>
                 <div>
-                    <TextValidationError errorMessage={validationError.lastname} />
                     <TextInput
                         type="text"
                         name="lastname"
@@ -259,14 +258,14 @@ export default function RegistrationForm({
                         id="lname"
                         value={formData.lastname}
                         placeHolder="Your lastname"
+                        validationError={validationError.lastname ? validationError.lastname : ""}
                     />
                 </div>
                 <div>
-                    <TextValidationError errorMessage={validationError.birthdayDate} />
                     <div className="registration__birthday-input">
                         <span>Birthday: </span>
                         <DateInput
-                            className="registration__input"
+                            className="registration__birthday-input"
                             id="birthdayDate"
                             name="birthdayDate"
                             onChangeHandler={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -276,11 +275,13 @@ export default function RegistrationForm({
                                 inputOnFocusHandler(e, "birthdayDate");
                             }}
                             value={formData.birthdayDate}
+                            validationError={
+                                validationError.birthdayDate ? validationError.birthdayDate : ""
+                            }
                         />
                     </div>
                 </div>
                 <div>
-                    <TextValidationError errorMessage={validationError.email} />
                     <TextInput
                         type="text"
                         name="email"
@@ -294,12 +295,10 @@ export default function RegistrationForm({
                         id="email"
                         value={formData.email}
                         placeHolder="Email address"
+                        validationError={validationError.email ? validationError.email : ""}
                     />
                 </div>
                 <div>
-                    <TextValidationError
-                        errorMessage={validationError.password ? validationError.password : ""}
-                    />
                     <TextInput
                         type="password"
                         name="password"
@@ -313,6 +312,7 @@ export default function RegistrationForm({
                         id="password"
                         value={formData.password}
                         placeHolder="Password"
+                        validationError={validationError.password ? validationError.password : ""}
                     />
                 </div>
                 <div className="registration__adress-block block-adress">
@@ -340,7 +340,6 @@ export default function RegistrationForm({
                         </div>
                         <div className="billing_countries__select-block">
                             <p className="billing_countries">Country:</p>
-                            <TextValidationError errorMessage={validationError.billingCountry} />
                             <select
                                 value={formData.billingCountry}
                                 className="block-address_select"
@@ -358,9 +357,9 @@ export default function RegistrationForm({
                                 <option value="RU">Russia</option>
                                 <option value="BE">Belarus</option>
                             </select>
+                            <TextValidationError errorMessage={validationError.billingCountry} />
                         </div>
                         <div>
-                            <TextValidationError errorMessage={validationError.billingStreet} />
                             <TextInput
                                 type="text"
                                 name="billingStreet"
@@ -374,10 +373,14 @@ export default function RegistrationForm({
                                 id="billingStreet"
                                 value={formData.billingStreet}
                                 placeHolder="Street"
+                                validationError={
+                                    validationError.billingStreet
+                                        ? validationError.billingStreet
+                                        : ""
+                                }
                             />
                         </div>
                         <div>
-                            <TextValidationError errorMessage={validationError.billingCity} />
                             <TextInput
                                 type="text"
                                 name="billingCity"
@@ -391,10 +394,12 @@ export default function RegistrationForm({
                                 id="billingCity"
                                 value={formData.billingCity}
                                 placeHolder="City"
+                                validationError={
+                                    validationError.billingCity ? validationError.billingCity : ""
+                                }
                             />
                         </div>
                         <div>
-                            <TextValidationError errorMessage={validationError.billingPostalCode} />
                             <TextInput
                                 type="text"
                                 name="billingPostalCode"
@@ -408,6 +413,11 @@ export default function RegistrationForm({
                                 id="billingPostalCode"
                                 value={formData.billingPostalCode}
                                 placeHolder="Postal code"
+                                validationError={
+                                    validationError.billingPostalCode
+                                        ? validationError.billingPostalCode
+                                        : ""
+                                }
                             />
                         </div>
                     </div>
@@ -426,13 +436,7 @@ export default function RegistrationForm({
                         </div>
                         <div className="billing_countries__select-block">
                             <p className="billing_countries">Country:</p>
-                            <TextValidationError
-                                errorMessage={
-                                    validationError.shippingCountry && !oneAddress
-                                        ? validationError.shippingCountry
-                                        : ""
-                                }
-                            />
+
                             <select
                                 value={formData.shippingCountry}
                                 className="block-address_select"
@@ -450,15 +454,15 @@ export default function RegistrationForm({
                                 <option value="RU">Russia</option>
                                 <option value="BE">Belarus</option>
                             </select>
-                        </div>
-                        <div>
                             <TextValidationError
                                 errorMessage={
-                                    validationError.shippingCity && !oneAddress
-                                        ? validationError.shippingCity
+                                    validationError.shippingCountry && !oneAddress
+                                        ? validationError.shippingCountry
                                         : ""
                                 }
                             />
+                        </div>
+                        <div>
                             <TextInput
                                 type="text"
                                 name="shippingCity"
@@ -472,16 +476,12 @@ export default function RegistrationForm({
                                 id="shippingCity"
                                 value={formData.shippingCity}
                                 placeHolder="City"
+                                validationError={
+                                    validationError.shippingCity ? validationError.shippingCity : ""
+                                }
                             />
                         </div>
                         <div>
-                            <TextValidationError
-                                errorMessage={
-                                    validationError.shippingStreet && !oneAddress
-                                        ? validationError.shippingStreet
-                                        : ""
-                                }
-                            />
                             <TextInput
                                 type="text"
                                 name="shippingStreet"
@@ -495,16 +495,14 @@ export default function RegistrationForm({
                                 id="shippingStreet"
                                 value={formData.shippingStreet}
                                 placeHolder="Street"
-                            />
-                        </div>
-                        <div>
-                            <TextValidationError
-                                errorMessage={
-                                    validationError.shippingPostalCode && !oneAddress
-                                        ? validationError.shippingPostalCode
+                                validationError={
+                                    validationError.shippingStreet
+                                        ? validationError.shippingStreet
                                         : ""
                                 }
                             />
+                        </div>
+                        <div>
                             <TextInput
                                 type="text"
                                 name="shippingPostalCode"
@@ -518,12 +516,17 @@ export default function RegistrationForm({
                                 id="shippingPostalCode"
                                 value={formData.shippingPostalCode}
                                 placeHolder="Postal code"
+                                validationError={
+                                    validationError.shippingPostalCode
+                                        ? validationError.shippingPostalCode
+                                        : ""
+                                }
                             />
                         </div>
                     </div>
                 </div>
                 <TextValidationError errorMessage={registrationError} />
-                <RegistrationButton className="registration__button" buttonText="Registration" />
+                <RegistrationButton className="registration__button" buttonText="Sign up" />
             </form>
         </section>
     );
