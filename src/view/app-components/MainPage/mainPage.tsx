@@ -1,12 +1,11 @@
 import React from "react";
 import "view/app-components/MainPage/style.scss";
-import Header from "view/app-components/Header/Header";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function MainPage() {
     return (
         <div className="main-page">
             <div className="main-part">
-                <Header />
                 {/* some content start */}
                 <h2 style={{ textAlign: "center" }}>MainPage</h2>
                 <div className="some-contant" style={{ maxWidth: "40%", marginLeft: "3rem" }}>
@@ -20,19 +19,6 @@ export default function MainPage() {
                     {/* some content end */}
                 </div>
             </div>
-            {/* some footer content start */}
-            <footer
-                style={{
-                    textAlign: "center",
-                    fontSize: "4rem",
-                    border: "0.3rem solid black",
-                    maxWidth: "1440px",
-                    margin: "0 auto",
-                }}
-            >
-                Some footer
-            </footer>
-            {/* some footer end */}
         </div>
     );
 }

@@ -1,13 +1,14 @@
 import React from "react";
+import TextValidationError from "view/app-components/Registration/components/ErrorsComponents/TextValidationError";
 
-export interface ITextInput {
+export interface ITextInput extends React.ComponentPropsWithRef<"input"> {
     name: string;
     placeHolder: string;
     value: string;
     id: string;
     type: string;
     className: string;
-    onChangeHandler: (e: React.ChangeEvent<HTMLInputElement>, key: string) => void;
+    validationError: string;
 }
 
 export function TextInput({
@@ -17,21 +18,21 @@ export function TextInput({
     value,
     id,
     className,
-    onChangeHandler,
+    validationError,
+    ...rest
 }: ITextInput) {
     return (
-        <label htmlFor={name}>
+        <div className="registration__input__wrapper">
             <input
-                onChange={(e) => {
-                    onChangeHandler(e, name);
-                }}
                 className={className}
                 type={type}
                 name={name}
                 id={id}
                 value={value}
                 placeholder={placeHolder}
+                {...rest}
             />
-        </label>
+            <TextValidationError errorMessage={validationError} />
+        </div>
     );
 }

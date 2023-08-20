@@ -1,5 +1,4 @@
 import React from "react";
-import Header from "view/app-components/Header/Header";
 import { AuthForm } from "view/app-components//AuthorizationForm/AuthForm";
 import Text from "view/app-components/Text/text";
 import { NavLink } from "react-router-dom";
@@ -7,7 +6,6 @@ import { NavLink } from "react-router-dom";
 export default function LoginPage() {
     return (
         <div>
-            <Header />
             <div className="login-title">
                 <Text classes={["space-grotesk-500-font", "font-size_heading-4", "page-title"]}>
                     Sign in

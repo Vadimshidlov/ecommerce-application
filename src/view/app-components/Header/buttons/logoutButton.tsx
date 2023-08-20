@@ -1,7 +1,21 @@
+import { useAuth } from "auth-context";
 import React from "react";
+// import { AuthDataStore } from "service/AuthDataStore";
+import { AuthService } from "service/AuthService";
 import "view/app-components/Header/buttons/style.scss";
 
 export function LogoutButton() {
+    const authContetxtApi = useAuth();
+    // const AuthDataStoreApi = AuthDataStore.getAuthDataStore();
+    const AuthServiceApi = new AuthService();
+
+    const logoutHandler = async () => {
+        localStorage.clear();
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        await AuthServiceApi.createAnonymousToken();
+        authContetxtApi?.setIsAuth(false);
+    };
+
     return (
         <svg
             className="button-box"
@@ -10,6 +24,7 @@ export function LogoutButton() {
             height="24"
             viewBox="0 0 24 24"
             fill="none"
+            onClick={logoutHandler}
         >
             <path
                 className="logout-button"
