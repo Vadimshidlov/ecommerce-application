@@ -1,5 +1,6 @@
 import AxiosApi from "service/AxiosAnonymousFlow";
 import { AuthDataStore } from "service/AuthDataStore";
+import axios from "axios";
 
 type TokenResponseType = {
     access_token: string;
@@ -33,8 +34,26 @@ export class AuthService {
 
     public async createAnonymousToken(): Promise<void> {
         try {
-            const tokenRequest = await this.requestApi.post<TokenResponseType>(
+            // const tokenRequest = await this.requestApi.post<TokenResponseType>(
+            //     this.API_ANON_AUTH_URL,
+            //     {
+            //         params: {
+            //             grant_type: "client_credentials",
+            //             scope: `manage_project:uwoc_ecm-app view_audit_log:uwoc_ecm-app manage_api_clients:uwoc_ecm-app`,
+            //             // scope: `view_published_products:${this.CTP_PROJECT_KEY}`,
+            //         },
+            //         headers: {
+            //             Authorization: `Basic ${btoa(
+            //                 `${this.CTP_CLIENT_ID}:${this.CTP_CLIENT_SECRET}`,
+            //             )}`,
+            //             "Content-Type": this.ANON_TOKEN_CONTENT_TYPE,
+            //         },
+            //     },
+            // );
+
+            const tokenRequest = await axios.post<TokenResponseType>(
                 this.API_ANON_AUTH_URL,
+                {},
                 {
                     params: {
                         grant_type: "client_credentials",
