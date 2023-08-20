@@ -1,9 +1,16 @@
 import React from "react";
 import { AuthForm } from "view/app-components//AuthorizationForm/AuthForm";
 import Text from "view/app-components/Text/text";
-import { NavLink } from "react-router-dom";
+import { NavLink, Navigate } from "react-router-dom";
+import { useAuth } from "auth-context";
 
 export default function LoginPage() {
+    const { isAuth } = useAuth();
+
+    if (isAuth) {
+        return <Navigate to="/" />;
+    }
+
     return (
         <div>
             <div className="login-title">

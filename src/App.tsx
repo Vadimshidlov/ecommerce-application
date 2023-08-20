@@ -15,7 +15,6 @@ import "react-toastify/dist/ReactToastify.css";
 function App() {
     // const AuthDataStoreApi = AuthDataStore.getAuthDataStore();
     const { setIsAuth } = useAuth();
-    const { isAuth } = useAuth();
     const AuthServiceApi = useRef(new AuthService());
     const AuthDataStoreApi = useRef(AuthDataStore.getAuthDataStore());
 
@@ -51,21 +50,12 @@ function App() {
                 pauseOnHover
                 theme="light"
             />
-            {isAuth ? (
-                <Routes>
-                    <Route path="/" element={<MainPage />} />
-                    <Route path="/registration" element={<MainPage />} />
-                    <Route path="/login" element={<MainPage />} />
-                    <Route path="*" element={<PageNotFound />} />
-                </Routes>
-            ) : (
-                <Routes>
-                    <Route path="/" element={<MainPage />} />
-                    <Route path="login" element={<LoginPage />} />
-                    <Route path="registration" element={<RegistrationPage />} />
-                    <Route path="*" element={<PageNotFound />} />
-                </Routes>
-            )}
+            <Routes>
+                <Route path="/" element={<MainPage />} />
+                <Route path="login" element={<LoginPage />} />
+                <Route path="registration" element={<RegistrationPage />} />
+                <Route path="*" element={<PageNotFound />} />
+            </Routes>
             <Footer />
         </div>
     );
