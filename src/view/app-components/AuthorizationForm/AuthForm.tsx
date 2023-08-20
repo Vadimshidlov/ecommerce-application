@@ -9,6 +9,11 @@ import closedEye from "assets/svg/closedEye.svg";
 import openEye from "assets/svg/openEye.svg";
 import { AxiosError } from "axios";
 import { useAuth } from "auth-context";
+import {
+    errorAuthorizationMessage,
+    successAuthorizationMessage,
+} from "shared/utils/notifyMessages";
+import "react-toastify/dist/ReactToastify.css";
 
 export function AuthForm() {
     const LOGIN_SERVICE: LoginService = new LoginService();
@@ -53,6 +58,7 @@ export function AuthForm() {
 
             setIsAuth(true);
             navigate("/");
+            successAuthorizationMessage();
         } catch (error) {
             if (error instanceof Yup.ValidationError) {
                 error.inner.forEach((err) => {
@@ -63,8 +69,7 @@ export function AuthForm() {
                     }
                 });
             } else if (error instanceof AxiosError && error.response?.status === 400) {
-                setEmailError(error.response.data.message);
-                setPassError(error.response.data.message);
+                errorAuthorizationMessage();
             }
         }
     };
