@@ -1,6 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import React, { useCallback, useEffect, useRef } from "react";
 import Header from "view/app-components/Header/Header";
+import Footer from "view/app-components/Footer/Footer";
 import { Routes, Route } from "react-router-dom";
 import MainPage from "view/app-components/MainPage/mainPage";
 // import Text from "view/app-components/Text/text";
@@ -53,6 +54,7 @@ function App() {
                     <Route path="*" element={<PageNotFound />} />
                 </Routes>
             )}
+            <Footer />
         </div>
     );
 }
