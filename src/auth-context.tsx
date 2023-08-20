@@ -5,10 +5,6 @@ export type AuthContextType = {
     isAuth: IsAuthType;
     setIsAuth: React.Dispatch<React.SetStateAction<boolean>>;
 };
-export type AuthDipatchContextType = React.Dispatch<React.SetStateAction<boolean>>;
-export type State = { isAuth: boolean };
-export type Action = { type: "login" } | { type: "logout" };
-export type Dispatch = (action: Action) => void;
 export type AuthProviderProps = { children: React.ReactNode };
 
 const AuthStateContext = React.createContext<AuthContextType | null>(null);

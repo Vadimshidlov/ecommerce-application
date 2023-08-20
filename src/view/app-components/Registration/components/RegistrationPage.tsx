@@ -8,7 +8,6 @@ import { AuthDataStore } from "service/AuthDataStore";
 import { AxiosError } from "axios";
 import { useAuth } from "auth-context";
 import "react-toastify/dist/ReactToastify.css";
-// import { errorRegistrationMessage, successRegistrationMessage } from "shared/utils/notifyMessages";
 import { errorRegistrationMessage, successRegistrationMessage } from "shared/utils/notifyMessages";
 import { ToastContainer } from "react-toastify";
 
@@ -53,10 +52,7 @@ function RegistrationPage() {
             handleSuccessRegistration();
         } catch (error) {
             if (error instanceof AxiosError) {
-                console.log(error, `AxiosError`);
-                console.log(error.response?.data.message, `AxiosError`);
                 errorRegistrationMessage();
-                registrationErrorHandler(error.response?.data.message);
             } else if (error instanceof Error) {
                 console.log(error.message, `instanceof Error`);
             }

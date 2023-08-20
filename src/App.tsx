@@ -1,15 +1,15 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import React, { useCallback, useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import Header from "view/app-components/Header/Header";
 import { Routes, Route } from "react-router-dom";
 import MainPage from "view/app-components/MainPage/mainPage";
-// import Text from "view/app-components/Text/text";
 import LoginPage from "view/app-components/LoginPage/LoginPage";
 import PageNotFound from "view/app-components/PageNotFound/pageNotFound";
 import { AuthDataStore } from "service/AuthDataStore";
 import { AuthService } from "service/AuthService";
 import { useAuth } from "auth-context";
 import RegistrationPage from "view/app-components/Registration/components/RegistrationPage";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
     // const AuthDataStoreApi = AuthDataStore.getAuthDataStore();
@@ -38,6 +38,18 @@ function App() {
     return (
         <div>
             <Header />
+            <ToastContainer
+                position="top-center"
+                autoClose={2000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="light"
+            />
             {isAuth ? (
                 <Routes>
                     <Route path="/" element={<MainPage />} />

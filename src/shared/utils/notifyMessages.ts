@@ -1,7 +1,7 @@
 import { toast } from "react-toastify";
 
 export const successRegistrationMessage = () => {
-    toast.success("🦄 Success registration!", {
+    toast.success("🦄 Successful registration!", {
         position: "top-center",
         autoClose: 2000,
         hideProgressBar: false,

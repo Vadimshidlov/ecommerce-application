@@ -1,9 +1,7 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import React, { FocusEvent, useCallback, useEffect, useState } from "react";
+import React, { FocusEvent, useEffect, useState } from "react";
 import RegistrationButton from "view/app-components/Registration/components/RegistationButton";
 import * as yup from "yup";
 import { ValidationError } from "yup";
-import { PasswordError } from "view/app-components/Registration/components/ErrorsComponents/PasswordError";
 import { useNavigate } from "react-router-dom";
 import { TextInput } from "view/app-components/Registration/components/InputComponents/TextInput";
 import TextValidationError from "view/app-components/Registration/components/ErrorsComponents/TextValidationError";
@@ -12,7 +10,7 @@ import { DateInput } from "view/app-components/Registration/components/InputComp
 import {
     getInitialFormData,
     ISignUpForm,
-    validFormatCurrentDate,
+    maxValidBirthdayDate,
 } from "shared/utils/getInitialFormData";
 import { getInitialFormErrorsData, IStateErrors } from "shared/utils/getInitialFormErrorsData";
 import { getChangeFormByAddressData } from "shared/utils/getFinallyFormData";
@@ -44,18 +42,28 @@ const userScheme = yup.object({
         .required("Lastname is required field")
         .min(4, "Very short lastname")
         .max(25, "Very large lastname"),
-    email: yup.string().required("Email is required field").email("Please, write correct email"),
+    email: yup
+        .string()
+        .required("Email is required field")
+        .email("Email must be in the format user@example.com")
+        .matches(/^(?!\S\s)/, "Email must not contain a space"),
     birthdayDate: yup
         .date()
         .typeError("Please enter a valid date")
         .required("Date is required field")
-        .min("2010-01-01", "Date is too early")
-        .max(validFormatCurrentDate, "Date is too late"),
+        .max(maxValidBirthdayDate, "User must be over 13 years old"),
     password: yup
         .string()
-        .required()
-        .min(8, "Password should be more than 8 characters")
-        .matches(/^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/),
+        .required("Password is a required field")
+        .min(8, "Password must contain at least 8 characters")
+        .matches(
+            /(?=.[!@#$%^&-])/,
+            "The password must contain at least one special character (for example, !@#$%^&-)",
+        )
+        .matches(/^(?!\S\s)/, "Password must not contain a space")
+        .matches(/(?=.[A-Z])/, "The password must be received for one capital letter (AZ)")
+        .matches(/(?=.[a-z])/, "Password must contain at least one lowercase letter (az)")
+        .matches(/(?=.\d)/, "Password must contain at least one number (0-9)"),
     billingStreet: yup
         .string()
         .required("Street is required field")
@@ -66,7 +74,7 @@ const userScheme = yup.object({
         .required("City is required field")
         .min(1, "Must contain at least one character")
         .max(25, "Value is very big")
-        .matches(/^[A-Za-z0-9 ]+$/, "No special characters or numbers!"),
+        .matches(/^[a-zA-Zа-яА-Я-]+(?: [a-zA-Zа-яА-Я-]+)*$/, "No special characters or numbers!"),
     billingPostalCode: yup
         .string()
         .required("Postal code is required field")
@@ -100,7 +108,7 @@ const userScheme = yup.object({
         .required("City is required field")
         .min(1, "Must contain at least one character")
         .max(25, "Value is very big")
-        .matches(/^[A-Za-z0-9 ]+$/, "No special characters or numbers!"),
+        .matches(/^[a-zA-Zа-яА-Я-]+(?: [a-zA-Zа-яА-Я-]+)*$/, "No special characters or numbers!"),
     shippingPostalCode: yup
         .string()
         .required("Postal code is required field")
@@ -289,14 +297,9 @@ export default function RegistrationForm({
                     />
                 </div>
                 <div>
-                    {validationError.password ? (
-                        <div className="registration__error">
-                            {PasswordError(
-                                validationError.password[0].toUpperCase() +
-                                    validationError.password.slice(1),
-                            )}
-                        </div>
-                    ) : null}
+                    <TextValidationError
+                        errorMessage={validationError.password ? validationError.password : ""}
+                    />
                     <TextInput
                         type="password"
                         name="password"
@@ -340,7 +343,7 @@ export default function RegistrationForm({
                             <TextValidationError errorMessage={validationError.billingCountry} />
                             <select
                                 value={formData.billingCountry}
-                                className="block-adress_select"
+                                className="block-address_select"
                                 name="billingCountry"
                                 id="billingCountry"
                                 onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -432,7 +435,7 @@ export default function RegistrationForm({
                             />
                             <select
                                 value={formData.shippingCountry}
-                                className="block-adress_select"
+                                className="block-address_select"
                                 name="shippingCountry"
                                 id="shippingCountry"
                                 onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {

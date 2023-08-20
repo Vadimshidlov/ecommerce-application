@@ -15,10 +15,18 @@ export interface ISignUpForm {
 }
 
 const nowDate = new Date(Date.now());
+
 const currYear = nowDate.toLocaleString("default", { year: "numeric" });
+
 const currMonth = nowDate.toLocaleString("default", { month: "2-digit" });
+
 const currDay = nowDate.toLocaleString("default", { day: "2-digit" });
+
 export const validFormatCurrentDate = `${currYear}-${currMonth}-${currDay}`;
+
+const maxValidYear = String(Number(currYear) - 13);
+
+export const maxValidBirthdayDate = `${maxValidYear}-${currMonth}-${currDay}`;
 
 export const getInitialFormData = (): ISignUpForm => ({
     firstname: "",
