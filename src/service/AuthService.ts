@@ -33,7 +33,6 @@ export class AuthService {
                     params: {
                         grant_type: "client_credentials",
                         scope: `manage_project:uwoc_ecm-app view_audit_log:uwoc_ecm-app manage_api_clients:uwoc_ecm-app`,
-                        // scope: `view_published_products:${this.CTP_PROJECT_KEY}`,
                     },
                     headers: {
                         Authorization: `Basic ${btoa(

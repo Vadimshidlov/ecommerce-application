@@ -1,8 +1,6 @@
 import React, { FocusEvent, useEffect, useState } from "react";
-// import RegistrationButton from "view/app-components/Registration/components/RegistationButton";
 import * as yup from "yup";
 import { ValidationError } from "yup";
-// import { useNavigate } from "react-router-dom";
 import TextValidationError from "view/app-components/Registration/components/ErrorsComponents/TextValidationError";
 import { getValidationErrorsObject } from "shared/utils/getValidationErrorsObject";
 import { DateInput } from "shared/components/DateInput/DateInput";
@@ -167,8 +165,6 @@ export default function RegistrationForm({
     useEffect(() => {
         setDefaultShippingAddress(false);
     }, [oneAddress]);
-
-    // const navigate = useNavigate();
 
     const inputTextHandler = async (
         e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>,

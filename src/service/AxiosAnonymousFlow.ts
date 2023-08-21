@@ -42,7 +42,6 @@ class AxiosAnonymousFlow {
 
             async (error) => {
                 if (axios.isAxiosError(error)) {
-                    console.log("anonymousAccessToken_401_interceptor");
                     const originalRequest: InternalAxiosRequestConfig<AxiosInstance> | undefined =
                         error.config;
 

@@ -14,12 +14,8 @@ export const getChangeFormByAddressData = (
 
         const obj: ISignUpForm = { ...formData, ...defaultAddresses };
 
-        // setFormData((prevState) => ({ ...prevState, ...defaultAddresses }));
-        // TODO Remove
-        // setFormData({ ...obj });
         return obj;
     }
 
     return formData;
-    // setFormData((prevState) => ({ ...prevState }));
 };

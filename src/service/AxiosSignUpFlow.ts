@@ -13,7 +13,6 @@ class AxiosSignUpFlow {
     }
 
     public post<D>(
-        // urlParams: string,
         config: AxiosRequestConfig | undefined,
         data: object | undefined,
         queryParams = "",
