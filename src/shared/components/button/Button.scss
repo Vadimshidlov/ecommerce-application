@@ -1,7 +1,7 @@
 @import url(commonStyle/colors.scss);
 
 .button {
-    padding: 19px 55px;
+    padding: 19px 25px;
     background-color: $color-black;
     cursor: pointer;
     border: none;
@@ -11,6 +11,10 @@
     transition: transform 0.3s;
     &:active {
         transform: scale(0.95);
+    }
+
+    @media (max-width: 490px) {
+        padding: 9px 10px;
     }
 }
 

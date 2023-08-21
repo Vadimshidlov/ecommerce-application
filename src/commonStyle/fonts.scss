@@ -58,10 +58,18 @@ $font-size-12: 12px;
 
 .font-size_heading-3 {
     font-size: $font-size-54;
+
+    @media (max-width: 490px) {
+        font-size: $font-size-40;
+    }
 }
 
 .font-size_heading-4 {
     font-size: $font-size-40;
+
+    @media (max-width: 490px) {
+        font-size: $font-size-28;
+    }
 }
 
 .font-size_heading-5 {
@@ -78,6 +86,10 @@ $font-size-12: 12px;
 
 .font-size_2xl {
     font-size: $font-size-22;
+
+    @media (max-width: 490px) {
+        font-size: $font-size-16;
+    }
 }
 
 .font-size_xl {
