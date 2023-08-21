@@ -61,17 +61,16 @@ const userScheme = yup.object({
         .max(maxValidBirthdayDate, "User must be over 13 years old"),
     password: yup
         .string()
-        .required("Password is a required field")
-        .min(8, "Password must contain at least 8 characters")
         .matches(
             /(?=.[!@#$%^&-])/,
             "The password must contain at least one special character (for example, !@#$%^&-)",
         )
-        .matches(/^(?!\S\s)/, "Password must not contain a space")
         .matches(/(?=.[A-Z])/, "The password must be received for one capital letter (AZ)")
         .matches(/(?=.[a-z])/, "Password must contain at least one lowercase letter (az)")
         .matches(/(?=.\d)/, "Password must contain at least one number (0-9)")
-        .matches(/^[^\s]*$/, "Password must not contain a space"),
+        .matches(/^[^\s]*$/, "Password must not contain a space")
+        .min(8, "Password must contain at least 8 characters")
+        .required("Password is a required field"),
     billingStreet: yup
         .string()
         .required("Street is required field")
