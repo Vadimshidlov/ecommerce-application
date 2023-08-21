@@ -44,9 +44,13 @@ const userScheme = yup.object({
         .max(25, "Very large lastname"),
     email: yup
         .string()
-        .required("Email is required field")
+        .matches(/^[^\s]*$/, "Email must not contain a space")
+        .required("Email is a required field")
         .email("Email must be in the format user@example.com")
-        .matches(/^(?!\S\s)/, "Email must not contain a space"),
+        .matches(
+            /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+            "Email must be in the format user@example.com",
+        ),
     birthdayDate: yup
         .date()
         .typeError("Please enter a valid date")
@@ -63,7 +67,8 @@ const userScheme = yup.object({
         .matches(/^(?!\S\s)/, "Password must not contain a space")
         .matches(/(?=.[A-Z])/, "The password must be received for one capital letter (AZ)")
         .matches(/(?=.[a-z])/, "Password must contain at least one lowercase letter (az)")
-        .matches(/(?=.\d)/, "Password must contain at least one number (0-9)"),
+        .matches(/(?=.\d)/, "Password must contain at least one number (0-9)")
+        .matches(/^[^\s]*$/, "Password must not contain a space"),
     billingStreet: yup
         .string()
         .required("Street is required field")
