@@ -6,6 +6,10 @@
     margin: 0 auto;
     padding-top: 0.5rem;
     padding: 19px 52px;
+
+    @media (max-width: 490px) {
+        padding: 19px 10px;
+    }
 }
 
 .header-overlay {
@@ -18,4 +22,8 @@
     padding-top: 0.5rem;
     transform: translateX(-50%);
     padding: 19px 52px;
+
+    @media (max-width: 490px) {
+        padding: 19px 10px;
+    }
 }
