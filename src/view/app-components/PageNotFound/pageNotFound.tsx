@@ -1,8 +1,6 @@
 import React from "react";
 import "view/app-components/PageNotFound/style.scss";
 import { useNavigate } from "react-router-dom";
-
-import Header from "view/app-components/Header/Header";
 import NotFoundIcon from "view/app-components/PageNotFound/notFoundIcon";
 import Text from "view/app-components/Text/text";
 
@@ -12,7 +10,6 @@ export default function PageNotFound() {
 
     return (
         <div>
-            <Header />
             <div className="not-found__container">
                 <NotFoundIcon />
                 <Text classes={["space-grotesk-500-font", "color_black", "font-size_heading-3"]}>
