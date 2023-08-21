@@ -3,8 +3,11 @@
     border: none;
     cursor: pointer;
     position: absolute;
-    right: 0;
-    top: 50%;
-    transform: translateY(-100%);
+    right: 10px;
+    top: 12px;
     outline: none;
+
+    @media (max-width: 490px) {
+        top: 6px;
+    }
 }

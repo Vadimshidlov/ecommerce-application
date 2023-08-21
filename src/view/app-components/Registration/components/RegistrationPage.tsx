@@ -3,11 +3,12 @@ import LoginService from "service/LoginService";
 import { AuthCustomerDataType, RegistrationService } from "service/RegistrationService";
 import { ISignUpForm } from "shared/utils/getInitialFormData";
 import RegistrationForm from "view/app-components/Registration/components/RegistrationForm";
-import { useNavigate, Navigate } from "react-router-dom";
+import { useNavigate, Navigate, NavLink } from "react-router-dom";
 import { AuthDataStore } from "service/AuthDataStore";
 import { AxiosError } from "axios";
 import { useAuth } from "auth-context";
 import { errorRegistrationMessage, successRegistrationMessage } from "shared/utils/notifyMessages";
+import Text from "view/app-components/Text/text";
 
 function RegistrationPage() {
     const registrationService = useRef(new RegistrationService());
@@ -64,13 +65,22 @@ function RegistrationPage() {
     }
 
     return (
-        <div>
+        <section className="registration__container">
+            <Text classes={["space-grotesk-500-font", "font-size_heading-3", "page-title"]}>
+                Sign up
+            </Text>
+            <div className="registration__subtitle">
+                <Text classes={["inter-400-font", "font-size_m"]}>Already have an account?</Text>
+                <NavLink to="/login" className="inter-600-font font-size_m color_black">
+                    Sign in
+                </NavLink>
+            </div>
             <RegistrationForm
                 onSubmitSignInData={onSubmitSignInDataCallBack}
                 registrationError={registrationError}
                 errorHandler={registrationErrorHandler}
             />
-        </div>
+        </section>
     );
 }
 

@@ -1,4 +1,4 @@
-.login-form {
+.login__form {
     padding: 32px;
     margin: 0 auto;
     display: flex;
@@ -7,21 +7,32 @@
     justify-content: center;
     gap: 32px;
     max-width: 652px;
-}
 
-.input-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
+    @media (max-width: 490px) {
+        padding: 32px 0;
+        gap: 24px;
+    }
 
-.password-wrapper {
-    position: relative;
-    width: 100%;
-}
+    .input__container {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
 
-.error-message {
-    padding: 10px;
-    color: red;
+        div {
+            width: 100%;
+        }
+    }
+
+    .password__wrapper {
+        position: relative;
+        width: 100%;
+    }
+
+    .registration__error {
+        padding-top: 10px;
+        width: 100%;
+        color: #e61010;
+    }
 }

@@ -12,19 +12,19 @@ export default function LoginPage() {
     }
 
     return (
-        <div>
-            <div className="login-title">
-                <Text classes={["space-grotesk-500-font", "font-size_heading-4", "page-title"]}>
+        <section className="login__container">
+            <div className="login__title">
+                <Text classes={["space-grotesk-500-font", "font-size_heading-3", "page-title"]}>
                     Sign in
                 </Text>
             </div>
-            <div className="login-description">
+            <div className="login__subtitle">
                 <Text classes={["inter-400-font", "font-size_m"]}>Don’t have an account yet?</Text>
                 <NavLink to="/registration" className="inter-600-font font-size_m color_black">
                     Sign up
                 </NavLink>
             </div>
             <AuthForm />
-        </div>
+        </section>
     );
 }

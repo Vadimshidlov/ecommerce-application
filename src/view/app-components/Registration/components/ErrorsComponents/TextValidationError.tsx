@@ -5,7 +5,9 @@ export type ITextValidationError = {
 };
 
 function TextValidationError({ errorMessage }: ITextValidationError) {
-    return errorMessage ? <span className="registration__error">{errorMessage}</span> : null;
+    return errorMessage ? (
+        <span className="registration__error inter-400-font font-size_xs">{errorMessage}</span>
+    ) : null;
 }
 
 export default TextValidationError;

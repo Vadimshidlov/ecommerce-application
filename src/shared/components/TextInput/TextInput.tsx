@@ -22,9 +22,9 @@ export function TextInput({
     ...rest
 }: ITextInput) {
     return (
-        <div className="registration__input__wrapper">
+        <div>
             <input
-                className={className}
+                className={`inter-400-font font-size_m ${className}`}
                 type={type}
                 name={name}
                 id={id}
