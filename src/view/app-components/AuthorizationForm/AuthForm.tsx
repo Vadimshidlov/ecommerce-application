@@ -33,6 +33,11 @@ export function AuthForm() {
     const schema = Yup.object({
         email: Yup.string()
             .email("Email must be in the format user@example.com")
+            .matches(
+                /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                "Email must be in the format user@example.com",
+            )
+            .matches(/^[^\s]*$/, "Email must not contain a space")
             .required("Email is a required field"),
         password: Yup.string()
             .matches(
@@ -42,6 +47,7 @@ export function AuthForm() {
             .matches(/(?=.*[A-Z])/, "The password must be received for one capital letter (AZ)")
             .matches(/(?=.*[a-z])/, "Password must contain at least one lowercase letter (az)")
             .matches(/(?=.*\d)/, "Password must contain at least one number (0-9)")
+            .matches(/^[^\s]*$/, "Password must not contain a space")
             .min(8, "Password must contain at least 8 characters")
             .required("Password is a required field"),
     });

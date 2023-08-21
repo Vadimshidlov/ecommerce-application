@@ -14,6 +14,9 @@ import { getChangeFormByAddressData } from "shared/utils/getFinallyFormData";
 import { TextInput } from "shared/components/TextInput/TextInput";
 import Text from "view/app-components/Text/text";
 import { Button } from "shared/components/button/Button";
+import { ButtonIcon } from "shared/components/ButtonIcon/ButtonIcon";
+import closedEye from "assets/svg/closedEye.svg";
+import openEye from "assets/svg/openEye.svg";
 
 export type RegisterFormDataType = {
     firstname: string;
@@ -44,9 +47,13 @@ const userScheme = yup.object({
         .max(25, "Very large lastname"),
     email: yup
         .string()
-        .required("Email is required field")
+        .matches(/^[^\s]*$/, "Email must not contain a space")
+        .required("Email is a required field")
         .email("Email must be in the format user@example.com")
-        .matches(/^(?!\S\s)/, "Email must not contain a space"),
+        .matches(
+            /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+            "Email must be in the format user@example.com",
+        ),
     birthdayDate: yup
         .date()
         .typeError("Please enter a valid date")
@@ -63,7 +70,8 @@ const userScheme = yup.object({
         .matches(/^(?!\S\s)/, "Password must not contain a space")
         .matches(/(?=.[A-Z])/, "The password must be received for one capital letter (AZ)")
         .matches(/(?=.[a-z])/, "Password must contain at least one lowercase letter (az)")
-        .matches(/(?=.\d)/, "Password must contain at least one number (0-9)"),
+        .matches(/(?=.\d)/, "Password must contain at least one number (0-9)")
+        .matches(/^[^\s]*$/, "Password must not contain a space"),
     billingStreet: yup
         .string()
         .required("Street is required field")
@@ -210,6 +218,11 @@ export default function RegistrationForm({
         }
     };
 
+    const [inputType, setInputType] = useState<string>("password");
+    const toggleHideButton = (): void => {
+        setInputType(inputType === "password" ? "text" : "password");
+    };
+
     return (
         <form className="registration__form" onSubmit={onFormSubmit}>
             <div className="registration__personal-data">
@@ -262,21 +275,31 @@ export default function RegistrationForm({
                         placeHolder="Email address"
                         validationError={validationError.email ? validationError.email : ""}
                     />
-                    <TextInput
-                        type="password"
-                        name="password"
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                            inputTextHandler(e, "password")
-                        }
-                        onFocus={(e: FocusEvent) => {
-                            inputOnFocusHandler(e, "password");
-                        }}
-                        className="registration__input"
-                        id="password"
-                        value={formData.password}
-                        placeHolder="Password"
-                        validationError={validationError.password ? validationError.password : ""}
-                    />
+                    <div className="password__wrapper">
+                        <TextInput
+                            type={inputType}
+                            name="password"
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                                inputTextHandler(e, "password")
+                            }
+                            onFocus={(e: FocusEvent) => {
+                                inputOnFocusHandler(e, "password");
+                            }}
+                            className="registration__input"
+                            id="password"
+                            value={formData.password}
+                            placeHolder="Password"
+                            validationError={
+                                validationError.password ? validationError.password : ""
+                            }
+                        />
+                        <ButtonIcon
+                            url={inputType === "password" ? closedEye : openEye}
+                            altText="icon-eye"
+                            classes="button-icon"
+                            onClick={toggleHideButton}
+                        />
+                    </div>
                     <div className="registration__birthday-input">
                         <Text classes={["inter-400-font", "font-size_m", "color_grey-dark"]}>
                             Birthday:

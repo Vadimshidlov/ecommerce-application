@@ -25,14 +25,14 @@
         }
     }
 
-    .password__wrapper {
-        position: relative;
-        width: 100%;
-    }
-
     .registration__error {
         padding-top: 10px;
         width: 100%;
         color: #e61010;
     }
+}
+
+.password__wrapper {
+    position: relative;
+    width: 100%;
 }
