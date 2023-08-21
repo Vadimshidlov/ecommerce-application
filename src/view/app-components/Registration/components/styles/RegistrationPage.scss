@@ -6,6 +6,11 @@
     margin: 0 auto;
     max-width: 652px;
 
+    @media (max-width: 490px) {
+        margin-top: 12px;
+        padding: 32px 10px;
+    }
+
     .registration__subtitle {
         margin-top: 24px;
         display: flex;
