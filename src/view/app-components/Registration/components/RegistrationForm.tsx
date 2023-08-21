@@ -303,12 +303,18 @@ export default function RegistrationForm({
                     </div>
                 </div>
             </div>
-            <div className="registration__adress-block block-adress">
+            <div
+                className="registration__address-block
+ block-adress"
+            >
                 <Text classes={["inter-600-font", "font-size_m", "color_blue-dark"]}>
                     Billing address:
                 </Text>
                 {/* <p className="block-address_title">Billing address:</p> */}
-                <div className="registration__adress-block-wrapper">
+                <div
+                    className="registration__address-block
+-wrapper"
+                >
                     <div className="billing_countries__select-block">
                         <Text classes={["inter-400-font", "font-size_m", "color_grey-dark"]}>
                             Country:
@@ -424,12 +430,18 @@ export default function RegistrationForm({
                 </div>
             </div>
             <div hidden={!!oneAddress}>
-                <div className="registration__adress-block">
+                <div
+                    className="registration__address-block
+"
+                >
                     {/* <p className="block-address_title">Shipping address:</p> */}
                     <Text classes={["inter-600-font", "font-size_m", "color_blue-dark"]}>
                         Shipping address:
                     </Text>
-                    <div className="registration__adress-block-wrapper">
+                    <div
+                        className="registration__address-block
+-wrapper"
+                    >
                         <div className="billing_countries__select-block">
                             <Text classes={["inter-400-font", "font-size_m", "color_grey-dark"]}>
                                 Country:
