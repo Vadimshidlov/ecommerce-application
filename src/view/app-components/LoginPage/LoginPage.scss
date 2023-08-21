@@ -1,14 +1,26 @@
-.login-title,
-.login-description {
-    text-align: center;
-}
+.login__container {
+    margin: 0 auto;
+    padding: 32px;
+    max-width: 652px;
 
-.login-description {
-    margin-top: 24px;
-    span {
-        padding: 0 5px;
+    .login__title,
+    .login__description {
+        text-align: center;
     }
-    a {
-        text-decoration: none;
+
+    .login__subtitle {
+        margin-top: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 0px 10px;
+        // a {
+        //     text-decoration: none;
+        // }
+
+        @media (max-width: 490px) {
+            margin-top: 12px;
+        }
     }
 }

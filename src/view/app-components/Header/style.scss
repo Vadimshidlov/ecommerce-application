@@ -1,4 +1,16 @@
 .header {
+    width: 100%;
+    left: 50%;
+    //max-width: 1440px;
+    display: flex;
+    justify-content: space-between;
+    margin: 0 auto;
+    padding-top: 0.5rem;
+    //gap: 30vw;
+    padding: 19px 52px;
+}
+
+.header-overlay {
     position: absolute;
     width: 100%;
     left: 50%;

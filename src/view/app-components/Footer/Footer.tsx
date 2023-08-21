@@ -6,7 +6,7 @@ export default function Footer() {
     return (
         <div className="footer">
             <LogoLink />
-            <Text classes={["inter-400-font ", "font-size_m"]}>
+            <Text classes={["inter-400-font ", "font-size_m", "color_grey"]}>
                 Phosfluorescently engage worldwide method process shopping.
             </Text>
         </div>

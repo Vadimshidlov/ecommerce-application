@@ -13,7 +13,6 @@ import {
     errorAuthorizationMessage,
     successAuthorizationMessage,
 } from "shared/utils/notifyMessages";
-import "react-toastify/dist/ReactToastify.css";
 
 export function AuthForm() {
     const LOGIN_SERVICE: LoginService = new LoginService();
@@ -56,9 +55,9 @@ export function AuthForm() {
             await LOGIN_SERVICE.getAuthToken({ email, password });
             await LOGIN_SERVICE.authenticateCustomer({ email, password });
 
+            successAuthorizationMessage();
             setIsAuth(true);
             navigate("/");
-            successAuthorizationMessage();
         } catch (error) {
             if (error instanceof Yup.ValidationError) {
                 error.inner.forEach((err) => {
@@ -75,8 +74,8 @@ export function AuthForm() {
     };
 
     return (
-        <form className="login-form" onSubmit={handleSubmit}>
-            <div className="input-container">
+        <form className="login__form" onSubmit={handleSubmit}>
+            <div className="input__container">
                 <TextInput
                     name="email"
                     placeHolder="email"
@@ -85,6 +84,7 @@ export function AuthForm() {
                     type="text"
                     className="registration__input"
                     onInput={() => setEmailError("")}
+                    onFocus={() => setEmailError("")}
                     onChange={(event) => setEmail(event.target.value)}
                     validationError={emailError || ""}
                 />
@@ -92,8 +92,8 @@ export function AuthForm() {
                     {emailError}
                 </label> */}
             </div>
-            <div className="input-container">
-                <div className="password-wrapper">
+            <div className="input__container">
+                <div className="password__wrapper">
                     <TextInput
                         name="password"
                         placeHolder="password"
@@ -102,6 +102,7 @@ export function AuthForm() {
                         type={inputType}
                         className="registration__input btn-full-width"
                         onInput={() => setPassError("")}
+                        onFocus={() => setPassError("")}
                         onChange={(event) => setPassword(event.target.value)}
                         validationError={passError || ""}
                     />
