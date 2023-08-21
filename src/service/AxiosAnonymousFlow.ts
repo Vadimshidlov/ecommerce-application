@@ -25,11 +25,7 @@ class AxiosAnonymousFlow {
     private readonly AuthDataStoreApi = new AuthDataStore();
 
     constructor() {
-        this.request = axios.create({
-            // headers: {
-            //     Authorization: `Basic ${localStorage.getItem("anonymousAccessToken")}`,
-            // },
-        });
+        this.request = axios.create({});
         this.createResponseInterceptor();
     }
 
@@ -70,7 +66,6 @@ class AxiosAnonymousFlow {
                                         grant_type: `refresh_token`,
                                         refresh_token: `${anonymousRefreshToken}`,
                                     },
-
                                     headers: {
                                         Authorization: `Basic ${btoa(
                                             `${CTP_CLIENT_ID}:${CTP_CLIENT_SECRET}`,
@@ -84,9 +79,6 @@ class AxiosAnonymousFlow {
                                 response401Token.data.access_token,
                                 anonymousRefreshToken,
                             );
-
-                            console.log(response401Token);
-                            console.log(response401Token.data.access_token, `access_token`);
 
                             return await this.request(originalRequest || {});
                         } catch (e) {

@@ -1,8 +1,18 @@
 .main-part {
-    //max-width: 1440px;
     margin: 0 auto;
     background: url('../../../assets/home-image.png') no-repeat;
     background-size: cover;
-    height: 800px;
-    padding-top: 68px;
+    height: 75vh;
+    padding-top: 10vh;
+}
+
+.some-content {
+    display:flex;
+    flex-direction: column;
+    row-gap: 1rem;
+}
+
+.some-content .button {
+    padding: .5rem;
+    width: 80%;
 }

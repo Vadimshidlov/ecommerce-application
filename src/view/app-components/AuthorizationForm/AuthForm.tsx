@@ -8,6 +8,12 @@ import { TextInput } from "shared/components/TextInput/TextInput";
 import closedEye from "assets/svg/closedEye.svg";
 import openEye from "assets/svg/openEye.svg";
 import { AxiosError } from "axios";
+import { useAuth } from "auth-context";
+import {
+    errorAuthorizationMessage,
+    successAuthorizationMessage,
+} from "shared/utils/notifyMessages";
+import "react-toastify/dist/ReactToastify.css";
 
 export function AuthForm() {
     const LOGIN_SERVICE: LoginService = new LoginService();
@@ -23,6 +29,7 @@ export function AuthForm() {
     };
 
     const navigate = useNavigate();
+    const { setIsAuth } = useAuth();
 
     const schema = Yup.object({
         email: Yup.string()
@@ -49,7 +56,9 @@ export function AuthForm() {
             await LOGIN_SERVICE.getAuthToken({ email, password });
             await LOGIN_SERVICE.authenticateCustomer({ email, password });
 
+            setIsAuth(true);
             navigate("/");
+            successAuthorizationMessage();
         } catch (error) {
             if (error instanceof Yup.ValidationError) {
                 error.inner.forEach((err) => {
@@ -60,8 +69,7 @@ export function AuthForm() {
                     }
                 });
             } else if (error instanceof AxiosError && error.response?.status === 400) {
-                setEmailError(error.response.data.message);
-                setPassError(error.response.data.message);
+                errorAuthorizationMessage();
             }
         }
     };
@@ -78,10 +86,11 @@ export function AuthForm() {
                     className="registration__input"
                     onInput={() => setEmailError("")}
                     onChange={(event) => setEmail(event.target.value)}
+                    validationError={emailError || ""}
                 />
-                <label htmlFor="email" className="error-message">
+                {/* <label htmlFor="email" className="error-message">
                     {emailError}
-                </label>
+                </label> */}
             </div>
             <div className="input-container">
                 <div className="password-wrapper">
@@ -94,6 +103,7 @@ export function AuthForm() {
                         className="registration__input btn-full-width"
                         onInput={() => setPassError("")}
                         onChange={(event) => setPassword(event.target.value)}
+                        validationError={passError || ""}
                     />
                     <ButtonIcon
                         url={inputType === "password" ? closedEye : openEye}
@@ -102,9 +112,9 @@ export function AuthForm() {
                         onClick={toggleHideButton}
                     />
                 </div>
-                <label htmlFor="password" className="error-message">
+                {/* <label htmlFor="password" className="error-message">
                     {passError}
-                </label>
+                </label> */}
             </div>
             <Button
                 type="submit"
