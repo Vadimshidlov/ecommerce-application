@@ -2,7 +2,6 @@ import React from "react";
 import "view/app-components/Header/LogoLink/style.scss";
 
 export function LogoLink() {
-    // return <img src="src\assets\logo.svg" alt="" />;
     return (
         <svg
             className="logo-box"

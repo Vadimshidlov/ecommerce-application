@@ -13,7 +13,6 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 function App() {
-    // const AuthDataStoreApi = AuthDataStore.getAuthDataStore();
     const { setIsAuth } = useAuth();
     const AuthServiceApi = useRef(new AuthService());
     const AuthDataStoreApi = useRef(AuthDataStore.getAuthDataStore());

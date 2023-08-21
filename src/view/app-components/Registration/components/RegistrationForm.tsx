@@ -1,8 +1,6 @@
 import React, { FocusEvent, useEffect, useState } from "react";
-// import RegistrationButton from "view/app-components/Registration/components/RegistationButton";
 import * as yup from "yup";
 import { ValidationError } from "yup";
-// import { useNavigate } from "react-router-dom";
 import TextValidationError from "view/app-components/Registration/components/ErrorsComponents/TextValidationError";
 import { getValidationErrorsObject } from "shared/utils/getValidationErrorsObject";
 import { DateInput } from "shared/components/DateInput/DateInput";
@@ -168,8 +166,6 @@ export default function RegistrationForm({
         setDefaultShippingAddress(false);
     }, [oneAddress]);
 
-    // const navigate = useNavigate();
-
     const inputTextHandler = async (
         e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>,
         key: keyof RegisterFormDataType,
@@ -303,12 +299,18 @@ export default function RegistrationForm({
                     </div>
                 </div>
             </div>
-            <div className="registration__adress-block block-adress">
+            <div
+                className="registration__address-block
+ block-adress"
+            >
                 <Text classes={["inter-600-font", "font-size_m", "color_blue-dark"]}>
                     Billing address:
                 </Text>
                 {/* <p className="block-address_title">Billing address:</p> */}
-                <div className="registration__adress-block-wrapper">
+                <div
+                    className="registration__address-block
+-wrapper"
+                >
                     <div className="billing_countries__select-block">
                         <Text classes={["inter-400-font", "font-size_m", "color_grey-dark"]}>
                             Country:
@@ -424,12 +426,18 @@ export default function RegistrationForm({
                 </div>
             </div>
             <div hidden={!!oneAddress}>
-                <div className="registration__adress-block">
+                <div
+                    className="registration__address-block
+"
+                >
                     {/* <p className="block-address_title">Shipping address:</p> */}
                     <Text classes={["inter-600-font", "font-size_m", "color_blue-dark"]}>
                         Shipping address:
                     </Text>
-                    <div className="registration__adress-block-wrapper">
+                    <div
+                        className="registration__address-block
+-wrapper"
+                    >
                         <div className="billing_countries__select-block">
                             <Text classes={["inter-400-font", "font-size_m", "color_grey-dark"]}>
                                 Country:
