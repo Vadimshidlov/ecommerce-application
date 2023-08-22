@@ -3,11 +3,15 @@
     width: 100%;
     border: 1px solid #cbcbcb;
     border-radius: 6px;
-    outline: none;
+    // outline: none;
 
     @media (max-width: 490px) {
         font-size: 12px;
         padding: 10px;
         gap: 24px;
     }
+}
+
+.input__outline-error {
+    outline: 2px solid #e61010;
 }
