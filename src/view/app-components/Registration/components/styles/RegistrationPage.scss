@@ -8,7 +8,7 @@
 
     @media (max-width: 490px) {
         margin-top: 12px;
-        padding: 32px 10px;
+        padding: 32px 20px;
     }
 
     .registration__subtitle {
@@ -59,10 +59,6 @@
             div {
                 width: 100%;
             }
-
-            @media (max-width: 490px) {
-                gap: 24px;
-            }
         }
 
         .registration__birthday-input {
@@ -72,20 +68,10 @@
             justify-content: start;
             gap: 20px;
 
-            @media (max-width: 490px) {
-                span {
-                    font-size: 12px;
-                }
-            }
-
             .registration__birthday-date {
                 padding: 5px;
                 border: 1px solid #ccc;
                 border-radius: 6px;
-
-                @media (max-width: 490px) {
-                    font-size: 14px;
-                }
             }
 
             .date-input__component {
@@ -95,22 +81,21 @@
             }
         }
 
-        .registration__address-block
- {
+        .registration__address-block {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 20px;
 
             .registration__address-block-wrapper {
                 display: flex;
                 flex-direction: column;
                 gap: 32px;
+            }
 
-                .registration__default-wrapper {
-                    display: flex;
-                    flex-direction: column;
-                    gap: 6px;
-                }
+            .registration__default-wrapper {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
             }
         }
 
@@ -118,12 +103,6 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-
-            @media (max-width: 490px) {
-                span {
-                    font-size: 12px;
-                }
-            }
         }
 
         .block-address_select {
@@ -131,10 +110,6 @@
             border: 1px solid #ccc;
             border-radius: 6px;
             cursor: pointer;
-
-            @media (max-width: 490px) {
-                font-size: 12px;
-            }
         }
 
         .registration__default-address {
@@ -143,17 +118,6 @@
             align-items: center;
             flex-direction: row-reverse;
             column-gap: 10px;
-
-            @media (max-width: 490px) {
-                align-items: baseline;
-                font-size: 12px;
-                column-gap: 5px;
-
-                input {
-                    height: 10px;
-                    width: 10px;
-                }
-            }
         }
     }
 }
