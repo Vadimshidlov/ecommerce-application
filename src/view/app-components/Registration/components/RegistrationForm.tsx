@@ -38,13 +38,15 @@ const userScheme = yup.object({
     firstname: yup
         .string()
         .required("Firstname is required field")
-        .min(4, "Very short firstname")
-        .max(25, "Very large firstname"),
+        .min(1, "Very short firstname")
+        .max(25, "Very large firstname")
+        .matches(/^[a-zA-Zа-яА-Я]*$/, "Only letters allowed"),
     lastname: yup
         .string()
         .required("Lastname is required field")
-        .min(4, "Very short lastname")
-        .max(25, "Very large lastname"),
+        .min(1, "Very short lastname")
+        .max(25, "Very large lastname")
+        .matches(/^[a-zA-Zа-яА-Я]*$/, "Only letters allowed"),
     email: yup
         .string()
         .matches(/^[^\s]*$/, "Email must not contain a space")
@@ -61,16 +63,16 @@ const userScheme = yup.object({
         .max(maxValidBirthdayDate, "User must be over 13 years old"),
     password: yup
         .string()
-        .matches(
-            /(?=.[!@#$%^&-])/,
-            "The password must contain at least one special character (for example, !@#$%^&-)",
-        )
+        .required("Password is a required field")
+        .min(8, "Password must contain at least 8 characters")
         .matches(/(?=.[A-Z])/, "The password must be received for one capital letter (AZ)")
         .matches(/(?=.[a-z])/, "Password must contain at least one lowercase letter (az)")
         .matches(/(?=.\d)/, "Password must contain at least one number (0-9)")
         .matches(/^[^\s]*$/, "Password must not contain a space")
-        .min(8, "Password must contain at least 8 characters")
-        .required("Password is a required field"),
+        .matches(
+            /(?=.[!@#$%^&-])/,
+            "The password must contain at least one special character (for example, !@#$%^&-)",
+        ),
     billingStreet: yup
         .string()
         .required("Street is required field")
@@ -238,7 +240,9 @@ export default function RegistrationForm({
                         onFocus={(e: FocusEvent) => {
                             inputOnFocusHandler(e, "firstname");
                         }}
-                        className="registration__input"
+                        className={`registration__input ${
+                            !validationError.firstname ? "" : "input__outline-error"
+                        }`}
                         id="fname"
                         value={formData.firstname}
                         placeHolder="Your name"
@@ -253,7 +257,9 @@ export default function RegistrationForm({
                         onFocus={(e: FocusEvent) => {
                             inputOnFocusHandler(e, "lastname");
                         }}
-                        className="registration__input"
+                        className={`registration__input ${
+                            !validationError.lastname ? "" : "input__outline-error"
+                        }`}
                         id="lname"
                         value={formData.lastname}
                         placeHolder="Your lastname"
@@ -268,7 +274,9 @@ export default function RegistrationForm({
                         onFocus={(e: FocusEvent) => {
                             inputOnFocusHandler(e, "email");
                         }}
-                        className="registration__input"
+                        className={`registration__input ${
+                            !validationError.email ? "" : "input__outline-error"
+                        }`}
                         id="email"
                         value={formData.email}
                         placeHolder="Email address"
@@ -284,7 +292,9 @@ export default function RegistrationForm({
                             onFocus={(e: FocusEvent) => {
                                 inputOnFocusHandler(e, "password");
                             }}
-                            className="registration__input"
+                            className={`registration__input ${
+                                !validationError.password ? "" : "input__outline-error"
+                            }`}
                             id="password"
                             value={formData.password}
                             placeHolder="Password"
@@ -304,7 +314,9 @@ export default function RegistrationForm({
                             Birthday:
                         </Text>
                         <DateInput
-                            className="registration__birthday-date inter-400-font font-size_m color_grey-dark"
+                            className={`registration__birthday-date inter-400-font font-size_m color_grey-dark ${
+                                !validationError.birthdayDate ? "" : "input__outline-error"
+                            }`}
                             id="birthdayDate"
                             name="birthdayDate"
                             onChangeHandler={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -367,7 +379,9 @@ export default function RegistrationForm({
                                 onFocus={(e: FocusEvent) => {
                                     inputOnFocusHandler(e, "billingStreet");
                                 }}
-                                className="registration__input"
+                                className={`registration__input ${
+                                    !validationError.billingStreet ? "" : "input__outline-error"
+                                }`}
                                 id="billingStreet"
                                 value={formData.billingStreet}
                                 placeHolder="Street"
@@ -388,7 +402,9 @@ export default function RegistrationForm({
                                 onFocus={(e: FocusEvent) => {
                                     inputOnFocusHandler(e, "billingCity");
                                 }}
-                                className="registration__input"
+                                className={`registration__input ${
+                                    !validationError.billingCity ? "" : "input__outline-error"
+                                }`}
                                 id="billingCity"
                                 value={formData.billingCity}
                                 placeHolder="City"
@@ -407,7 +423,9 @@ export default function RegistrationForm({
                                 onFocus={(e: FocusEvent) => {
                                     inputOnFocusHandler(e, "billingPostalCode");
                                 }}
-                                className="registration__input"
+                                className={`registration__input ${
+                                    !validationError.billingPostalCode ? "" : "input__outline-error"
+                                }`}
                                 id="billingPostalCode"
                                 value={formData.billingPostalCode}
                                 placeHolder="Postal code"
@@ -500,7 +518,9 @@ export default function RegistrationForm({
                                     onFocus={(e: FocusEvent) => {
                                         inputOnFocusHandler(e, "shippingCity");
                                     }}
-                                    className="registration__input"
+                                    className={`registration__input ${
+                                        !validationError.shippingCity ? "" : "input__outline-error"
+                                    }`}
                                     id="shippingCity"
                                     value={formData.shippingCity}
                                     placeHolder="City"
@@ -521,7 +541,11 @@ export default function RegistrationForm({
                                     onFocus={(e: FocusEvent) => {
                                         inputOnFocusHandler(e, "shippingStreet");
                                     }}
-                                    className="registration__input"
+                                    className={`registration__input ${
+                                        !validationError.shippingStreet
+                                            ? ""
+                                            : "input__outline-error"
+                                    }`}
                                     id="shippingStreet"
                                     value={formData.shippingStreet}
                                     placeHolder="Street"
@@ -542,7 +566,11 @@ export default function RegistrationForm({
                                     onFocus={(e: FocusEvent) => {
                                         inputOnFocusHandler(e, "shippingPostalCode");
                                     }}
-                                    className="registration__input"
+                                    className={`registration__input ${
+                                        !validationError.shippingPostalCode
+                                            ? ""
+                                            : "input__outline-error"
+                                    }`}
                                     id="shippingPostalCode"
                                     value={formData.shippingPostalCode}
                                     placeHolder="Postal code"

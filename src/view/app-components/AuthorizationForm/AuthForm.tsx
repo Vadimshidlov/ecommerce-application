@@ -88,15 +88,12 @@ export function AuthForm() {
                     value={email}
                     id="email"
                     type="text"
-                    className="registration__input"
+                    className={`registration__input ${!emailError ? "" : "input__outline-error"}`}
                     onInput={() => setEmailError("")}
                     onFocus={() => setEmailError("")}
                     onChange={(event) => setEmail(event.target.value)}
                     validationError={emailError || ""}
                 />
-                {/* <label htmlFor="email" className="error-message">
-                    {emailError}
-                </label> */}
             </div>
             <div className="input__container">
                 <div className="password__wrapper">
@@ -106,7 +103,9 @@ export function AuthForm() {
                         value={password}
                         id="password"
                         type={inputType}
-                        className="registration__input btn-full-width"
+                        className={`registration__input ${
+                            !passError ? "" : "input__outline-error"
+                        }`}
                         onInput={() => setPassError("")}
                         onFocus={() => setPassError("")}
                         onChange={(event) => setPassword(event.target.value)}
@@ -119,9 +118,6 @@ export function AuthForm() {
                         onClick={toggleHideButton}
                     />
                 </div>
-                {/* <label htmlFor="password" className="error-message">
-                    {passError}
-                </label> */}
             </div>
             <Button
                 type="submit"

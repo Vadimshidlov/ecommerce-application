@@ -1,18 +1,18 @@
 .main-part {
     margin: 0 auto;
-    background: url('../../../assets/home-image.png') no-repeat;
+    background: url("../../../assets/home-image.png") center no-repeat;
     background-size: cover;
     height: 75vh;
     padding-top: 10vh;
 }
 
 .some-content {
-    display:flex;
+    display: flex;
     flex-direction: column;
     row-gap: 1rem;
 }
 
 .some-content .button {
-    padding: .5rem;
+    padding: 0.5rem;
     width: 80%;
 }
