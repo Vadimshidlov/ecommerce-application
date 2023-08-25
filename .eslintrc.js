@@ -27,6 +27,7 @@ module.exports = {
         project: "./tsconfig.json",
     },
     rules: {
+        "import/no-extraneous-dependencies": ["error", { devDependencies: true }],
         "no-restricted-imports": [
             "error",
             {
@@ -52,5 +53,7 @@ module.exports = {
         "@typescript-eslint/no-explicit-any": "error",
         "react-hooks/exhaustive-deps": "error",
         "prettier/prettier": ["error", { endOfLine: "auto" }],
+        "react/button-has-type": "off",
+        "react/jsx-props-no-spreading": "off",
     },
 };

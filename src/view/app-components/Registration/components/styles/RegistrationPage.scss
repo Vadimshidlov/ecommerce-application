@@ -1,0 +1,123 @@
+.registration__container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 32px;
+    margin: 0 auto;
+    max-width: 652px;
+
+    @media (max-width: 490px) {
+        margin-top: 12px;
+        padding: 32px 20px;
+    }
+
+    .registration__subtitle {
+        margin-top: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 0px 10px;
+
+        @media (max-width: 490px) {
+            margin-top: 12px;
+        }
+    }
+
+    .registration__form {
+        padding: 32px;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 32px;
+        width: 100%;
+
+        @media (max-width: 490px) {
+            padding: 32px 0;
+            gap: 24px;
+        }
+
+        .registration__error {
+            width: 100%;
+            padding-top: 5px;
+            color: #e61010;
+        }
+
+        .registration__personal-data {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .input__wrapper {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            gap: 32px;
+
+            div {
+                width: 100%;
+            }
+        }
+
+        .registration__birthday-input {
+            border-radius: 6px;
+            display: flex;
+            align-items: baseline;
+            justify-content: start;
+            gap: 20px;
+
+            .registration__birthday-date {
+                padding: 5px;
+                border: 1px solid #ccc;
+                border-radius: 6px;
+            }
+
+            .date-input__component {
+                display: flex;
+                flex-direction: column;
+                max-width: 180px;
+            }
+        }
+
+        .registration__address-block {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+
+            .registration__address-block-wrapper {
+                display: flex;
+                flex-direction: column;
+                gap: 32px;
+            }
+
+            .registration__default-wrapper {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+
+        .billing_countries__select-block {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .block-address_select {
+            padding: 5px 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .registration__default-address {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            flex-direction: row-reverse;
+            column-gap: 10px;
+        }
+    }
+}

@@ -1,0 +1,23 @@
+@import url(commonStyle/colors.scss);
+
+.button {
+    padding: 19px 25px;
+    background-color: $color-black;
+    cursor: pointer;
+    border: none;
+    border-radius: 6px;
+    text-align: center;
+    white-space: nowrap;
+    transition: transform 0.3s;
+    &:active {
+        transform: scale(0.95);
+    }
+
+    @media (max-width: 490px) {
+        padding: 12px 10px;
+    }
+}
+
+.btn-full-width {
+    width: 100%;
+}

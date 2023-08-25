@@ -1,0 +1,113 @@
+@mixin InterRegularFont {
+    font-weight: 400;
+    font-family: "Inter";
+}
+
+@mixin InterSemiBoldFont {
+    font-weight: 600;
+    font-family: "Inter";
+}
+
+@mixin InterBoldFont {
+    font-weight: 700;
+    font-family: "Inter";
+}
+
+@mixin SpaceGroteskMediumFont {
+    font-weight: 500;
+    font-family: "SpaceGrotesk";
+}
+
+.inter-400-font {
+    @include InterRegularFont;
+}
+
+.inter-600-font {
+    @include InterSemiBoldFont;
+}
+
+.inter-700-font {
+    @include InterBoldFont;
+}
+
+.space-grotesk-500-font {
+    @include SpaceGroteskMediumFont;
+}
+
+$font-size-80: 80px;
+$font-size-72: 72px;
+$font-size-54: 54px;
+$font-size-40: 40px;
+$font-size-34: 34px;
+$font-size-28: 28px;
+$font-size-26: 26px;
+$font-size-22: 22px;
+$font-size-20: 20px;
+$font-size-18: 18px;
+$font-size-16: 16px;
+$font-size-14: 14px;
+$font-size-12: 12px;
+
+.font-size_heading-1 {
+    font-size: $font-size-80;
+}
+
+.font-size_heading-2 {
+    font-size: $font-size-72;
+}
+
+.font-size_heading-3 {
+    font-size: $font-size-54;
+
+    @media (max-width: 490px) {
+        font-size: $font-size-40;
+    }
+}
+
+.font-size_heading-4 {
+    font-size: $font-size-40;
+
+    @media (max-width: 490px) {
+        font-size: $font-size-28;
+    }
+}
+
+.font-size_heading-5 {
+    font-size: $font-size-34;
+}
+
+.font-size_heading-6 {
+    font-size: $font-size-28;
+}
+
+.font-size_3xl {
+    font-size: $font-size-26;
+}
+
+.font-size_2xl {
+    font-size: $font-size-22;
+
+    @media (max-width: 490px) {
+        font-size: $font-size-16;
+    }
+}
+
+.font-size_xl {
+    font-size: $font-size-20;
+}
+
+.font-size_l {
+    font-size: $font-size-18;
+}
+
+.font-size_m {
+    font-size: $font-size-16;
+}
+
+.font-size_s {
+    font-size: $font-size-14;
+}
+
+.font-size_xs {
+    font-size: $font-size-12;
+}
