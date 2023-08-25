@@ -11,6 +11,7 @@ import { useAuth } from "auth-context";
 import RegistrationPage from "view/app-components/Registration/components/RegistrationPage";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import ProductPage from "view/app-components/ProductPage/ProductPage";
 
 function App() {
     const { setIsAuth } = useAuth();
@@ -53,6 +54,7 @@ function App() {
                 <Route path="/" element={<MainPage />} />
                 <Route path="login" element={<LoginPage />} />
                 <Route path="registration" element={<RegistrationPage />} />
+                <Route path="product_page" element={<ProductPage />} />
                 <Route path="*" element={<PageNotFound />} />
             </Routes>
             <Footer />

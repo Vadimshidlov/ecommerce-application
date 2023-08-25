@@ -1,0 +1,13 @@
+.product__container {
+    display: grid;
+    grid-template-columns: 40% auto;
+    grid-template-rows: auto;
+
+    .swiper-width {
+        width: 40vw;
+    }
+
+    // .product__info {
+    //     height: 500px;
+    // }
+}
