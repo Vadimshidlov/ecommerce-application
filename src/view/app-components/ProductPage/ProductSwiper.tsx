@@ -1,39 +1,56 @@
-import React from "react";
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import React, { useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Pagination, A11y } from "swiper/modules";
+import { Navigation, Pagination, A11y, Scrollbar } from "swiper/modules";
 
-// Import Swiper styles
 import "swiper/scss";
 import "swiper/scss/navigation";
 import "swiper/scss/pagination";
 import "swiper/scss/scrollbar";
+import { ProductBodyType } from "view/app-components/ProductPage/ProductBody";
 
-const imagesList: string[] = [
-    "https://a.lmcdn.ru/img600x866/R/T/RTLACY005601_20921413_1_v1_2x.jpg",
-    "https://a.lmcdn.ru/img600x866/R/T/RTLACY005601_20921414_2_v1_2x.jpg",
-    "https://a.lmcdn.ru/img600x866/R/T/RTLACY005601_20921415_3_v1_2x.jpg",
-];
+function ProductSwiper({ productResponse }: ProductBodyType) {
+    const imagesList: string[] = [];
+    productResponse?.masterVariant.images.forEach((imageUrl) => imagesList.push(imageUrl.url));
+    const [modalVersion, setModalVersion] = useState(false);
 
-function ProductSwiper() {
     return (
-        <Swiper
-            modules={[Navigation, Pagination, A11y]}
-            spaceBetween={50}
-            loop
-            slidesPerView={1}
-            navigation
-            pagination={{ clickable: true }}
-            // scrollbar={{ draggable: true }}
-            onSlideChange={() => console.log("slide change")}
-            onSwiper={(swiper) => console.log(swiper)}
-            className="swiper-width"
-        >
-            {imagesList.map((image, index) => (
-                <SwiperSlide key={image}>
-                    <img src={image} alt={String(index)} />
-                </SwiperSlide>
-            ))}
-        </Swiper>
+        <div className={modalVersion ? "swiper__container__modal" : "swiper__container"}>
+            <div className="swiper__close-btn" hidden={!modalVersion}>
+                x
+            </div>
+            <Swiper
+                modules={[Navigation, Pagination, A11y]}
+                spaceBetween={50}
+                loop
+                slidesPerView={1}
+                autoHeight={false}
+                navigation
+                scrollbar={modalVersion}
+                pagination={{ clickable: true }}
+                onSlideChange={() => console.log("slide change")}
+                onSwiper={(swiper) => console.log(swiper)}
+                breakpoints={{}}
+            >
+                {imagesList.map((image, index) => (
+                    <SwiperSlide key={image}>
+                        <div
+                            onClick={() => {
+                                // if (!modalVersion) {
+                                setModalVersion((currentVersion) => !currentVersion);
+                                // }
+                            }}
+                            onKeyDown={() => {
+                                console.log("Swiper-container click");
+                            }}
+                            className="swiper__image-container"
+                        >
+                            <img src={image} alt={String(index)} />
+                        </div>
+                    </SwiperSlide>
+                ))}
+            </Swiper>
+        </div>
     );
 }
 
