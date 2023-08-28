@@ -16,6 +16,7 @@ function useGetProductDate() {
                 const productResponse = await axios.get(url, {
                     headers: {
                         Authorization: `Bearer ${tokenStoreApi.getAnonymousAccessToken()}`,
+                        // Authorization: `Bearer ${tokenStoreApi.getAccessAuthToken()}`,
                     },
                 });
 

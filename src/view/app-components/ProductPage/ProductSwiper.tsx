@@ -2,7 +2,6 @@
 import React, { useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, A11y, Scrollbar } from "swiper/modules";
-
 import "swiper/scss";
 import "swiper/scss/navigation";
 import "swiper/scss/pagination";
