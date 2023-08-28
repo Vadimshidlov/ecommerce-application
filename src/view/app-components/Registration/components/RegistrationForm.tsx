@@ -10,7 +10,7 @@ import {
     maxValidBirthdayDate,
 } from "shared/utils/getInitialFormData";
 import { getInitialFormErrorsData, IStateErrors } from "shared/utils/getInitialFormErrorsData";
-import { getChangeFormByAddressData } from "shared/utils/getFinallyFormData";
+import { getChangeFormByAddressData } from "shared/utils/getChangeFormByAddressData";
 import { TextInput } from "shared/components/TextInput/TextInput";
 import Text from "view/app-components/Text/text";
 import { Button } from "shared/components/button/Button";

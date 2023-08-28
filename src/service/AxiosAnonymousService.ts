@@ -13,7 +13,7 @@ export type AnonymousAccessType = {
     token_type: string;
 };
 
-class AxiosAnonymousFlow {
+class AxiosAnonymousService {
     public request: AxiosInstance;
 
     private readonly CTP_PROJECT_KEY = "uwoc_ecm-app";
@@ -53,36 +53,32 @@ class AxiosAnonymousFlow {
                         anonymousAccessToken &&
                         anonymousAccessToken
                     ) {
-                        try {
-                            const CTP_CLIENT_SECRET = "6x4a7bsRL81dJoq1vsQ81yf3C0BiJrYH";
-                            const CTP_CLIENT_ID = "OLQF6DvQqgu9NiEaNj5l-ngD";
+                        const CTP_CLIENT_SECRET = "6x4a7bsRL81dJoq1vsQ81yf3C0BiJrYH";
+                        const CTP_CLIENT_ID = "OLQF6DvQqgu9NiEaNj5l-ngD";
 
-                            const response401Token = await axios.post<AnonymousAccessType>(
-                                `https://auth.europe-west1.gcp.commercetools.com/oauth/token`,
-                                {},
-                                {
-                                    params: {
-                                        grant_type: `refresh_token`,
-                                        refresh_token: `${anonymousRefreshToken}`,
-                                    },
-                                    headers: {
-                                        Authorization: `Basic ${btoa(
-                                            `${CTP_CLIENT_ID}:${CTP_CLIENT_SECRET}`,
-                                        )}`,
-                                        "Content-Type": "application/x-www-form-urlencoded",
-                                    },
+                        const response401Token = await axios.post<AnonymousAccessType>(
+                            `https://auth.europe-west1.gcp.commercetools.com/oauth/token`,
+                            {},
+                            {
+                                params: {
+                                    grant_type: `refresh_token`,
+                                    refresh_token: `${anonymousRefreshToken}`,
                                 },
-                            );
+                                headers: {
+                                    Authorization: `Basic ${btoa(
+                                        `${CTP_CLIENT_ID}:${CTP_CLIENT_SECRET}`,
+                                    )}`,
+                                    "Content-Type": "application/x-www-form-urlencoded",
+                                },
+                            },
+                        );
 
-                            this.AuthDataStoreApi.setAnonymousTokens(
-                                response401Token.data.access_token,
-                                anonymousRefreshToken,
-                            );
+                        this.AuthDataStoreApi.setAnonymousTokens(
+                            response401Token.data.access_token,
+                            anonymousRefreshToken,
+                        );
 
-                            return await this.request(originalRequest || {});
-                        } catch (e) {
-                            console.log(e);
-                        }
+                        return this.request(originalRequest || {});
                     }
                 }
 
@@ -104,4 +100,4 @@ class AxiosAnonymousFlow {
     }
 }
 
-export default new AxiosAnonymousFlow();
+export default new AxiosAnonymousService();

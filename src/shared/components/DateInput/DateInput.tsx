@@ -22,7 +22,6 @@ export function DateInput({
 }: IDateInput) {
     return (
         <div className="date-input__component">
-            {/* <label htmlFor={name}> */}
             <input
                 onChange={(e) => {
                     onChangeHandler(e, name);
@@ -36,7 +35,6 @@ export function DateInput({
                 id={id}
                 value={value}
             />
-            {/* </label> */}
             <TextValidationError errorMessage={validationError} />
         </div>
     );

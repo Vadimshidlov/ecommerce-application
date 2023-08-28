@@ -16,9 +16,23 @@ function ProductSwiper({ productResponse }: ProductBodyType) {
 
     return (
         <div className={modalVersion ? "swiper__container__modal" : "swiper__container"}>
-            <div className="swiper__close-btn" hidden={!modalVersion}>
-                x
-            </div>
+            <div
+                className="swiper__close-btn"
+                hidden={!modalVersion}
+                onClick={() => {
+                    if (modalVersion) {
+                        setModalVersion((currentVersion) => !currentVersion);
+                    }
+                }}
+                onKeyDown={(e) => {
+                    if (e.key === "Escape") {
+                        if (modalVersion) {
+                            setModalVersion((currentVersion) => !currentVersion);
+                        }
+                    }
+                }}
+            />
+            <div className="swiper_modal-background" hidden={!modalVersion} />
             <Swiper
                 modules={[Navigation, Pagination, A11y]}
                 spaceBetween={50}
@@ -27,7 +41,7 @@ function ProductSwiper({ productResponse }: ProductBodyType) {
                 autoHeight={false}
                 navigation
                 scrollbar={modalVersion}
-                pagination={{ clickable: true }}
+                pagination={modalVersion ? false : { clickable: true }}
                 onSlideChange={() => console.log("slide change")}
                 onSwiper={(swiper) => console.log(swiper)}
                 breakpoints={{}}
@@ -36,9 +50,9 @@ function ProductSwiper({ productResponse }: ProductBodyType) {
                     <SwiperSlide key={image}>
                         <div
                             onClick={() => {
-                                // if (!modalVersion) {
-                                setModalVersion((currentVersion) => !currentVersion);
-                                // }
+                                if (!modalVersion) {
+                                    setModalVersion((currentVersion) => !currentVersion);
+                                }
                             }}
                             onKeyDown={() => {
                                 console.log("Swiper-container click");

@@ -1,6 +1,14 @@
 export class AuthDataStore {
     private static instance: AuthDataStore;
 
+    private readonly ANONYMOUS_ACCESS_TOKEN_KEY = "anonymousAccessToken";
+
+    private readonly ANONYMOUS_REFRESH_TOKEN_KEY = "anonymousRefreshToken";
+
+    private readonly AUTH_ACCESS_TOKEN_KEY = "accessAuthToken";
+
+    private readonly AUTH_REFRESH_TOKEN_KEY = "refreshAuthToken";
+
     public static getAuthDataStore(): AuthDataStore {
         if (!this.instance) {
             this.instance = new AuthDataStore();
@@ -10,27 +18,27 @@ export class AuthDataStore {
     }
 
     public setAnonymousTokens(anonymousAccessToken: string, anonymousRefreshToken: string): void {
-        localStorage.setItem("anonymousAccessToken", anonymousAccessToken);
-        localStorage.setItem("anonymousRefreshToken", anonymousRefreshToken);
+        localStorage.setItem(this.ANONYMOUS_ACCESS_TOKEN_KEY, anonymousAccessToken);
+        localStorage.setItem(this.ANONYMOUS_REFRESH_TOKEN_KEY, anonymousRefreshToken);
     }
 
     public setAuthTokens(accessAuthToken: string, refreshAuthToken: string): void {
-        localStorage.setItem("accessAuthToken", accessAuthToken);
-        localStorage.setItem("refreshAuthToken", refreshAuthToken);
+        localStorage.setItem(this.AUTH_ACCESS_TOKEN_KEY, accessAuthToken);
+        localStorage.setItem(this.AUTH_REFRESH_TOKEN_KEY, refreshAuthToken);
     }
 
-    public getAnonymousAccessToken(): string {
-        const anonymousAccessToken = localStorage.getItem("anonymousAccessToken");
+    public getAnonymousAccessToken(): string | null {
+        const anonymousAccessToken = localStorage.getItem(this.ANONYMOUS_ACCESS_TOKEN_KEY);
 
         if (!anonymousAccessToken) {
-            return "";
+            return null;
         }
 
         return anonymousAccessToken;
     }
 
     public getAnonymousRefreshToken(): string {
-        const anonymousRefreshToken = localStorage.getItem("anonymousRefreshToken");
+        const anonymousRefreshToken = localStorage.getItem(this.ANONYMOUS_REFRESH_TOKEN_KEY);
 
         if (!anonymousRefreshToken) {
             throw new Error("Anonymous refresh token was fallen");
@@ -39,18 +47,18 @@ export class AuthDataStore {
         return anonymousRefreshToken;
     }
 
-    public getAccessAuthToken(): string {
-        const accessAuthToken = localStorage.getItem("accessAuthToken");
+    public getAccessAuthToken(): string | null {
+        const accessAuthToken = localStorage.getItem(this.AUTH_ACCESS_TOKEN_KEY);
 
         if (!accessAuthToken) {
-            return "";
+            return null;
         }
 
         return accessAuthToken;
     }
 
     public getAuthRefreshToken(): string {
-        const refreshAuthToken = localStorage.getItem("refreshAuthToken");
+        const refreshAuthToken = localStorage.getItem(this.AUTH_REFRESH_TOKEN_KEY);
 
         if (!refreshAuthToken) {
             throw new Error("Auth refresh token was fallen");
@@ -60,10 +68,6 @@ export class AuthDataStore {
     }
 
     public removeTokenFromStore(key: string): void {
-        const token = localStorage.getItem(key);
-
-        if (token) {
-            localStorage.removeItem(key);
-        }
+        localStorage.removeItem(key);
     }
 }

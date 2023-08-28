@@ -1,6 +1,6 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
 
-class AxiosSignUpFlow {
+class AxiosSignUpService {
     public request: AxiosInstance;
 
     private readonly API_URL =
@@ -21,4 +21,4 @@ class AxiosSignUpFlow {
     }
 }
 
-export default new AxiosSignUpFlow();
+export default new AxiosSignUpService();

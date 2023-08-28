@@ -25,32 +25,28 @@ export class AuthService {
     private readonly API_ANON_AUTH_URL = `${this.CTP_AUTH_URL}/oauth/${this.CTP_PROJECT_KEY}/anonymous/token`;
 
     public async createAnonymousToken(): Promise<void> {
-        try {
-            const tokenRequest = await axios.post<TokenResponseType>(
-                this.API_ANON_AUTH_URL,
-                {},
-                {
-                    params: {
-                        grant_type: "client_credentials",
-                        scope: `manage_project:uwoc_ecm-app view_audit_log:uwoc_ecm-app manage_api_clients:uwoc_ecm-app`,
-                    },
-                    headers: {
-                        Authorization: `Basic ${btoa(
-                            `${this.CTP_CLIENT_ID}:${this.CTP_CLIENT_SECRET}`,
-                        )}`,
-                        "Content-Type": this.ANON_TOKEN_CONTENT_TYPE,
-                    },
+        const tokenRequest = await axios.post<TokenResponseType>(
+            this.API_ANON_AUTH_URL,
+            {},
+            {
+                params: {
+                    grant_type: "client_credentials",
+                    scope: `manage_project:uwoc_ecm-app view_audit_log:uwoc_ecm-app manage_api_clients:uwoc_ecm-app`,
                 },
-            );
+                headers: {
+                    Authorization: `Basic ${btoa(
+                        `${this.CTP_CLIENT_ID}:${this.CTP_CLIENT_SECRET}`,
+                    )}`,
+                    "Content-Type": this.ANON_TOKEN_CONTENT_TYPE,
+                },
+            },
+        );
 
-            const tokenResponse: TokenResponseType = await tokenRequest.data;
+        const tokenResponse: TokenResponseType = await tokenRequest.data;
 
-            const anonymousAccessToken = tokenResponse.access_token;
-            const anonymousRefreshToken = tokenResponse.refresh_token;
+        const anonymousAccessToken = tokenResponse.access_token;
+        const anonymousRefreshToken = tokenResponse.refresh_token;
 
-            this.AuthDataStoreApi.setAnonymousTokens(anonymousAccessToken, anonymousRefreshToken);
-        } catch (e) {
-            console.log(e);
-        }
+        this.AuthDataStoreApi.setAnonymousTokens(anonymousAccessToken, anonymousRefreshToken);
     }
 }
