@@ -12,7 +12,7 @@ import {
 import { getInitialFormErrorsData, IStateErrors } from "shared/utils/getInitialFormErrorsData";
 import { getChangeFormByAddressData } from "shared/utils/getFinallyFormData";
 import { TextInput } from "shared/components/TextInput/TextInput";
-import Text from "view/app-components/Text/text";
+import Text from "shared/components/Text/text";
 import { Button } from "shared/components/button/Button";
 import { ButtonIcon } from "shared/components/ButtonIcon/ButtonIcon";
 import closedEye from "assets/svg/closedEye.svg";
@@ -444,6 +444,7 @@ export default function RegistrationForm({
                             </Text>
                             <input
                                 name="defaultAddress"
+                                id="def-address-1"
                                 type="checkbox"
                                 checked={oneAddress}
                                 onChange={handleDefaultAddress}

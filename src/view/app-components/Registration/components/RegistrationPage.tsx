@@ -8,7 +8,7 @@ import { AuthDataStore } from "service/AuthDataStore";
 import { AxiosError } from "axios";
 import { useAuth } from "auth-context";
 import { errorRegistrationMessage, successRegistrationMessage } from "shared/utils/notifyMessages";
-import Text from "view/app-components/Text/text";
+import Text from "shared/components/Text/text";
 
 function RegistrationPage() {
     const registrationService = useRef(new RegistrationService());

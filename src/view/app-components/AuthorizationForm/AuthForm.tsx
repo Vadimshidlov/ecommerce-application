@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
-import LoginService from "service/LoginService/LoginService";
+import LoginService from "service/LoginService";
 import { Button } from "shared/components/button/Button";
 import { ButtonIcon } from "shared/components/ButtonIcon/ButtonIcon";
 import { TextInput } from "shared/components/TextInput/TextInput";
@@ -79,6 +79,27 @@ export function AuthForm() {
         }
     };
 
+    // async function valid(): Promise<void> {
+    //     try {
+    //         await schema.validate({ email, password }, { abortEarly: false });
+    //     } catch (error) {
+    //         if (error instanceof Yup.ValidationError) {
+    //             error.inner.forEach((err) => {
+    //                 if (err.path === "email") {
+    //                     setEmailError(err.message);
+    //                 } else {
+    //                     setPassError(err.message);
+    //                 }
+    //             });
+    //         }
+    //     }
+    // }
+
+    // useEffect(() => {
+    //     valid();
+    //     console.log(email);
+    // }, [email, valid]);
+
     return (
         <form className="login__form" onSubmit={handleSubmit}>
             <div className="input__container">
@@ -89,7 +110,9 @@ export function AuthForm() {
                     id="email"
                     type="text"
                     className={`registration__input ${!emailError ? "" : "input__outline-error"}`}
-                    onInput={() => setEmailError("")}
+                    onInput={(event) => {
+                        setEmail((event.target as HTMLInputElement).value);
+                    }}
                     onFocus={() => setEmailError("")}
                     onChange={(event) => setEmail(event.target.value)}
                     validationError={emailError || ""}
