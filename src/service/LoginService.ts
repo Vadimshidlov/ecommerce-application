@@ -65,8 +65,6 @@ export default class LoginService {
 
     private readonly SCOPES: string = "manage_project:uwoc_ecm-app";
 
-    private IS_AUTHORIZED = false;
-
     public async getAuthToken({ email, password }: LoginType): Promise<void> {
         const response: AxiosResponse<DataResponseType> = await axios({
             url: `${this.AUTH_URL}/oauth/${this.PROJECT_KEY}/customers/token`,
@@ -87,23 +85,31 @@ export default class LoginService {
     }
 
     public async authenticateCustomer({ email, password }: LoginType): Promise<void> {
-        try {
-            const ACCESS_TOKEN = this.AUTH_DATA_STORE.getAccessAuthToken();
-            const response: AxiosResponse<CustomerType> = await axios({
-                url: `${this.API_URL}/${this.PROJECT_KEY}/login`,
-                method: "POST",
-                data: { email, password },
-                headers: {
-                    Authorization: `Bearer ${ACCESS_TOKEN}`,
-                    "Content-Type": "application/json",
-                },
-            });
+        const ACCESS_TOKEN = this.AUTH_DATA_STORE.getAccessAuthToken();
+        const response: AxiosResponse<CustomerType> = await axios({
+            url: `${this.API_URL}/${this.PROJECT_KEY}/login`,
+            method: "POST",
+            data: { email, password },
+            headers: {
+                Authorization: `Bearer ${ACCESS_TOKEN}`,
+                "Content-Type": "application/json",
+            },
+        });
 
-            if (response.status === 200) {
-                this.IS_AUTHORIZED = true;
-            }
-        } catch (error) {
-            console.log(error);
+        if (response.status !== 200) {
+            throw Error("User with such credentials was not found");
         }
     }
+
+    // public async getProductsProjections(): Promise<void> {
+    //     const response: AxiosResponse<CustomerType> = await axios({
+    //         url: `${this.API_URL}/${this.PROJECT_KEY}/login`,
+    //         method: "POST",
+    //         data: { email, password },
+    //         headers: {
+    //             Authorization: `Bearer ${ACCESS_TOKEN}`,
+    //             "Content-Type": "application/json",
+    //         },
+    //     });
+    // }
 }
