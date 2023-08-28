@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import ProductCard from "shared/components/ProductCard/ProductCard";
 import PageHeading from "shared/components/PageHeading/PageHeading";
-import Filter from "view/app-components/ShopPage/Filter/Filter";
+import { Filter, QueryParamsType } from "view/app-components/ShopPage/Filter/Filter";
 import img from "assets/test-img.jpg";
-// import ProductService from "service/ProductService";
+import ProductService from "service/ProductService";
+import { AuthService } from "service/AuthService";
+import { AuthDataStore } from "service/AuthDataStore";
 import { useCategorie } from "providers/FilterProvider";
 
 export interface IProduct {
@@ -29,17 +31,37 @@ export interface IProduct {
     };
 }
 
+const PRODUCT_SREVICE = new ProductService();
+const AUTH_SERVICE = new AuthService();
+const AUTH_DATA_STORE = new AuthDataStore();
+const token = AUTH_DATA_STORE.getAccessAuthToken() || AUTH_DATA_STORE.getAnonymousAccessToken();
+
+if (!token) {
+    AUTH_SERVICE.createAnonymousToken();
+}
+let { results } = (await PRODUCT_SREVICE.getAllProducts()).data;
+
 export function ShopPage() {
+    const [queryParams, setQueryParams] = useState<QueryParamsType>();
     const [products, setProducts] = useState<IProduct[]>([]);
     const { categorie } = useCategorie();
 
     useEffect(() => {
-        function getProductList() {
+        if (categorie.length === 0) {
+            setProducts(results);
+        } else {
             setProducts(categorie);
         }
 
-        getProductList();
-    }, [categorie]);
+        async function setParams() {
+            if (queryParams) {
+                results = (await PRODUCT_SREVICE.getProduct(queryParams)).data.results;
+                setProducts(results);
+            }
+        }
+
+        setParams();
+    }, [categorie, queryParams]);
 
     return (
         <section className="shop-page container">
@@ -50,7 +72,11 @@ export function ShopPage() {
                     voluptatum deleniti."
             />
             <div className="shop-page__wrapper">
-                <Filter />
+                <Filter
+                    onClickFn={(param: QueryParamsType) => {
+                        setQueryParams(param);
+                    }}
+                />
                 <div className="shop-page__product-cards">
                     <div className="shop-page__cards-container">
                         {products.map((product) => (

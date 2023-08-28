@@ -5,9 +5,18 @@ import { Button } from "shared/components/button/Button";
 import ProductService from "service/ProductService";
 import { useCategorie } from "providers/FilterProvider";
 
-export default function Filter() {
+export type QueryParamsType = {
+    filter: string;
+};
+interface IValue {
+    onClickFn: (param: QueryParamsType) => void;
+}
+
+export function Filter({ onClickFn }: IValue) {
     const { setCategorie } = useCategorie();
     const PRODUCT_SREVICE = new ProductService();
+
+    // const [queryParams, setQueryParams] = useState("");
 
     async function filterCategories(key: string) {
         try {
@@ -97,21 +106,63 @@ export default function Filter() {
             <div className="filter__colors">
                 <Text classes={["inter-600-font", "font-size_xl", "color_blue-dark"]}>Color</Text>
                 <div className="filter__colors-wrapper">
-                    <input type="checkbox" id="color-yellow" className="filter__colors-item" />
-                    <input type="checkbox" id="color-black" className="filter__colors-item" />
-                    <input type="checkbox" id="color-blue" className="filter__colors-item" />
-                    <input type="checkbox" id="color-green" className="filter__colors-item" />
+                    <input
+                        type="checkbox"
+                        id="color-yellow"
+                        className="filter__colors-item"
+                        onChange={() => {
+                            onClickFn({ filter: `variants.attributes.color.key:"yellow"` });
+                        }}
+                    />
+                    <input
+                        type="checkbox"
+                        id="color-black"
+                        className="filter__colors-item"
+                        onChange={() => {
+                            onClickFn({ filter: `variants.attributes.color.key:"black"` });
+                        }}
+                    />
+                    <input
+                        type="checkbox"
+                        id="color-blue"
+                        className="filter__colors-item"
+                        onChange={() => {
+                            onClickFn({ filter: `variants.attributes.color.key:"blue"` });
+                        }}
+                    />
+                    <input
+                        type="checkbox"
+                        id="color-green"
+                        className="filter__colors-item"
+                        onChange={() => {
+                            onClickFn({ filter: `variants.attributes.color.key:"green"` });
+                        }}
+                    />
                 </div>
             </div>
             <div className="filter__size">
                 <Text classes={["inter-600-font", "font-size_xl", "color_blue-dark"]}>Size</Text>
                 <div className="filter__size-wrapper">
                     <div className="filter__size-items">
-                        <input type="checkbox" id="size-xs" className="filter__size-item" />
+                        <input
+                            type="checkbox"
+                            id="size-xs"
+                            className="filter__size-item"
+                            // onChange={() => {
+                            //     onClickFn({ filter: `variants.attributes.shoes_size.key:"13"` });
+                            // }}
+                        />
                         <label htmlFor="size-xs">XS</label>
                     </div>
                     <div className="filter__size-items">
-                        <input type="checkbox" id="size-s" className="filter__size-item" />
+                        <input
+                            type="checkbox"
+                            id="size-s"
+                            className="filter__size-item"
+                            // onChange={() => {
+                            //     onClickFn("&asdasdadgdgdfg");
+                            // }}
+                        />
                         <label htmlFor="size-s">S</label>
                     </div>
                     <div className="filter__size-items">
