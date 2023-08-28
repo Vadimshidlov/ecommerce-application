@@ -9,6 +9,7 @@ import { AuthDataStore } from "service/AuthDataStore";
 import { AuthService } from "service/AuthService";
 import { useAuth } from "auth-context";
 import RegistrationPage from "view/app-components/Registration/components/RegistrationPage";
+import { ShopPage } from "view/app-components/ShopPage/ShopPage";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -53,6 +54,7 @@ function App() {
                 <Route path="/" element={<MainPage />} />
                 <Route path="login" element={<LoginPage />} />
                 <Route path="registration" element={<RegistrationPage />} />
+                <Route path="shop" element={<ShopPage />} />
                 <Route path="*" element={<PageNotFound />} />
             </Routes>
             <Footer />

@@ -1,0 +1,20 @@
+.shop-page__wrapper {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    grid-template-rows: repeat(2, 1fr);
+    grid-column-gap: 0px;
+    grid-row-gap: 0px;
+}
+
+.shop-page__product-cards {
+    grid-area: 1 / 2 / 4 / 4;
+}
+
+.shop-page__cards-container {
+    margin-left: auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    max-width: 993px;
+    gap: 76px 27px;
+}
