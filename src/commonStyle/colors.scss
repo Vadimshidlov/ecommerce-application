@@ -6,6 +6,8 @@ $color-grey--dark: #807e7e;
 $color-blue--dark: #3e3e59;
 $color-red: #e25563;
 $color-green: #20c997;
+$color-yellow: #fbff89;
+$color-blue: #4ba1db;
 $color-indigo: #af83f8;
 
 .color_white {
@@ -32,12 +34,20 @@ $color-indigo: #af83f8;
     color: $color-blue--dark;
 }
 
+.color_blue {
+    color: $color-blue;
+}
+
 .color_red {
     color: $color-red;
 }
 
 .color_green {
     color: $color-green;
+}
+
+.color_yellow {
+    color: $color-yellow;
 }
 
 .color_indigo {

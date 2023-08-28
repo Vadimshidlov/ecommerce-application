@@ -12,3 +12,15 @@ input[type="checkbox"] {
     min-width: 15px;
     min-height: 15px;
 }
+
+.container {
+    margin: 0 auto;
+    padding-left: 52px;
+    padding-right: 52px;
+    max-width: 1440px;
+
+    @media (max-width: 490px) {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+}
