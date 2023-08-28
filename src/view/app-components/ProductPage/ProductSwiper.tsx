@@ -7,9 +7,13 @@ import "swiper/scss";
 import "swiper/scss/navigation";
 import "swiper/scss/pagination";
 import "swiper/scss/scrollbar";
-import { ProductBodyType } from "view/app-components/ProductPage/ProductBody";
+import { ProductResponseType } from "view/app-components/ProductPage/ProductPage";
 
-function ProductSwiper({ productResponse }: ProductBodyType) {
+export type ProductSwiperType = {
+    productResponse: ProductResponseType;
+};
+
+function ProductSwiper({ productResponse }: ProductSwiperType) {
     const imagesList: string[] = [];
     productResponse?.masterVariant.images.forEach((imageUrl) => imagesList.push(imageUrl.url));
     const [modalVersion, setModalVersion] = useState(false);
@@ -40,8 +44,9 @@ function ProductSwiper({ productResponse }: ProductBodyType) {
                 slidesPerView={1}
                 autoHeight={false}
                 navigation
-                scrollbar={modalVersion}
-                pagination={modalVersion ? false : { clickable: true }}
+                // scrollbar={modalVersion}
+                // pagination={modalVersion ? false : { clickable: true }}
+                pagination={{ clickable: true }}
                 onSlideChange={() => console.log("slide change")}
                 onSwiper={(swiper) => console.log(swiper)}
                 breakpoints={{}}

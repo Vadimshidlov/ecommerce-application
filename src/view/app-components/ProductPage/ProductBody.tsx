@@ -1,18 +1,37 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React from "react";
+import React, { useState } from "react";
+import { Button } from "shared/components/button/Button";
 import { ProductResponseType } from "view/app-components/ProductPage/ProductPage";
+import plusButton from "assets/svg/Plus.svg";
+import minusButton from "assets/svg/Minus.svg";
+import { ButtonIcon } from "shared/components/ButtonIcon/ButtonIcon";
 
 export type ProductBodyType = {
     productResponse: ProductResponseType;
+    checkedSize: number;
+    setCheckedSize: (value: number) => void;
 };
 
-function ProductBody({ productResponse }: ProductBodyType) {
-    const productColor = productResponse.masterVariant.attributes[1].value.key;
+function ProductBody({ productResponse, checkedSize, setCheckedSize }: ProductBodyType) {
+    // const productColor = productResponse.masterVariant.attributes[1].value.key;
+    let productColor: string = "";
+    productResponse.masterVariant.attributes.forEach((variant) => {
+        if (variant.name === "color") {
+            productColor = variant.value.key;
+        }
+    });
+    console.log(productColor, `productColor`);
+
     const productColorClass = `product__color product__color__${productColor}`;
-    const productSize = productResponse.masterVariant.attributes[0].value.key;
+    const productSizes = productResponse.variants.map(
+        (productVariant) => productVariant.attributes[0].value.key,
+    );
+    const [productCount, setProductCount] = useState<number>(1);
+
+    console.log(productSizes);
 
     return (
-        <div>
+        <div className="product__body">
             <h2 className="product__name">{productResponse.name["en-US"]}</h2>
             <div className="product__description">{productResponse.description["en-US"]}</div>
             <div className="product__price">
@@ -23,13 +42,51 @@ function ProductBody({ productResponse }: ProductBodyType) {
                 <div className={productColorClass} />
             </div>
             <span className="product__color__title">Size:</span>
-            <div className="product_sizes">
-                <div className="product__size">{productSize}</div>
-                <div className="product__size">{productSize}</div>
-                <div className="product__size">{productSize}</div>
-                <div className="product__size">{productSize}</div>
-                <div className="product__size">{productSize}</div>
+            <ul className="product_sizes">
+                {productSizes.map((productSize, index) => (
+                    <button
+                        onClick={() => {
+                            setCheckedSize(index);
+                        }}
+                        onKeyDown={() => {
+                            setCheckedSize(index);
+                        }}
+                        className={
+                            index === checkedSize
+                                ? "product__size product__size__active"
+                                : "product__size"
+                        }
+                        key={productSize}
+                    >
+                        {productSize}
+                    </button>
+                ))}
+            </ul>
+            <div className="product__cart-count">
+                <ButtonIcon
+                    url={minusButton}
+                    altText="icon-eye"
+                    classes="product__cart-count__button-minus"
+                    onClick={() => {
+                        if (productCount > 1) {
+                            setProductCount((prevState) => prevState - 1);
+                        }
+                    }}
+                />
+                <span>{productCount}</span>
+                <ButtonIcon
+                    url={plusButton}
+                    altText="icon-eye"
+                    classes="product__cart-count__button-plus"
+                    onClick={() => setProductCount((prevState) => prevState + 1)}
+                />
             </div>
+            <Button
+                type="submit"
+                text="Add to Cart"
+                textClasses={["space-grotesk-500-font", "font-size_2xl", "color_white"]}
+                buttonClasses="button btn-full-width"
+            />
         </div>
     );
 }
