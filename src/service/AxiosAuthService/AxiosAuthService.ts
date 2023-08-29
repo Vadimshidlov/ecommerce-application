@@ -4,14 +4,8 @@ import axios, {
     AxiosResponse,
     InternalAxiosRequestConfig,
 } from "axios";
-import { AuthDataStore } from "service/AuthDataStore";
-
-export type AnonymousAccessType = {
-    access_token: string;
-    expires_in: number;
-    scope: string;
-    token_type: string;
-};
+import { AuthDataStore } from "service/AuthDataStore/AuthDataStore";
+import { AnonymousAccessType } from "service/AxiosAuthService/types";
 
 class AxiosAuthService {
     public request: AxiosInstance;

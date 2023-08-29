@@ -1,31 +1,8 @@
 import { AxiosResponse } from "axios";
 import { ISignUpForm } from "shared/utils/getInitialFormData";
-import { AuthDataStore } from "service/AuthDataStore";
-import AxiosSignUpService from "service/AxiosApiService";
-
-export type CustomerAddressType = {
-    streetName: string;
-    postalCode: string;
-    city: string;
-    country: string;
-};
-
-export type CustomerDataType = {
-    email: string;
-    firstName: string;
-    lastName: string;
-    password: string;
-    addresses: CustomerAddressType[];
-    shippingAddresses: number[];
-    billingAddresses: number[];
-    defaultBillingAddress?: number;
-    defaultShippingAddress?: number;
-};
-
-export type AuthCustomerDataType = {
-    email: string;
-    password: string;
-};
+import { AuthDataStore } from "service/AuthDataStore/AuthDataStore";
+import AxiosSignUpService from "service/AxiosApiService/AxiosApiService";
+import { CustomerDataType } from "service/RegistrationService/types";
 
 export class RegistrationService {
     private AxiosSignUpServiceApi = AxiosSignUpService;

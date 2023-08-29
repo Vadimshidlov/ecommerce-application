@@ -1,13 +1,6 @@
-import { AuthDataStore } from "service/AuthDataStore";
-import AxiosAuthService from "service/AxiosAuthService";
-
-type TokenResponseType = {
-    access_token: string;
-    expires_in: number;
-    token_type: string;
-    scope: string;
-    refresh_token: string;
-};
+import { AuthDataStore } from "service/AuthDataStore/AuthDataStore";
+import AxiosAuthService from "service/AxiosAuthService/AxiosAuthService";
+import { TokenResponseType } from "service/AuthService/types";
 
 export class AuthService {
     private readonly CTP_AUTH_URL = "https://auth.europe-west1.gcp.commercetools.com";

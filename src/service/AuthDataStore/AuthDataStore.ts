@@ -9,6 +9,10 @@ export class AuthDataStore {
 
     private readonly AUTH_REFRESH_TOKEN_KEY = "refreshAuthToken";
 
+    private readonly AUTH_REFRESH_TOKEN_MESSAGE = "Auth refresh token was fallen";
+
+    private readonly ANONYMOUS_REFRESH_TOKEN_MESSAGE = "Anonymous refresh token was fallen";
+
     public static getAuthDataStore(): AuthDataStore {
         if (!this.instance) {
             this.instance = new AuthDataStore();
@@ -41,7 +45,7 @@ export class AuthDataStore {
         const anonymousRefreshToken = localStorage.getItem(this.ANONYMOUS_REFRESH_TOKEN_KEY);
 
         if (!anonymousRefreshToken) {
-            throw new Error("Anonymous refresh token was fallen");
+            throw new Error(this.ANONYMOUS_REFRESH_TOKEN_MESSAGE);
         }
 
         return anonymousRefreshToken;
@@ -61,7 +65,7 @@ export class AuthDataStore {
         const refreshAuthToken = localStorage.getItem(this.AUTH_REFRESH_TOKEN_KEY);
 
         if (!refreshAuthToken) {
-            throw new Error("Auth refresh token was fallen");
+            throw new Error(this.AUTH_REFRESH_TOKEN_MESSAGE);
         }
 
         return refreshAuthToken;

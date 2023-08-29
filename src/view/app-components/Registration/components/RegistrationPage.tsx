@@ -1,14 +1,14 @@
 import React, { useRef, useState } from "react";
-import { RegistrationService } from "service/RegistrationService";
+import { RegistrationService } from "service/RegistrationService/RegistrationService";
 import { ISignUpForm } from "shared/utils/getInitialFormData";
 import RegistrationForm from "view/app-components/Registration/components/RegistrationForm";
 import { useNavigate, Navigate, NavLink } from "react-router-dom";
-import { AuthDataStore } from "service/AuthDataStore";
+import { AuthDataStore } from "service/AuthDataStore/AuthDataStore";
 import { AxiosError } from "axios";
 import { useAuth } from "auth-context";
 import { errorRegistrationMessage, successRegistrationMessage } from "shared/utils/notifyMessages";
 import Text from "view/app-components/Text/text";
-import { LoginStore } from "service/LoginStore";
+import { LoginStore } from "service/LoginStore/LoginStore";
 import LoginService from "service/LoginService/LoginService";
 
 function RegistrationPage() {

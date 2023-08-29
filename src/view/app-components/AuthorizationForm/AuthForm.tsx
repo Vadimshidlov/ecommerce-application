@@ -12,8 +12,8 @@ import {
     errorAuthorizationMessage,
     successAuthorizationMessage,
 } from "shared/utils/notifyMessages";
-import { LoginStore } from "service/LoginStore";
-import LoginService from "service/LoginService";
+import { LoginStore } from "service/LoginStore/LoginStore";
+import LoginService from "service/LoginService/LoginService";
 
 export function AuthForm() {
     const LOGIN_SERVICE: LoginService = new LoginService();

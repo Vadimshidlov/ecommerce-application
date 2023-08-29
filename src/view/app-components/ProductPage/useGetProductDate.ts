@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 // import { AuthDataStore } from "service/AuthDataStore";
 // import axios from "axios";
 import { ProductResponseType } from "view/app-components/ProductPage/ProductPage";
-import AxiosSignUpService from "service/AxiosApiService";
+import AxiosSignUpService from "service/AxiosApiService/AxiosApiService";
 
 function useGetProductDate() {
     const [productData, setProductData] = useState<ProductResponseType>();

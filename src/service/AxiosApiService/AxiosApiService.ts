@@ -4,16 +4,10 @@ import axios, {
     AxiosResponse,
     InternalAxiosRequestConfig,
 } from "axios";
-import { AuthDataStore } from "service/AuthDataStore";
-import { AnonymousAccessType } from "service/AxiosAuthService";
-import { LoginStore } from "service/LoginStore";
-
-export type AccessTokenType = {
-    access_token: string;
-    expires_in: number;
-    scope: string;
-    token_type: string;
-};
+import { AuthDataStore } from "service/AuthDataStore/AuthDataStore";
+import { LoginStore } from "service/LoginStore/LoginStore";
+import { AccessTokenType } from "service/AxiosApiService/types";
+import { AnonymousAccessType } from "service/AxiosAuthService/types";
 
 class AxiosApiService {
     public request: AxiosInstance;
