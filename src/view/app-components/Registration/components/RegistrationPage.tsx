@@ -1,6 +1,5 @@
 import React, { useRef, useState } from "react";
-import LoginService from "service/LoginService";
-import { AuthCustomerDataType, RegistrationService } from "service/RegistrationService";
+import { RegistrationService } from "service/RegistrationService";
 import { ISignUpForm } from "shared/utils/getInitialFormData";
 import RegistrationForm from "view/app-components/Registration/components/RegistrationForm";
 import { useNavigate, Navigate, NavLink } from "react-router-dom";
@@ -10,22 +9,22 @@ import { useAuth } from "auth-context";
 import { errorRegistrationMessage, successRegistrationMessage } from "shared/utils/notifyMessages";
 import Text from "view/app-components/Text/text";
 import { LoginStore } from "service/LoginStore";
+import LoginService from "service/LoginService/LoginService";
 
 function RegistrationPage() {
     const registrationService = useRef(new RegistrationService());
     const loginService = useRef(new LoginService());
     const authDataStore = useRef(AuthDataStore.getAuthDataStore());
-    const loginStore = useRef(LoginStore.getLoginStore());
     const navigate = useNavigate();
     const [registrationError, setRegistrationError] = useState("");
     const { setIsAuth } = useAuth();
+    const loginStore = LoginStore.getLoginStore();
 
     const handleSuccessRegistration = () => {
         successRegistrationMessage();
         authDataStore.current.removeTokenFromStore("anonymousAccessToken");
         navigate("/");
         setIsAuth(true);
-        loginStore.current.setAuthStatus(true);
     };
 
     const registrationErrorHandler = (errorMessage: string) => {
@@ -44,13 +43,11 @@ function RegistrationPage() {
                 defaultShippingAddress,
             );
 
-            const authCustomerData: AuthCustomerDataType = {
-                email: formData.email,
-                password: formData.password,
-            };
+            const { email, password } = formData;
 
-            await loginService.current.getAuthToken(authCustomerData);
-            await loginService.current.authenticateCustomer(authCustomerData);
+            await loginService.current.getAuthToken({ email, password });
+            loginStore.setAuthStatus(true);
+            await loginService.current.authenticateCustomer({ email, password });
             handleSuccessRegistration();
         } catch (error) {
             if (error instanceof AxiosError) {

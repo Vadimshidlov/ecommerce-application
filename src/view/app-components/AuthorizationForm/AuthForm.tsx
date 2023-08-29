@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
-import LoginService from "service/LoginService/LoginService";
 import { Button } from "shared/components/button/Button";
 import { ButtonIcon } from "shared/components/ButtonIcon/ButtonIcon";
 import { TextInput } from "shared/components/TextInput/TextInput";
@@ -14,6 +13,7 @@ import {
     successAuthorizationMessage,
 } from "shared/utils/notifyMessages";
 import { LoginStore } from "service/LoginStore";
+import LoginService from "service/LoginService";
 
 export function AuthForm() {
     const LOGIN_SERVICE: LoginService = new LoginService();
@@ -62,10 +62,15 @@ export function AuthForm() {
             await schema.validate({ email, password }, { abortEarly: false });
 
             await LOGIN_SERVICE.getAuthToken({ email, password });
+            console.log("1");
+
             await LOGIN_SERVICE.authenticateCustomer({ email, password });
+            console.log("2");
 
             successAuthorizationMessage();
             setIsAuth(true);
+            console.log("3");
+
             loginStore.setAuthStatus(true);
             console.log(loginStore.getAuthStatus(), `<--- after logint isAuth`);
 

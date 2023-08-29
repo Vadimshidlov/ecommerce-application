@@ -59,9 +59,9 @@ export default class LoginService {
 
     private readonly PROJECT_KEY: string = "uwoc_ecm-app";
 
-    private readonly CLIENT_SECRET: string = "E8AYLzgyU7V1edyQweQ9yCxpr2luFops";
+    private readonly CLIENT_SECRET: string = "6x4a7bsRL81dJoq1vsQ81yf3C0BiJrYH";
 
-    private readonly CLIENT_ID: string = "DzC-BvkGRO8l_GPzpNcR2pzI";
+    private readonly CLIENT_ID: string = "OLQF6DvQqgu9NiEaNj5l-ngD";
 
     private readonly SCOPES: string = "manage_project:uwoc_ecm-app";
 

@@ -1,8 +1,5 @@
-// import axios from "axios";
-import axios from "axios";
 import { AuthDataStore } from "service/AuthDataStore";
-// import axios from "axios";
-// import AxiosAnonymousService from "service/AxiosAnonymousService";
+import AxiosAuthService from "service/AxiosAuthService";
 
 type TokenResponseType = {
     access_token: string;
@@ -17,39 +14,30 @@ export class AuthService {
 
     private readonly CTP_PROJECT_KEY = "uwoc_ecm-app";
 
-    private readonly CTP_CLIENT_SECRET = "6x4a7bsRL81dJoq1vsQ81yf3C0BiJrYH";
-
-    private readonly CTP_CLIENT_ID = "OLQF6DvQqgu9NiEaNj5l-ngD";
-
     private readonly ANON_TOKEN_CONTENT_TYPE = "application/x-www-form-urlencoded";
 
     private AuthDataStoreApi = AuthDataStore.getAuthDataStore();
 
-    private readonly API_ANON_AUTH_URL = `${this.CTP_AUTH_URL}/oauth/${this.CTP_PROJECT_KEY}/anonymous/token`;
+    private AxiosAuthServiceApi = AxiosAuthService;
 
     public async createAnonymousToken(): Promise<void> {
-        const tokenRequest = await axios.post<TokenResponseType>(
-            this.API_ANON_AUTH_URL,
-            {},
+        const tokenRequest = await this.AxiosAuthServiceApi.post<TokenResponseType>(
             {
                 params: {
                     grant_type: "client_credentials",
                     scope: `manage_project:uwoc_ecm-app view_audit_log:uwoc_ecm-app manage_api_clients:uwoc_ecm-app`,
                 },
                 headers: {
-                    Authorization: `Basic ${btoa(
-                        `${this.CTP_CLIENT_ID}:${this.CTP_CLIENT_SECRET}`,
-                    )}`,
                     "Content-Type": this.ANON_TOKEN_CONTENT_TYPE,
                 },
             },
+            {},
+            `oauth/${this.CTP_PROJECT_KEY}/anonymous/token`,
         );
+
         const tokenResponse: TokenResponseType = await tokenRequest.data;
         const anonymousAccessToken = tokenResponse.access_token;
         const anonymousRefreshToken = tokenResponse.refresh_token;
         this.AuthDataStoreApi.setAnonymousTokens(anonymousAccessToken, anonymousRefreshToken);
-        // ---older
     }
 }
-
-// first123456@ghggh.ghgh  first123456!FF

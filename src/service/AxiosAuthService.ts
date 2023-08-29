@@ -13,14 +13,8 @@ export type AnonymousAccessType = {
     token_type: string;
 };
 
-class AxiosAnonymousService {
+class AxiosAuthService {
     public request: AxiosInstance;
-
-    private readonly CTP_PROJECT_KEY = "uwoc_ecm-app";
-
-    private readonly CTP_AUTH_URL = "https://auth.europe-west1.gcp.commercetools.com";
-
-    private readonly API_URL = `${this.CTP_AUTH_URL}/oauth/${this.CTP_PROJECT_KEY}/anonymous/token`;
 
     private readonly AuthDataStoreApi = new AuthDataStore();
 
@@ -34,7 +28,6 @@ class AxiosAnonymousService {
     private createResponseInterceptor(): void {
         this.request.interceptors.request.use((config) => {
             const returnConfig = config;
-            // returnConfig.headers.Authorization = `Bearer ${this.AuthDataStoreApi.getAnonymousAccessToken()}`;
             returnConfig.headers.Authorization = `Basic ${btoa(
                 `OLQF6DvQqgu9NiEaNj5l-ngD:6x4a7bsRL81dJoq1vsQ81yf3C0BiJrYH`,
             )}`;
@@ -93,12 +86,11 @@ class AxiosAnonymousService {
     }
 
     public post<D>(
-        url: string,
         config: AxiosRequestConfig | undefined,
         data: object | undefined = {},
-        // queryParams: string = "",
+        queryParams: string = "",
     ): Promise<AxiosResponse<D>> {
-        return this.request.post(url, data, config);
+        return this.request.post(queryParams, data, config);
     }
 
     public get<D>(url: string, config: AxiosRequestConfig | undefined): Promise<AxiosResponse<D>> {
@@ -106,4 +98,4 @@ class AxiosAnonymousService {
     }
 }
 
-export default new AxiosAnonymousService();
+export default new AxiosAuthService();

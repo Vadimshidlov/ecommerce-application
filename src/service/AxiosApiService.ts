@@ -5,17 +5,22 @@ import axios, {
     InternalAxiosRequestConfig,
 } from "axios";
 import { AuthDataStore } from "service/AuthDataStore";
-import { AnonymousAccessType } from "service/AxiosAnonymousService";
+import { AnonymousAccessType } from "service/AxiosAuthService";
 import { LoginStore } from "service/LoginStore";
 
-class AxiosSignUpService {
+export type AccessTokenType = {
+    access_token: string;
+    expires_in: number;
+    scope: string;
+    token_type: string;
+};
+
+class AxiosApiService {
     public request: AxiosInstance;
 
     private readonly AuthDataStoreApi = new AuthDataStore();
 
-    private readonly API_URL =
-        // "https://api.europe-west1.gcp.commercetools.com/uwoc_ecm-app/customers";
-        "https://api.europe-west1.gcp.commercetools.com/uwoc_ecm-app/";
+    private readonly API_URL = "https://api.europe-west1.gcp.commercetools.com/uwoc_ecm-app/";
 
     constructor() {
         this.request = axios.create({
@@ -39,9 +44,6 @@ class AxiosSignUpService {
                     ? this.AuthDataStoreApi.getAccessAuthToken()
                     : this.AuthDataStoreApi.getAnonymousAccessToken()
             }`;
-            // returnConfig.headers.Authorization = `Basic ${btoa(
-            //     `OLQF6DvQqgu9NiEaNj5l-ngD:6x4a7bsRL81dJoq1vsQ81yf3C0BiJrYH`,
-            // )}`;
 
             return returnConfig;
         });
@@ -64,7 +66,7 @@ class AxiosSignUpService {
                             const CTP_CLIENT_ID = "OLQF6DvQqgu9NiEaNj5l-ngD";
                             console.log("inter auth 1");
 
-                            const response401Token = await axios.post<AnonymousAccessType>(
+                            const response401Token = await axios.post<AccessTokenType>(
                                 `https://auth.europe-west1.gcp.commercetools.com/oauth/token`,
                                 {},
                                 {
@@ -81,12 +83,10 @@ class AxiosSignUpService {
                                 },
                             );
 
-                            this.AuthDataStoreApi.setAnonymousTokens(
+                            this.AuthDataStoreApi.setAuthTokens(
                                 response401Token.data.access_token,
                                 authRefreshToken,
                             );
-
-                            // return this.request(originalRequest || {});
                         }
                     } else if (!loginStore.getAuthStatus()) {
                         const anonymousAccessToken =
@@ -124,8 +124,6 @@ class AxiosSignUpService {
                                 response401Token.data.access_token,
                                 anonymousRefreshToken,
                             );
-
-                            // return this.request(originalRequest || {});
                         }
                     }
 
@@ -149,9 +147,9 @@ class AxiosSignUpService {
         config: AxiosRequestConfig | undefined,
         queryParams = "",
     ): Promise<AxiosResponse<D>> {
-        console.log("AxiosSignUpService ---> get");
+        console.log("AxiosApiService ---> get");
         return this.request.get(queryParams, config);
     }
 }
 
-export default new AxiosSignUpService();
+export default new AxiosApiService();

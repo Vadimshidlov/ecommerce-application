@@ -46,7 +46,7 @@ function ProductSwiper({ productResponse }: ProductSwiperType) {
                 // scrollbar={modalVersion}
                 // pagination={modalVersion ? false : { clickable: true }}
                 pagination={{ clickable: true }}
-                onSlideChange={() => console.log("slide change")}
+                onSlideChange={() => {}}
                 onSwiper={(swiper) => console.log(swiper)}
                 breakpoints={{}}
             >
