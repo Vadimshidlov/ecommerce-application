@@ -1,5 +1,8 @@
-import axios, { AxiosResponse } from "axios";
+// import axios, { AxiosResponse } from "axios";
+import { AxiosResponse } from "axios";
 import { AuthDataStore } from "service/AuthDataStore";
+import AxiosAnonymousService from "service/AxiosAnonymousService";
+import AxiosSignUpService from "service/AxiosSignUpService";
 
 type CustomerType = {
     customer: {
@@ -67,16 +70,43 @@ export default class LoginService {
 
     private IS_AUTHORIZED = false;
 
+    private AxiosAnonymousServiceApi = AxiosAnonymousService;
+
+    private AxiosSignUpServiceApi = AxiosSignUpService;
+
     public async getAuthToken({ email, password }: LoginType): Promise<void> {
-        const response: AxiosResponse<DataResponseType> = await axios({
-            url: `${this.AUTH_URL}/oauth/${this.PROJECT_KEY}/customers/token`,
-            method: "POST",
-            data: `grant_type=password&username=${email}&password=${password}&scope=${this.SCOPES}`,
-            headers: {
-                Authorization: `Basic ${btoa(`${this.CLIENT_ID}:${this.CLIENT_SECRET}`)}`,
-                "Content-Type": "application/x-www-form-urlencoded",
+        // const response: AxiosResponse<DataResponseType> = await axios({
+        //     url: `${this.AUTH_URL}/oauth/${this.PROJECT_KEY}/customers/token`,
+        //     method: "POST",
+        //     data: `grant_type=password&username=${email}&password=${password}&scope=${this.SCOPES}`,
+        //     headers: {
+        //         Authorization: `Basic ${btoa(`${this.CLIENT_ID}:${this.CLIENT_SECRET}`)}`,
+        //         "Content-Type": "application/x-www-form-urlencoded",
+        //     },
+        // });
+
+        // if (response.status === 400) {
+        //     throw Error("User with such credentials was not found");
+        // }
+
+        // const { data } = response;
+        // this.AUTH_DATA_STORE.setAuthTokens(data.access_token, data.refresh_token);
+
+        const response = await this.AxiosAnonymousServiceApi.post<DataResponseType>(
+            `${this.AUTH_URL}/oauth/${this.PROJECT_KEY}/customers/token`,
+            {
+                params: {
+                    grant_type: "password",
+                    username: `${email}`,
+                    password: `${password}`,
+                    scope: `${this.SCOPES}`,
+                },
+                headers: {
+                    // Authorization: `Basic ${btoa(`${this.CLIENT_ID}:${this.CLIENT_SECRET}`)}`,
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
             },
-        });
+        );
 
         if (response.status === 400) {
             throw Error("User with such credentials was not found");
@@ -88,16 +118,44 @@ export default class LoginService {
 
     public async authenticateCustomer({ email, password }: LoginType): Promise<void> {
         try {
-            const ACCESS_TOKEN = this.AUTH_DATA_STORE.getAccessAuthToken();
-            const response: AxiosResponse<CustomerType> = await axios({
-                url: `${this.API_URL}/${this.PROJECT_KEY}/login`,
-                method: "POST",
-                data: { email, password },
-                headers: {
-                    Authorization: `Bearer ${ACCESS_TOKEN}`,
-                    "Content-Type": "application/json",
-                },
-            });
+            // const ACCESS_TOKEN = this.AUTH_DATA_STORE.getAccessAuthToken();
+            // const response: AxiosResponse<CustomerType> = await axios({
+            //     url: `${this.API_URL}/${this.PROJECT_KEY}/login`,
+            //     method: "POST",
+            //     data: { email, password },
+            //     headers: {
+            //         Authorization: `Bearer ${ACCESS_TOKEN}`,
+            //         "Content-Type": "application/json",
+            //     },
+            // });
+            // if (response.status === 200) {
+            //     this.IS_AUTHORIZED = true;
+            // }
+
+            // const ACCESS_TOKEN = this.AUTH_DATA_STORE.getAccessAuthToken();
+            // const response: AxiosResponse<CustomerType> = await axios({
+            //     url: `${this.API_URL}/${this.PROJECT_KEY}/login`,
+            //     method: "POST",
+            //     data: { email, password },
+            //     headers: {
+            //         "Content-Type": "application/json",
+            //     },
+            // });
+
+            const response: AxiosResponse<CustomerType> =
+                await this.AxiosSignUpServiceApi.post<CustomerType>(
+                    {},
+                    {
+                        params: {
+                            email,
+                            password,
+                        },
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                    },
+                    "/login",
+                );
 
             if (response.status === 200) {
                 this.IS_AUTHORIZED = true;

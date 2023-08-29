@@ -25,14 +25,19 @@ class AxiosAnonymousService {
     private readonly AuthDataStoreApi = new AuthDataStore();
 
     constructor() {
-        this.request = axios.create({});
+        this.request = axios.create({
+            baseURL: "https://auth.europe-west1.gcp.commercetools.com",
+        });
         this.createResponseInterceptor();
     }
 
     private createResponseInterceptor(): void {
         this.request.interceptors.request.use((config) => {
             const returnConfig = config;
-            returnConfig.headers.Authorization = `Bearer ${this.AuthDataStoreApi.getAnonymousAccessToken()}`;
+            // returnConfig.headers.Authorization = `Bearer ${this.AuthDataStoreApi.getAnonymousAccessToken()}`;
+            returnConfig.headers.Authorization = `Basic ${btoa(
+                `OLQF6DvQqgu9NiEaNj5l-ngD:6x4a7bsRL81dJoq1vsQ81yf3C0BiJrYH`,
+            )}`;
 
             return returnConfig;
         });
@@ -91,6 +96,7 @@ class AxiosAnonymousService {
         url: string,
         config: AxiosRequestConfig | undefined,
         data: object | undefined = {},
+        // queryParams: string = "",
     ): Promise<AxiosResponse<D>> {
         return this.request.post(url, data, config);
     }

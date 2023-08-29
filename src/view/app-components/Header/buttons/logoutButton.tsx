@@ -1,6 +1,7 @@
 import { useAuth } from "auth-context";
 import React from "react";
 import { AuthService } from "service/AuthService";
+import { LoginStore } from "service/LoginStore";
 import "view/app-components/Header/buttons/style.scss";
 
 export function LogoutButton() {
@@ -8,9 +9,11 @@ export function LogoutButton() {
     const AuthServiceApi = new AuthService();
 
     const logoutHandler = async () => {
+        const loginStore = LoginStore.getLoginStore();
         localStorage.clear();
         await AuthServiceApi.createAnonymousToken();
         authContextApi?.setIsAuth(false);
+        loginStore.setAuthStatus(false);
     };
 
     return (

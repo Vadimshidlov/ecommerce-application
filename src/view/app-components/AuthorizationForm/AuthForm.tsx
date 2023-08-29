@@ -13,6 +13,7 @@ import {
     errorAuthorizationMessage,
     successAuthorizationMessage,
 } from "shared/utils/notifyMessages";
+import { LoginStore } from "service/LoginStore";
 
 export function AuthForm() {
     const LOGIN_SERVICE: LoginService = new LoginService();
@@ -52,6 +53,8 @@ export function AuthForm() {
             .required("Password is a required field"),
     });
 
+    const loginStore = LoginStore.getLoginStore();
+
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
 
@@ -63,6 +66,9 @@ export function AuthForm() {
 
             successAuthorizationMessage();
             setIsAuth(true);
+            loginStore.setAuthStatus(true);
+            console.log(loginStore.getAuthStatus(), `<--- after logint isAuth`);
+
             navigate("/");
         } catch (error) {
             if (error instanceof Yup.ValidationError) {

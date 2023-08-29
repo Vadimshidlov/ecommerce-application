@@ -1,5 +1,8 @@
-import { AuthDataStore } from "service/AuthDataStore";
+// import axios from "axios";
 import axios from "axios";
+import { AuthDataStore } from "service/AuthDataStore";
+// import axios from "axios";
+// import AxiosAnonymousService from "service/AxiosAnonymousService";
 
 type TokenResponseType = {
     access_token: string;
@@ -41,12 +44,12 @@ export class AuthService {
                 },
             },
         );
-
         const tokenResponse: TokenResponseType = await tokenRequest.data;
-
         const anonymousAccessToken = tokenResponse.access_token;
         const anonymousRefreshToken = tokenResponse.refresh_token;
-
         this.AuthDataStoreApi.setAnonymousTokens(anonymousAccessToken, anonymousRefreshToken);
+        // ---older
     }
 }
+
+// first123456@ghggh.ghgh  first123456!FF

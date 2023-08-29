@@ -45,6 +45,19 @@ export type ProductResponseType = {
         prices: [
             {
                 id: string;
+                discounted: {
+                    discount: {
+                        id: string;
+                        typeId: string;
+                    };
+                    value: {
+                        centAmount: number;
+                        currencyCode: string;
+                        fractionDigits: number;
+                        type: string;
+                    };
+                };
+
                 value: {
                     type: string;
                     currencyCode: string;

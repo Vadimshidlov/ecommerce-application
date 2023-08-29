@@ -72,12 +72,27 @@
         margin-bottom: 20px;
     }
 
+    .product__price-container {
+        display: flex;
+        column-gap: 5px;
+    }
+
     .product__price {
         font-family: Inter, serif;
         font-size: 26px;
         font-style: normal;
         font-weight: 600;
         margin-bottom: 15px;
+    }
+
+    .product__price-old {
+        font-family: Inter, serif;
+        font-size: 26px;
+        font-style: normal;
+        font-weight: 300;
+        text-decoration: line-through;
+        margin-bottom: 15px;
+        opacity: 0.7;
     }
 
     .swiper-slide img {

@@ -12,6 +12,7 @@ import RegistrationPage from "view/app-components/Registration/components/Regist
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ProductPage from "view/app-components/ProductPage/ProductPage";
+import { LoginStore } from "service/LoginStore";
 
 function App() {
     const { setIsAuth } = useAuth();
@@ -22,15 +23,18 @@ function App() {
         (async () => {
             const isAccessToken = AuthDataStoreApi.current.getAccessAuthToken();
             const isAnonToken = AuthDataStoreApi.current.getAnonymousAccessToken();
+            const loginStore = LoginStore.getLoginStore();
 
             if (!isAccessToken) {
                 setIsAuth(false);
+                loginStore.setAuthStatus(false);
 
                 if (!isAnonToken) {
                     await AuthServiceApi.current.createAnonymousToken();
                 }
             } else {
                 setIsAuth(true);
+                loginStore.setAuthStatus(true);
             }
         })();
     }, [setIsAuth]);

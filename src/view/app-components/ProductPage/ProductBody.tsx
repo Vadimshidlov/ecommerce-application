@@ -13,29 +13,35 @@ export type ProductBodyType = {
 };
 
 function ProductBody({ productResponse, checkedSize, setCheckedSize }: ProductBodyType) {
-    // const productColor = productResponse.masterVariant.attributes[1].value.key;
     let productColor: string = "";
     productResponse.masterVariant.attributes.forEach((variant) => {
         if (variant.name === "color") {
             productColor = variant.value.key;
         }
     });
-    console.log(productColor, `productColor`);
 
     const productColorClass = `product__color product__color__${productColor}`;
     const productSizes = productResponse.variants.map(
         (productVariant) => productVariant.attributes[0].value.key,
     );
+    const productDiscountPrice =
+        productResponse.masterVariant.prices[0].discounted.value.centAmount / 100;
+    const productPrice = productResponse.masterVariant.prices[0].value.centAmount / 100;
     const [productCount, setProductCount] = useState<number>(1);
-
-    console.log(productSizes);
 
     return (
         <div className="product__body">
             <h2 className="product__name">{productResponse.name["en-US"]}</h2>
             <div className="product__description">{productResponse.description["en-US"]}</div>
             <div className="product__price">
-                ${productResponse.masterVariant.prices[0].value.centAmount / 100}
+                {productDiscountPrice ? (
+                    <div className="product__price-container">
+                        <span className="product__price">${productDiscountPrice}</span>
+                        <span className="product__price-old">{productPrice}</span>
+                    </div>
+                ) : (
+                    <div className="product__price">${productPrice}</div>
+                )}
             </div>
             <span className="product__color__title">Color:</span>
             <div className="product__colors">

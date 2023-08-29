@@ -9,11 +9,13 @@ import { AxiosError } from "axios";
 import { useAuth } from "auth-context";
 import { errorRegistrationMessage, successRegistrationMessage } from "shared/utils/notifyMessages";
 import Text from "view/app-components/Text/text";
+import { LoginStore } from "service/LoginStore";
 
 function RegistrationPage() {
     const registrationService = useRef(new RegistrationService());
     const loginService = useRef(new LoginService());
     const authDataStore = useRef(AuthDataStore.getAuthDataStore());
+    const loginStore = useRef(LoginStore.getLoginStore());
     const navigate = useNavigate();
     const [registrationError, setRegistrationError] = useState("");
     const { setIsAuth } = useAuth();
@@ -23,6 +25,7 @@ function RegistrationPage() {
         authDataStore.current.removeTokenFromStore("anonymousAccessToken");
         navigate("/");
         setIsAuth(true);
+        loginStore.current.setAuthStatus(true);
     };
 
     const registrationErrorHandler = (errorMessage: string) => {

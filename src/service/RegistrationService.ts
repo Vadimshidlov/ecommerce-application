@@ -84,6 +84,7 @@ export class RegistrationService {
                 },
             },
             customerData,
+            "customers",
         );
     }
 
