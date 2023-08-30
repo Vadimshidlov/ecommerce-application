@@ -9,14 +9,13 @@ export type CountriesListType = {
 };
 
 export type CountrySelectPropsType = {
-    formDataObject: ISignUpForm;
+    value: string;
     setFormData: (e: React.ChangeEvent<HTMLSelectElement>) => void;
     name: string;
     id: string;
 };
 
-function CountrySelect({ formDataObject, setFormData, name, id }: CountrySelectPropsType) {
-    const formData = formDataObject;
+function CountrySelect({ value, setFormData, name, id }: CountrySelectPropsType) {
     const countriesList: CountriesListType[] = [
         { value: "US", text: "USA" },
         { value: "RU", text: "Russia" },
@@ -25,7 +24,7 @@ function CountrySelect({ formDataObject, setFormData, name, id }: CountrySelectP
 
     return (
         <select
-            value={formData.shippingCountry}
+            value={value}
             className="block-address_select inter-400-font font-size_m color_grey-dark"
             name={name}
             id={id}

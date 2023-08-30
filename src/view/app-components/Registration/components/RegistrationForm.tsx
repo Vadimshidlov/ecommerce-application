@@ -254,7 +254,7 @@ export default function RegistrationForm({
                             <option value="BE">Belarus</option>
                         </select> */}
                         <CountrySelect
-                            formDataObject={formData}
+                            value={formData.billingCountry}
                             id="billingCountry"
                             name="billingCountry"
                             setFormData={(e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -393,7 +393,7 @@ export default function RegistrationForm({
                                 <option value="BE">Belarus</option>
                             </select> */}
                             <CountrySelect
-                                formDataObject={formData}
+                                value={formData.shippingCountry}
                                 id="shippingCountry"
                                 name="shippingCountry"
                                 setFormData={(e: React.ChangeEvent<HTMLSelectElement>) => {
