@@ -11,10 +11,10 @@
 }
 
 .shop-page__cards-container {
+    margin-top: 16px;
     margin-left: auto;
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
-    max-width: 993px;
+    justify-content: space-evenly;
     gap: 76px 27px;
 }

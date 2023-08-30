@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import ProductCard from "shared/components/ProductCard/ProductCard";
 import PageHeading from "shared/components/PageHeading/PageHeading";
 import { Filter, QueryParamsType } from "view/app-components/ShopPage/Filter/Filter";
+import { Sorting } from "view/app-components/ShopPage/Sorting/Sorting";
 import img from "assets/test-img.jpg";
 import ProductService from "service/ProductService";
 import { AuthService } from "service/AuthService";
@@ -85,6 +86,7 @@ export function ShopPage() {
                     }}
                 />
                 <div className="shop-page__product-cards">
+                    <Sorting count={products.length} />
                     <div className="shop-page__cards-container">
                         {products.map((product) => (
                             <ProductCard

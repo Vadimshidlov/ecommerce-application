@@ -1,0 +1,13 @@
+.sorting {
+    padding: 7px 0;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    #sorting-select {
+        // appearance: none;
+        border: none;
+        outline: none;
+    }
+}
