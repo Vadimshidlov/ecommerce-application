@@ -17,8 +17,8 @@ function RegistrationPage() {
     const authDataStore = useRef(AuthDataStore.getAuthDataStore());
     const navigate = useNavigate();
     const [registrationError, setRegistrationError] = useState("");
-    const { setIsAuth } = useAuth();
     const loginStore = LoginStore.getLoginStore();
+    const { setIsAuth } = useAuth();
 
     const handleSuccessRegistration = () => {
         successRegistrationMessage();
