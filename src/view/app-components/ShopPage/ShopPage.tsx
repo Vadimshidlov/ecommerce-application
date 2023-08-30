@@ -23,6 +23,11 @@ export interface IProduct {
         ];
         prices: [
             {
+                discounted: {
+                    value: {
+                        centAmount: number;
+                    };
+                };
                 value: {
                     centAmount: number;
                 };
@@ -63,6 +68,8 @@ export function ShopPage() {
         setParams();
     }, [categorie, queryParams]);
 
+    console.log(products);
+
     return (
         <section className="shop-page container">
             <PageHeading
@@ -91,12 +98,17 @@ export function ShopPage() {
                                 }
                                 title={product.name["en-US"]}
                                 price={`${
+                                    product?.masterVariant?.prices[0]?.discounted
+                                        ? product.masterVariant.prices[0].discounted.value
+                                              .centAmount / 100
+                                        : ""
+                                }`}
+                                discountPrice={`${
                                     product.masterVariant.prices &&
                                     product.masterVariant.prices.length > 0
                                         ? product.masterVariant.prices[0].value.centAmount / 100
-                                        : 100
+                                        : ""
                                 } $`}
-                                discountPrice="150$"
                                 onClick={() => console.log(product.id)}
                             />
                         ))}

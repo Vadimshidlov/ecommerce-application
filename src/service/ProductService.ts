@@ -110,4 +110,21 @@ export default class ProductService {
 
         return response;
     }
+
+    public async getProductURL(url: string): Promise<AxiosResponse> {
+        const token =
+            this.AUTH_DATA_STORE.getAccessAuthToken() ||
+            this.AUTH_DATA_STORE.getAnonymousAccessToken();
+
+        const response: AxiosResponse = await axios({
+            url,
+            method: "GET",
+            headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+            },
+        });
+
+        return response;
+    }
 }
