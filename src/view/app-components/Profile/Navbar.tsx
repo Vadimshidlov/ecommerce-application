@@ -17,7 +17,8 @@ export default function Navbar() {
     return (
         <nav className="profile-navbar">
             <NavLink to="adresses">Addresses</NavLink>
-            <NavLink to="details">Profile details</NavLink>
+            <NavLink to="details">Details</NavLink>
+            <NavLink to="password">Password</NavLink>
             <NavLink to="/">
                 <button className="button-logout" onClick={logoutHandler}>
                     Logout

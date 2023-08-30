@@ -75,11 +75,19 @@ background: var(--white, #FFF);
 }
 
 .adresses,
-.details {
+.details,
+.change-password {
     margin-left: 3rem;
 }
 
 .button-logout {
     border: none;
     background-color: transparent;
+}
+
+.password-wrapper {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem;
+    align-items: flex-start;
 }

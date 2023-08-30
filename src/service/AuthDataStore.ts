@@ -66,4 +66,46 @@ export class AuthDataStore {
             localStorage.removeItem(key);
         }
     }
+
+    public setProfileVersion(version: string): void {
+        localStorage.setItem("profileVersion", version);
+    }
+
+    public setProfileBillingId(id: string): void {
+        localStorage.setItem("profileBillingId", id);
+    }
+
+    public setProfileShippingId(id: string): void {
+        localStorage.setItem("profileShippingId", id);
+    }
+
+    public getProfileVersion(): string {
+        const profileVersion = localStorage.getItem("profileVersion");
+
+        if (!profileVersion) {
+            return "";
+        }
+
+        return profileVersion;
+    }
+
+    public getProfileBillingId(): string {
+        const profileBillingId = localStorage.getItem("profileBillingId");
+
+        if (!profileBillingId) {
+            return "";
+        }
+
+        return profileBillingId;
+    }
+
+    public getProfileShippingId(): string {
+        const profileShippingId = localStorage.getItem("profileShippingId");
+
+        if (!profileShippingId) {
+            return "";
+        }
+
+        return profileShippingId;
+    }
 }
