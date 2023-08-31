@@ -56,6 +56,18 @@ border: 1px solid var(--black-300, #CBCBCB);
 background: var(--white, #FFF);
 }
 
+.adress-edit {
+    display: flex;
+    width: 424px;
+    padding: 32px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    border-radius: 6px;
+    border: 1px solid var(--black-300, blue);
+    background: var(--white, #FFF);
+}
+
 .edit-button {
     border: none;
     background-color: transparent;
@@ -90,4 +102,23 @@ background: var(--white, #FFF);
     flex-direction: column;
     margin-bottom: 1rem;
     align-items: flex-start;
+}
+
+.save-button {
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    opacity: 0.8;
+    color: blue;
+}
+
+.save-button:hover {
+    opacity: 1;
+}
+
+.block-address_select {
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    cursor: pointer;
 }
