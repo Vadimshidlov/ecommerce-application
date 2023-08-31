@@ -33,6 +33,7 @@ export class RegistrationService {
             firstName: formData.firstname,
             lastName: formData.lastname,
             password: formData.password,
+            dateOfBirth: formData.birthdayDate,
             addresses: [
                 {
                     streetName: formData.billingStreet,

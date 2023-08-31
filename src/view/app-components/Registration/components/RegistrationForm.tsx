@@ -236,23 +236,7 @@ export default function RegistrationForm({
                         <Text classes={["inter-400-font", "font-size_m", "color_grey-dark"]}>
                             Country:
                         </Text>
-                        {/* <select
-                            value={formData.billingCountry}
-                            className="block-address_select inter-400-font font-size_m color_grey-dark"
-                            name="billingCountry"
-                            id="billingCountry"
-                            onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-                                const { value } = e.target;
-                                setFormData((prevState) => ({
-                                    ...prevState,
-                                    billingCountry: value,
-                                }));
-                            }}
-                        >
-                            <option value="US">USA</option>
-                            <option value="RU">Russia</option>
-                            <option value="BE">Belarus</option>
-                        </select> */}
+
                         <CountrySelect
                             value={formData.billingCountry}
                             id="billingCountry"
@@ -375,23 +359,6 @@ export default function RegistrationForm({
                             <Text classes={["inter-400-font", "font-size_m", "color_grey-dark"]}>
                                 Country:
                             </Text>
-                            {/* <select
-                                value={formData.shippingCountry}
-                                className="block-address_select inter-400-font font-size_m color_grey-dark"
-                                name="shippingCountry"
-                                id="shippingCountry"
-                                onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-                                    const { value } = e.target;
-                                    setFormData((prevState) => ({
-                                        ...prevState,
-                                        shippingCountry: value,
-                                    }));
-                                }}
-                            >
-                                <option value="US">USA</option>
-                                <option value="RU">Russia</option>
-                                <option value="BE">Belarus</option>
-                            </select> */}
                             <CountrySelect
                                 value={formData.shippingCountry}
                                 id="shippingCountry"

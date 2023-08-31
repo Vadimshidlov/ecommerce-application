@@ -1,63 +1,12 @@
-import React, { useRef, useState } from "react";
-import { RegistrationService } from "service/RegistrationService/RegistrationService";
-import { ISignUpForm } from "shared/utils/getInitialFormData";
+import React from "react";
 import RegistrationForm from "view/app-components/Registration/components/RegistrationForm";
-import { useNavigate, Navigate, NavLink } from "react-router-dom";
-import { AuthDataStore } from "service/AuthDataStore/AuthDataStore";
-import { AxiosError } from "axios";
+import { Navigate, NavLink } from "react-router-dom";
 import { useAuth } from "auth-context";
-import { errorRegistrationMessage, successRegistrationMessage } from "shared/utils/notifyMessages";
 import Text from "view/app-components/Text/text";
-import { LoginStore } from "service/LoginStore/LoginStore";
-import LoginService from "service/LoginService/LoginService";
+import useRegistration from "view/app-components/Registration/useRegistration";
 
 function RegistrationPage() {
-    const registrationService = useRef(new RegistrationService());
-    const loginService = useRef(new LoginService());
-    const authDataStore = useRef(AuthDataStore.getAuthDataStore());
-    const navigate = useNavigate();
-    const [registrationError, setRegistrationError] = useState("");
-    const loginStore = LoginStore.getLoginStore();
-    const { setIsAuth } = useAuth();
-
-    const handleSuccessRegistration = () => {
-        successRegistrationMessage();
-        authDataStore.current.removeTokenFromStore("anonymousAccessToken");
-        navigate("/");
-        setIsAuth(true);
-    };
-
-    const registrationErrorHandler = (errorMessage: string) => {
-        setRegistrationError(errorMessage);
-    };
-
-    const onSubmitSignInDataCallBack = async (
-        formData: ISignUpForm,
-        defaultBillingAddress: boolean,
-        defaultShippingAddress: boolean,
-    ): Promise<void> => {
-        try {
-            await registrationService.current.createCustomer(
-                formData,
-                defaultBillingAddress,
-                defaultShippingAddress,
-            );
-
-            const { email, password } = formData;
-
-            await loginService.current.getAuthToken({ email, password });
-            loginStore.setAuthStatus(true);
-            await loginService.current.authenticateCustomer({ email, password });
-            handleSuccessRegistration();
-        } catch (error) {
-            if (error instanceof AxiosError) {
-                errorRegistrationMessage();
-            } else if (error instanceof Error) {
-                console.log(error.message, `instanceof Error`);
-            }
-        }
-    };
-
+    const { onSubmit, registrationError, registrationErrorHandler } = useRegistration();
     const { isAuth } = useAuth();
 
     if (isAuth) {
@@ -76,7 +25,7 @@ function RegistrationPage() {
                 </NavLink>
             </div>
             <RegistrationForm
-                onSubmitSignInData={onSubmitSignInDataCallBack}
+                onSubmitSignInData={onSubmit}
                 registrationError={registrationError}
                 errorHandler={registrationErrorHandler}
             />

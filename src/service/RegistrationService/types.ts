@@ -10,6 +10,7 @@ export type CustomerDataType = {
     firstName: string;
     lastName: string;
     password: string;
+    dateOfBirth: string;
     addresses: CustomerAddressType[];
     shippingAddresses: number[];
     billingAddresses: number[];
