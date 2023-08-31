@@ -1,14 +1,9 @@
 import React, { FocusEvent, useEffect, useState } from "react";
-// import * as yup from "yup";
 import { ValidationError } from "yup";
 import TextValidationError from "view/app-components/Registration/components/ErrorsComponents/TextValidationError";
 import { getValidationErrorsObject } from "shared/utils/getValidationErrorsObject";
 import { DateInput } from "shared/components/DateInput/DateInput";
-import {
-    getInitialFormData,
-    ISignUpForm,
-    // maxValidBirthdayDate,
-} from "shared/utils/getInitialFormData";
+import { getInitialFormData, ISignUpForm } from "shared/utils/getInitialFormData";
 import { getInitialFormErrorsData, IStateErrors } from "shared/utils/getInitialFormErrorsData";
 import { getChangeFormByAddressData } from "shared/utils/getChangeFormByAddressData";
 import { TextInput } from "shared/components/TextInput/TextInput";
@@ -19,32 +14,10 @@ import closedEye from "assets/svg/closedEye.svg";
 import openEye from "assets/svg/openEye.svg";
 import { userScheme } from "view/app-components/Registration/components/userSheme";
 import CountrySelect from "view/app-components/Registration/components/SelectCountry";
-
-export type RegisterFormDataType = {
-    firstname: string;
-    lastname: string;
-    email: string;
-    birthdayDate: string;
-    password: string;
-    billingStreet: string;
-    billingCity: string;
-    billingPostalCode: string;
-    billingCountry: string;
-    shippingStreet: string;
-    shippingCity: string;
-    shippingPostalCode: string;
-    shippingCountry: string;
-};
-
-export type OnSubmitSignInDataType = {
-    onSubmitSignInData: (
-        formData: ISignUpForm,
-        defaultBillingAddress: boolean,
-        defaultShippingAddress: boolean,
-    ) => Promise<void>;
-    registrationError: string;
-    errorHandler: (value: string) => void;
-};
+import {
+    OnSubmitSignInDataType,
+    RegisterFormDataType,
+} from "view/app-components/Registration/components/RegistrationForm/types";
 
 export default function RegistrationForm({
     onSubmitSignInData,
@@ -90,11 +63,8 @@ export default function RegistrationForm({
 
         try {
             const finallyFormData = getChangeFormByAddressData(oneAddress, formData);
-
             setFormData((prevState) => ({ ...prevState, ...finallyFormData }));
-
             await userScheme.validate(finallyFormData, { abortEarly: false });
-
             await onSubmitSignInData(
                 finallyFormData,
                 defaultBillingAddress,
@@ -230,7 +200,6 @@ export default function RegistrationForm({
                 <Text classes={["inter-600-font", "font-size_m", "color_blue-dark"]}>
                     Billing address:
                 </Text>
-                {/* <p className="block-address_title">Billing address:</p> */}
                 <div className="registration__address-block-wrapper">
                     <div className="billing_countries__select-block">
                         <Text classes={["inter-400-font", "font-size_m", "color_grey-dark"]}>
