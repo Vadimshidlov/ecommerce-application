@@ -23,3 +23,12 @@ export async function getInitialProfileAdressShipping() {
     const data = await getCustomer();
     return data.addresses[1];
 }
+
+export async function isBillingDefault() {
+    const data = await getCustomer();
+    let response = false;
+    for (const key in data) {
+        if (key === "defaultBillingAddressId") response = true;
+    }
+    return response;
+}

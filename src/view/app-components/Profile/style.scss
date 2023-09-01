@@ -135,3 +135,19 @@ background: var(--white, #FFF);
     width: 100%;
     justify-content: space-between;
 }
+
+.adress__input {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    border: 1px solid #cbcbcb;
+    border-radius: 6px;
+}
+
+.default-address {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    flex-direction: row-reverse;
+    column-gap: 10px;
+}

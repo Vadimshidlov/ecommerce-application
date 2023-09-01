@@ -3,6 +3,7 @@ import Text from "view/app-components/Text/text";
 import EditButton from "view/app-components/Profile/EditButton";
 import {
     getInitialProfileAdressBilling,
+    isBillingDefault,
     // getInitialProfileAdressShipping,
 } from "view/app-components/Profile/profile-utils";
 import "view/app-components/Profile/style.scss";
@@ -11,7 +12,11 @@ import { ValidationError } from "yup";
 import { getValidationErrorsAdress } from "shared/utils/getValidationErrorAdress";
 import { TextInput } from "shared/components/TextInput/TextInput";
 import TextValidationError from "view/app-components/Registration/components/ErrorsComponents/TextValidationError";
-import { changeBillingAdress } from "view/app-components/Profile/axiosProfile";
+import {
+    changeBillingAdress,
+    removeDefaultBillingAddressAPI,
+    setDefaultBillingAddressAPI,
+} from "view/app-components/Profile/axiosProfile";
 
 const getInitialBilling = (): BillingAdressType => ({
     id: "",
@@ -68,7 +73,7 @@ type BillingAdressType = {
 
 export default function ProfileAdressesPage() {
     const [editBilling, setEditBilling] = useState<boolean>(false);
-    // const [defaultBillingAddress, setDefaultBillingAddress] = useState(false);
+    const [defaultBillingAddress, setDefaultBillingAddress] = useState(false);
     // const [defaultShippingAddress, setDefaultShippingAddress] = useState(false);
     // const inputRef = useRef<HTMLInputElement>(null);
     const [dataBilling, setdataBilling] = useState<BillingAdressType>(getInitialBilling());
@@ -76,15 +81,21 @@ export default function ProfileAdressesPage() {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     // const [dataShipping, setdataShipping] = useState();
 
-    // useEffect(() => {
-    //     inputRef.current?.focus();
-    // }, [edit]);
+    useEffect(() => {
+        const fetchData = async () => {
+            if (defaultBillingAddress) {
+                await setDefaultBillingAddressAPI();
+            } else {
+                await removeDefaultBillingAddressAPI();
+            }
+        };
+        fetchData();
+    }, [defaultBillingAddress]);
 
     useEffect(() => {
         const fetchData = async () => {
             setdataBilling(await getInitialProfileAdressBilling());
-            // console.log("dataBilling", dataBilling);
-            // console.log("getInitialProfileAdressBilling", dataBill);
+            setDefaultBillingAddress(await isBillingDefault());
             // const dataShipp = await getInitialProfileAdressShipping();
             // console.log("getInitialProfileAdressShipping", dataShipp);
         };
@@ -112,7 +123,6 @@ export default function ProfileAdressesPage() {
         } catch (err) {
             if (err instanceof ValidationError) {
                 const errorsList = [...err.inner];
-
                 setValidationError((prevState) => ({
                     ...prevState,
                     ...getValidationErrorsAdress(errorsList),
@@ -133,13 +143,11 @@ export default function ProfileAdressesPage() {
         e.preventDefault();
 
         try {
-            billingAddressHandler(dataBilling);
-            const data = await changeBillingAdress(dataBilling);
-            console.log(data);
+            await billingAddressHandler(dataBilling);
+            await changeBillingAdress(dataBilling);
         } catch (err) {
             if (err instanceof ValidationError) {
                 const errorsList = [...err.inner];
-
                 setValidationError((prevState) => ({
                     ...prevState,
                     ...getValidationErrorsAdress(errorsList),
@@ -174,7 +182,7 @@ export default function ProfileAdressesPage() {
                                 Country:{" "}
                                 <select
                                     value={dataBilling.country}
-                                    className="inter-400-font font-size_m color_grey-dark"
+                                    className="inter-400-font font-size_m adress__input"
                                     name="country"
                                     onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
                                         const { value } = e.target;
@@ -196,7 +204,7 @@ export default function ProfileAdressesPage() {
                                     type="text"
                                     placeHolder=""
                                     value={dataBilling.city}
-                                    className={`inter-400-font font-size_m registration__input ${
+                                    className={`inter-400-font font-size_m adress__input ${
                                         !validationError.city ? "" : "input__outline-error"
                                     }`}
                                     name="city"
@@ -219,8 +227,8 @@ export default function ProfileAdressesPage() {
                                     placeHolder=""
                                     id="billingStreet"
                                     value={dataBilling.streetName}
-                                    className={`inter-400-font font-size_m registration__input ${
-                                        !validationError.city ? "" : "input__outline-error"
+                                    className={`inter-400-font font-size_m adress__input ${
+                                        !validationError.streetName ? "" : "input__outline-error"
                                     }`}
                                     name="streetName"
                                     onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
@@ -241,8 +249,8 @@ export default function ProfileAdressesPage() {
                                     placeHolder=""
                                     id="billingCode"
                                     value={dataBilling.postalCode}
-                                    className={`inter-400-font font-size_m registration__input ${
-                                        !validationError.city ? "" : "input__outline-error"
+                                    className={`inter-400-font font-size_m adress__input ${
+                                        !validationError.postalCode ? "" : "input__outline-error"
                                     }`}
                                     name="postalCode"
                                     onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
@@ -265,6 +273,19 @@ export default function ProfileAdressesPage() {
                             <div>{dataBilling.postalCode}</div>
                         </>
                     )}
+                    <div className="default-address">
+                        <Text classes={["inter-400-font", "font-size_s", "color_grey-dark"]}>
+                            Make as default billing address
+                        </Text>
+                        <input
+                            name="defaultBillingAddress"
+                            type="checkbox"
+                            checked={defaultBillingAddress}
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                                setDefaultBillingAddress(e.target.checked);
+                            }}
+                        />
+                    </div>
                 </div>
             </div>
         </form>
