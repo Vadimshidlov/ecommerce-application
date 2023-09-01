@@ -32,3 +32,12 @@ export async function isBillingDefault() {
     }
     return response;
 }
+
+export async function isShippingDefault() {
+    const data = await getCustomer();
+    let response = false;
+    for (const key in data) {
+        if (key === "defaultShippingAddressId") response = true;
+    }
+    return response;
+}

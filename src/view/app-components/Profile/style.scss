@@ -151,3 +151,9 @@ background: var(--white, #FFF);
     flex-direction: row-reverse;
     column-gap: 10px;
 }
+
+.adresses_forms{
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}

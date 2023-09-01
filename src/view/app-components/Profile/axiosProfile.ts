@@ -69,6 +69,41 @@ export async function changeBillingAdress(data: BillingAdressType) {
     });
 }
 
+export async function changeShippingAdress(data: BillingAdressType) {
+    const version = +AUTH_DATA_STORE.getProfileVersion();
+    const billingId = AUTH_DATA_STORE.getProfileShippingId();
+    const token = AUTH_DATA_STORE.getAccessAuthToken();
+
+    const dataNew = JSON.stringify({
+        version,
+        actions: [
+            {
+                action: "changeAddress",
+                addressId: `${billingId}`,
+                address: {
+                    streetName: data.streetName,
+                    postalCode: data.postalCode,
+                    city: data.city,
+                    country: data.country,
+                },
+            },
+        ],
+    });
+    const config = {
+        method: "post",
+        maxBodyLength: Infinity,
+        url: urlAPI,
+        headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+        },
+        data: dataNew,
+    };
+    axios.request(config).then((response) => {
+        AUTH_DATA_STORE.setProfileVersion(JSON.stringify(response.data.version));
+    });
+}
+
 export async function setDefaultBillingAddressAPI() {
     const version = +AUTH_DATA_STORE.getProfileVersion();
     const billingId = AUTH_DATA_STORE.getProfileBillingId();
@@ -98,6 +133,35 @@ export async function setDefaultBillingAddressAPI() {
     });
 }
 
+export async function setDefaultShippingAddressAPI() {
+    const version = +AUTH_DATA_STORE.getProfileVersion();
+    const shippingId = AUTH_DATA_STORE.getProfileShippingId();
+    const token = AUTH_DATA_STORE.getAccessAuthToken();
+
+    const data = JSON.stringify({
+        version,
+        actions: [
+            {
+                action: "setDefaultShippingAddress",
+                addressId: shippingId,
+            },
+        ],
+    });
+    const config = {
+        method: "post",
+        maxBodyLength: Infinity,
+        url: urlAPI,
+        headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+        },
+        data,
+    };
+    axios.request(config).then((response) => {
+        AUTH_DATA_STORE.setProfileVersion(JSON.stringify(response.data.version));
+    });
+}
+
 export async function removeDefaultBillingAddressAPI() {
     const version = +AUTH_DATA_STORE.getProfileVersion();
     const token = AUTH_DATA_STORE.getAccessAuthToken();
@@ -107,6 +171,33 @@ export async function removeDefaultBillingAddressAPI() {
         actions: [
             {
                 action: "setDefaultBillingAddress",
+            },
+        ],
+    });
+    const config = {
+        method: "post",
+        maxBodyLength: Infinity,
+        url: urlAPI,
+        headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+        },
+        data,
+    };
+    axios.request(config).then((response) => {
+        AUTH_DATA_STORE.setProfileVersion(JSON.stringify(response.data.version));
+    });
+}
+
+export async function removeDefaultShippingAddressAPI() {
+    const version = +AUTH_DATA_STORE.getProfileVersion();
+    const token = AUTH_DATA_STORE.getAccessAuthToken();
+
+    const data = JSON.stringify({
+        version,
+        actions: [
+            {
+                action: "setDefaultShippingAddress",
             },
         ],
     });
