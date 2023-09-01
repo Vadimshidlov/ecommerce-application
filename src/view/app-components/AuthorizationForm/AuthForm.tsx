@@ -95,7 +95,7 @@ export function AuthForm() {
             <div className="input__container">
                 <TextInput
                     name="email"
-                    placeHolder="email"
+                    placeholder="email"
                     value={email}
                     id="email"
                     type="text"
@@ -110,7 +110,7 @@ export function AuthForm() {
                 <div className="password__wrapper">
                     <TextInput
                         name="password"
-                        placeHolder="password"
+                        placeholder="password"
                         value={password}
                         id="password"
                         type={inputType}

@@ -2,22 +2,20 @@ import React, { FocusEvent, useEffect, useState } from "react";
 import { ValidationError } from "yup";
 import TextValidationError from "view/app-components/Registration/components/ErrorsComponents/TextValidationError";
 import { getValidationErrorsObject } from "shared/utils/getValidationErrorsObject";
-import { DateInput } from "shared/components/DateInput/DateInput";
+// import { DateInput } from "shared/components/DateInput/DateInput";
 import { getInitialFormData, ISignUpForm } from "shared/utils/getInitialFormData";
 import { getInitialFormErrorsData, IStateErrors } from "shared/utils/getInitialFormErrorsData";
 import { getChangeFormByAddressData } from "shared/utils/getChangeFormByAddressData";
 import { TextInput } from "shared/components/TextInput/TextInput";
 import Text from "view/app-components/Text/text";
 import { Button } from "shared/components/button/Button";
-import { ButtonIcon } from "shared/components/ButtonIcon/ButtonIcon";
-import closedEye from "assets/svg/closedEye.svg";
-import openEye from "assets/svg/openEye.svg";
+// import { ButtonIcon } from "shared/components/ButtonIcon/ButtonIcon";
+// import closedEye from "assets/svg/closedEye.svg";
+// import openEye from "assets/svg/openEye.svg";
 import { userScheme } from "view/app-components/Registration/components/userSheme";
 import CountrySelect from "view/app-components/Registration/components/SelectCountry";
-import {
-    OnSubmitSignInDataType,
-    RegisterFormDataType,
-} from "view/app-components/Registration/components/RegistrationForm/types";
+import { OnSubmitSignInDataType } from "view/app-components/Registration/components/RegistrationForm/types";
+import UserDataComponent from "view/app-components/Registration/components/RegistrationForm/UserDataComponent";
 
 export default function RegistrationForm({
     onSubmitSignInData,
@@ -43,15 +41,20 @@ export default function RegistrationForm({
 
     const inputTextHandler = async (
         e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>,
-        key: keyof RegisterFormDataType,
+        // key: keyof RegisterFormDataType,
     ) => {
-        const { value } = e.target;
+        const { value, name } = e.target;
 
-        setFormData({ ...formData, [key]: value });
+        setFormData({ ...formData, [name]: value });
     };
 
-    const inputOnFocusHandler = (e: FocusEvent, key: string) => {
-        setValidationError({ ...validationError, [key]: "" });
+    const inputOnFocusHandler = (e: FocusEvent) => {
+        let name: string = "";
+        if (e.target instanceof HTMLInputElement) {
+            name = e.target.name;
+        }
+
+        setValidationError({ ...validationError, [name]: "" });
 
         if (e.target instanceof HTMLInputElement && e.target.name === "email") {
             errorHandler("");
@@ -82,120 +85,14 @@ export default function RegistrationForm({
         }
     };
 
-    const [inputType, setInputType] = useState<string>("password");
-    const toggleHideButton = (): void => {
-        setInputType(inputType === "password" ? "text" : "password");
-    };
-
     return (
         <form className="registration__form" onSubmit={onFormSubmit}>
-            <div className="registration__personal-data">
-                <Text classes={["inter-600-font", "font-size_m", "color_blue-dark"]}>
-                    Personal data:
-                </Text>
-                <div className="input__wrapper">
-                    <TextInput
-                        type="text"
-                        name="firstname"
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                            inputTextHandler(e, "firstname")
-                        }
-                        onFocus={(e: FocusEvent) => {
-                            inputOnFocusHandler(e, "firstname");
-                        }}
-                        className={`registration__input ${
-                            !validationError.firstname ? "" : "input__outline-error"
-                        }`}
-                        id="fname"
-                        value={formData.firstname}
-                        placeHolder="Your name"
-                        validationError={validationError.firstname ? validationError.firstname : ""}
-                    />
-                    <TextInput
-                        type="text"
-                        name="lastname"
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                            inputTextHandler(e, "lastname")
-                        }
-                        onFocus={(e: FocusEvent) => {
-                            inputOnFocusHandler(e, "lastname");
-                        }}
-                        className={`registration__input ${
-                            !validationError.lastname ? "" : "input__outline-error"
-                        }`}
-                        id="lname"
-                        value={formData.lastname}
-                        placeHolder="Your lastname"
-                        validationError={validationError.lastname ? validationError.lastname : ""}
-                    />
-                    <TextInput
-                        type="text"
-                        name="email"
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                            inputTextHandler(e, "email")
-                        }
-                        onFocus={(e: FocusEvent) => {
-                            inputOnFocusHandler(e, "email");
-                        }}
-                        className={`registration__input ${
-                            !validationError.email ? "" : "input__outline-error"
-                        }`}
-                        id="email"
-                        value={formData.email}
-                        placeHolder="Email address"
-                        validationError={validationError.email ? validationError.email : ""}
-                    />
-                    <div className="password__wrapper">
-                        <TextInput
-                            type={inputType}
-                            name="password"
-                            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                                inputTextHandler(e, "password")
-                            }
-                            onFocus={(e: FocusEvent) => {
-                                inputOnFocusHandler(e, "password");
-                            }}
-                            className={`registration__input ${
-                                !validationError.password ? "" : "input__outline-error"
-                            }`}
-                            id="password"
-                            value={formData.password}
-                            placeHolder="Password"
-                            validationError={
-                                validationError.password ? validationError.password : ""
-                            }
-                        />
-                        <ButtonIcon
-                            url={inputType === "password" ? closedEye : openEye}
-                            altText="icon-eye"
-                            classes="button-icon"
-                            onClick={toggleHideButton}
-                        />
-                    </div>
-                    <div className="registration__birthday-input">
-                        <Text classes={["inter-400-font", "font-size_m", "color_grey-dark"]}>
-                            Birthday:
-                        </Text>
-                        <DateInput
-                            className={`registration__birthday-date inter-400-font font-size_m color_grey-dark ${
-                                !validationError.birthdayDate ? "" : "input__outline-error"
-                            }`}
-                            id="birthdayDate"
-                            name="birthdayDate"
-                            onChangeHandler={(e: React.ChangeEvent<HTMLInputElement>) =>
-                                inputTextHandler(e, "birthdayDate")
-                            }
-                            onFocusHandler={(e: FocusEvent) => {
-                                inputOnFocusHandler(e, "birthdayDate");
-                            }}
-                            value={formData.birthdayDate}
-                            validationError={
-                                validationError.birthdayDate ? validationError.birthdayDate : ""
-                            }
-                        />
-                    </div>
-                </div>
-            </div>
+            <UserDataComponent
+                formDataProps={formData}
+                validationErrorProps={validationError}
+                inputOnFocusHandler={inputOnFocusHandler}
+                inputTextHandler={inputTextHandler}
+            />
             <div className="registration__address-block block-adress">
                 <Text classes={["inter-600-font", "font-size_m", "color_blue-dark"]}>
                     Billing address:
@@ -225,18 +122,11 @@ export default function RegistrationForm({
                             <TextInput
                                 type="text"
                                 name="billingStreet"
-                                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                                    inputTextHandler(e, "billingStreet")
-                                }
-                                onFocus={(e: FocusEvent) => {
-                                    inputOnFocusHandler(e, "billingStreet");
-                                }}
-                                className={`registration__input ${
-                                    !validationError.billingStreet ? "" : "input__outline-error"
-                                }`}
+                                onChange={inputTextHandler}
+                                onFocus={inputOnFocusHandler}
                                 id="billingStreet"
                                 value={formData.billingStreet}
-                                placeHolder="Street"
+                                placeholder="Street"
                                 validationError={
                                     validationError.billingStreet
                                         ? validationError.billingStreet
@@ -248,18 +138,11 @@ export default function RegistrationForm({
                             <TextInput
                                 type="text"
                                 name="billingCity"
-                                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                                    inputTextHandler(e, "billingCity")
-                                }
-                                onFocus={(e: FocusEvent) => {
-                                    inputOnFocusHandler(e, "billingCity");
-                                }}
-                                className={`registration__input ${
-                                    !validationError.billingCity ? "" : "input__outline-error"
-                                }`}
+                                onChange={inputTextHandler}
+                                onFocus={inputOnFocusHandler}
                                 id="billingCity"
                                 value={formData.billingCity}
-                                placeHolder="City"
+                                placeholder="City"
                                 validationError={
                                     validationError.billingCity ? validationError.billingCity : ""
                                 }
@@ -269,18 +152,11 @@ export default function RegistrationForm({
                             <TextInput
                                 type="text"
                                 name="billingPostalCode"
-                                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                                    inputTextHandler(e, "billingPostalCode")
-                                }
-                                onFocus={(e: FocusEvent) => {
-                                    inputOnFocusHandler(e, "billingPostalCode");
-                                }}
-                                className={`registration__input ${
-                                    !validationError.billingPostalCode ? "" : "input__outline-error"
-                                }`}
+                                onChange={inputTextHandler}
+                                onFocus={inputOnFocusHandler}
                                 id="billingPostalCode"
                                 value={formData.billingPostalCode}
-                                placeHolder="Postal code"
+                                placeholder="Postal code"
                                 validationError={
                                     validationError.billingPostalCode
                                         ? validationError.billingPostalCode
@@ -353,18 +229,11 @@ export default function RegistrationForm({
                                 <TextInput
                                     type="text"
                                     name="shippingCity"
-                                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                                        inputTextHandler(e, "shippingCity")
-                                    }
-                                    onFocus={(e: FocusEvent) => {
-                                        inputOnFocusHandler(e, "shippingCity");
-                                    }}
-                                    className={`registration__input ${
-                                        !validationError.shippingCity ? "" : "input__outline-error"
-                                    }`}
+                                    onChange={inputTextHandler}
+                                    onFocus={inputOnFocusHandler}
                                     id="shippingCity"
                                     value={formData.shippingCity}
-                                    placeHolder="City"
+                                    placeholder="City"
                                     validationError={
                                         validationError.shippingCity
                                             ? validationError.shippingCity
@@ -376,20 +245,11 @@ export default function RegistrationForm({
                                 <TextInput
                                     type="text"
                                     name="shippingStreet"
-                                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                                        inputTextHandler(e, "shippingStreet")
-                                    }
-                                    onFocus={(e: FocusEvent) => {
-                                        inputOnFocusHandler(e, "shippingStreet");
-                                    }}
-                                    className={`registration__input ${
-                                        !validationError.shippingStreet
-                                            ? ""
-                                            : "input__outline-error"
-                                    }`}
+                                    onChange={inputTextHandler}
+                                    onFocus={inputOnFocusHandler}
                                     id="shippingStreet"
                                     value={formData.shippingStreet}
-                                    placeHolder="Street"
+                                    placeholder="Street"
                                     validationError={
                                         validationError.shippingStreet
                                             ? validationError.shippingStreet
@@ -401,20 +261,11 @@ export default function RegistrationForm({
                                 <TextInput
                                     type="text"
                                     name="shippingPostalCode"
-                                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                                        inputTextHandler(e, "shippingPostalCode")
-                                    }
-                                    onFocus={(e: FocusEvent) => {
-                                        inputOnFocusHandler(e, "shippingPostalCode");
-                                    }}
-                                    className={`registration__input ${
-                                        !validationError.shippingPostalCode
-                                            ? ""
-                                            : "input__outline-error"
-                                    }`}
+                                    onChange={inputTextHandler}
+                                    onFocus={inputOnFocusHandler}
                                     id="shippingPostalCode"
                                     value={formData.shippingPostalCode}
-                                    placeHolder="Postal code"
+                                    placeholder="Postal code"
                                     validationError={
                                         validationError.shippingPostalCode
                                             ? validationError.shippingPostalCode
