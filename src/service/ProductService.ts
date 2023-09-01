@@ -1,7 +1,7 @@
 import axios, { AxiosResponse } from "axios";
 import { AuthDataStore } from "service/AuthDataStore";
 import { AuthService } from "service/AuthService";
-import { QueryParamsType } from "view/app-components/ShopPage/Filter/Filter";
+// import { QueryParamsType } from "view/app-components/ShopPage/Filter/Filter";
 
 export default class ProductService {
     private readonly AUTH_DATA_STORE: AuthDataStore = new AuthDataStore();
@@ -39,7 +39,7 @@ export default class ProductService {
     //     });
     // }
 
-    public async getCategoryByKey(key: string): Promise<void> {
+    public async getCategoryByKey(key: string): Promise<AxiosResponse> {
         const token =
             this.AUTH_DATA_STORE.getAccessAuthToken() ||
             this.AUTH_DATA_STORE.getAnonymousAccessToken();
@@ -54,6 +54,7 @@ export default class ProductService {
         });
 
         this.CATEGORIE_ID = response.data.id;
+        return response;
     }
 
     public async getAllProducts(): Promise<AxiosResponse> {
@@ -93,31 +94,31 @@ export default class ProductService {
         return response;
     }
 
-    public async getProduct(filter: QueryParamsType): Promise<AxiosResponse> {
+    // public async getProduct(filter: QueryParamsType): Promise<AxiosResponse> {
+    //     const token =
+    //         this.AUTH_DATA_STORE.getAccessAuthToken() ||
+    //         this.AUTH_DATA_STORE.getAnonymousAccessToken();
+
+    //     const response: AxiosResponse = await axios({
+    //         url: `${this.API_URL}/${this.PROJECT_KEY}/product-projections/search`,
+    //         method: "GET",
+    //         headers: {
+    //             Authorization: `Bearer ${token}`,
+    //             "Content-Type": "application/json",
+    //         },
+    //         params: filter,
+    //     });
+
+    //     return response;
+    // }
+
+    public async getProductURL(path: string): Promise<AxiosResponse> {
         const token =
             this.AUTH_DATA_STORE.getAccessAuthToken() ||
             this.AUTH_DATA_STORE.getAnonymousAccessToken();
 
         const response: AxiosResponse = await axios({
-            url: `${this.API_URL}/${this.PROJECT_KEY}/product-projections/search`,
-            method: "GET",
-            headers: {
-                Authorization: `Bearer ${token}`,
-                "Content-Type": "application/json",
-            },
-            params: filter,
-        });
-
-        return response;
-    }
-
-    public async getProductURL(url: string): Promise<AxiosResponse> {
-        const token =
-            this.AUTH_DATA_STORE.getAccessAuthToken() ||
-            this.AUTH_DATA_STORE.getAnonymousAccessToken();
-
-        const response: AxiosResponse = await axios({
-            url,
+            url: `${this.API_URL}/${this.PROJECT_KEY}/product-projections/search?${path}`,
             method: "GET",
             headers: {
                 Authorization: `Bearer ${token}`,

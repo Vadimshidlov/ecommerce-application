@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
 import ProductCard from "shared/components/ProductCard/ProductCard";
 import PageHeading from "shared/components/PageHeading/PageHeading";
-import { Filter, QueryParamsType } from "view/app-components/ShopPage/Filter/Filter";
+import { Filter, IQueryParams } from "view/app-components/ShopPage/Filter/Filter";
 import { Sorting } from "view/app-components/ShopPage/Sorting/Sorting";
 import img from "assets/test-img.jpg";
 import ProductService from "service/ProductService";
 import { AuthService } from "service/AuthService";
 import { AuthDataStore } from "service/AuthDataStore";
 import { useCategorie } from "providers/FilterProvider";
+import { useNavigate } from "react-router-dom";
 
 export interface IProduct {
     categories: [];
@@ -48,9 +49,68 @@ if (!token) {
 let { results } = (await PRODUCT_SREVICE.getAllProducts()).data;
 
 export function ShopPage() {
-    const [queryParams, setQueryParams] = useState<QueryParamsType>();
+    const navigate = useNavigate();
+    const [queryParams, setQueryParams] = useState<string>("");
+    const [categoryParams, setCategoryParams] = useState<string>("");
+    // const [url, setUrl] = useState<string>("");
     const [products, setProducts] = useState<IProduct[]>([]);
     const { categorie } = useCategorie();
+
+    function collectColorParams({ param, type }: IQueryParams) {
+        if (type === "sort") {
+            setQueryParams((prevState) => {
+                if (prevState === "") {
+                    return `sort=price%20${param}`;
+                }
+                if (prevState.includes(param)) {
+                    const newUrl = `${prevState.replace(param, "").replace(/,""/g, "")}`;
+
+                    if (newUrl === 'filter=variants.attributes.color.key:""') {
+                        console.log("color--ok");
+                        return "";
+                    }
+
+                    return newUrl;
+                }
+                return `sort=price%20${param}`;
+            });
+        }
+        if (type === "color") {
+            setQueryParams((prevState) => {
+                if (prevState === "") {
+                    return `filter=variants.attributes.color.key:"${param}"`;
+                }
+                if (prevState.includes(param)) {
+                    const newUrl = `${prevState.replace(param, "").replace(/,""/g, "")}`;
+
+                    if (newUrl === 'filter=variants.attributes.color.key:""') {
+                        console.log("color--ok");
+                        return "";
+                    }
+
+                    return newUrl;
+                }
+                return `${prevState},"${param}"`;
+            });
+        } else if (type === "size") {
+            setQueryParams((prevState) => {
+                if (prevState === "") {
+                    return `filter=variants.attributes.size.key:"${param}"`;
+                }
+                if (prevState.includes(param)) {
+                    const newUrl = `${prevState.replace(param, "").replace(/,""/g, "")}`;
+
+                    if (newUrl === 'filter=variants.attributes.size.key:""') {
+                        console.log("size--ok");
+                        return "";
+                    }
+
+                    return newUrl;
+                }
+                return `${prevState},"${param}"`;
+            });
+        }
+    }
 
     useEffect(() => {
         if (categorie.length === 0) {
@@ -58,18 +118,26 @@ export function ShopPage() {
         } else {
             setProducts(categorie);
         }
+    }, [categorie]);
 
+    useEffect(() => {
         async function setParams() {
-            if (queryParams) {
-                results = (await PRODUCT_SREVICE.getProduct(queryParams)).data.results;
+            const url = `${categoryParams || ""}&${queryParams || ""}`;
+
+            console.log(url);
+
+            if (url) {
+                results = (await PRODUCT_SREVICE.getProductURL(url)).data.results;
+                console.log(url);
                 setProducts(results);
+                // console.log(results);
             }
         }
 
         setParams();
-    }, [categorie, queryParams]);
+    }, [categoryParams, queryParams]);
 
-    console.log(products);
+    // console.log(products);
 
     return (
         <section className="shop-page container">
@@ -81,12 +149,20 @@ export function ShopPage() {
             />
             <div className="shop-page__wrapper">
                 <Filter
-                    onClickFn={(param: QueryParamsType) => {
-                        setQueryParams(param);
+                    onChangeColor={({ param, type }) => {
+                        collectColorParams({ param, type });
+                    }}
+                    onChangeCategory={(param: string) => {
+                        setCategoryParams(param);
                     }}
                 />
                 <div className="shop-page__product-cards">
-                    <Sorting count={products.length} />
+                    <Sorting
+                        count={products.length}
+                        onChangeSort={({ param, type }) => {
+                            collectColorParams({ param, type });
+                        }}
+                    />
                     <div className="shop-page__cards-container">
                         {products.map((product) => (
                             <ProductCard
@@ -99,7 +175,7 @@ export function ShopPage() {
                                         : img
                                 }
                                 title={product.name["en-US"]}
-                                price={`${
+                                price={`$${
                                     product?.masterVariant?.prices[0]?.discounted
                                         ? product.masterVariant.prices[0].discounted.value
                                               .centAmount / 100
@@ -108,10 +184,15 @@ export function ShopPage() {
                                 discountPrice={`${
                                     product.masterVariant.prices &&
                                     product.masterVariant.prices.length > 0
-                                        ? product.masterVariant.prices[0].value.centAmount / 100
+                                        ? `$${
+                                              product.masterVariant.prices[0].value.centAmount / 100
+                                          }`
                                         : ""
-                                } $`}
-                                onClick={() => console.log(product.id)}
+                                }`}
+                                onClick={() => {
+                                    navigate(`/shop/${product.id}`);
+                                    console.log(product.id);
+                                }}
                             />
                         ))}
                     </div>
