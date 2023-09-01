@@ -6,6 +6,13 @@ import { getCustomer } from "view/app-components/Profile/axiosProfile";
 //     city: string;
 //     country: string;
 // };
+export type BillingAdressType = {
+    id: string;
+    streetName: string;
+    postalCode: string;
+    city: string;
+    country: string;
+};
 
 export async function getInitialProfileAdressBilling() {
     const data = await getCustomer();

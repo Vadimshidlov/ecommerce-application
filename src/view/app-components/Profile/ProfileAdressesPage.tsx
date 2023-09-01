@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { FocusEvent, useEffect, useState } from "react";
 import Text from "view/app-components/Text/text";
 import EditButton from "view/app-components/Profile/EditButton";
 import {
@@ -11,6 +11,7 @@ import { ValidationError } from "yup";
 import { getValidationErrorsAdress } from "shared/utils/getValidationErrorAdress";
 import { TextInput } from "shared/components/TextInput/TextInput";
 import TextValidationError from "view/app-components/Registration/components/ErrorsComponents/TextValidationError";
+import { changeBillingAdress } from "view/app-components/Profile/axiosProfile";
 
 const getInitialBilling = (): BillingAdressType => ({
     id: "",
@@ -91,9 +92,9 @@ export default function ProfileAdressesPage() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    useEffect(() => {
-        console.log(validationError);
-    }, [validationError]);
+    // useEffect(() => {
+    //     console.log(validationError);
+    // }, [validationError]);
 
     const inputBillingAddressHandler = async (
         e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>,
@@ -106,7 +107,7 @@ export default function ProfileAdressesPage() {
 
     const billingAddressHandler = async (billingAddress: BillingAdressType) => {
         try {
-            await billingScheme.validate(billingAddress);
+            await billingScheme.validate(billingAddress, { abortEarly: false });
             setEditBilling(!editBilling);
         } catch (err) {
             if (err instanceof ValidationError) {
@@ -116,124 +117,156 @@ export default function ProfileAdressesPage() {
                     ...prevState,
                     ...getValidationErrorsAdress(errorsList),
                 }));
-                // console.log(validationError);
             }
         }
     };
 
-    // const inputOnFocusHandler = (e: FocusEvent, key: string) => {
-    //     setValidationError({ ...validationError, [key]: "" });
+    const inputOnFocusHandler = (e: FocusEvent, key: string) => {
+        setValidationError({ ...validationError, [key]: "" });
 
-    //     if (e.target instanceof HTMLInputElement && e.target.name === "email") {
-    //         errorHandler("");
-    //     }
-    // };
+        // if (e.target instanceof HTMLInputElement && e.target.name === "email") {
+        // errorHandler("");
+        // }
+    };
+
+    const onBillingAdressSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+
+        try {
+            billingAddressHandler(dataBilling);
+            const data = await changeBillingAdress(dataBilling);
+            console.log(data);
+        } catch (err) {
+            if (err instanceof ValidationError) {
+                const errorsList = [...err.inner];
+
+                setValidationError((prevState) => ({
+                    ...prevState,
+                    ...getValidationErrorsAdress(errorsList),
+                }));
+            }
+        }
+    };
 
     return (
-        <div className="adresses">
-            <div className={`billing ${!editBilling ? "adress" : "adress-edit"}`}>
-                <div className="adress-tittle">
-                    <Text classes={["inter-600-font", "font-size_m", "color_blue-dark"]}>
-                        Billing address:
-                    </Text>
+        <form className="adressBilling__form" onSubmit={onBillingAdressSubmit}>
+            <div className="adresses">
+                <div className={`billing ${!editBilling ? "adress" : "adress-edit"}`}>
+                    <div className="adress-tittle">
+                        <Text classes={["inter-600-font", "font-size_m", "color_blue-dark"]}>
+                            Billing address:
+                        </Text>
+                        {editBilling ? (
+                            <button type="submit" className="save-button">
+                                <Text classes={["inter-600-font", "font-size_m"]}>Save</Text>
+                            </button>
+                        ) : (
+                            <EditButton
+                                onClick={() => {
+                                    setEditBilling(!editBilling);
+                                }}
+                            />
+                        )}
+                    </div>
                     {editBilling ? (
-                        <button
-                            type="submit"
-                            className="save-button"
-                            // onClick={() => {
-                            //     setEditBilling(!editBilling);
-                            // }}
-                            onClick={(event) => {
-                                event.preventDefault();
-                                billingAddressHandler(dataBilling);
-                            }}
-                        >
-                            <Text classes={["inter-600-font", "font-size_m"]}>Save</Text>
-                        </button>
+                        <>
+                            <div className="adress-line">
+                                Country:{" "}
+                                <select
+                                    value={dataBilling.country}
+                                    className="inter-400-font font-size_m color_grey-dark"
+                                    name="country"
+                                    onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+                                        const { value } = e.target;
+                                        setdataBilling((prevState) => ({
+                                            ...prevState,
+                                            country: value,
+                                        }));
+                                    }}
+                                >
+                                    <option value="US">USA</option>
+                                    <option value="RU">Russia</option>
+                                    <option value="BE">Belarus</option>
+                                </select>
+                                <TextValidationError errorMessage={validationError.country} />
+                            </div>
+                            <div className="adress-line">
+                                City:{" "}
+                                <TextInput
+                                    type="text"
+                                    placeHolder=""
+                                    value={dataBilling.city}
+                                    className={`inter-400-font font-size_m registration__input ${
+                                        !validationError.city ? "" : "input__outline-error"
+                                    }`}
+                                    name="city"
+                                    id="billingCity"
+                                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                                        inputBillingAddressHandler(event, "city");
+                                    }}
+                                    onFocus={(e: FocusEvent) => {
+                                        inputOnFocusHandler(e, "city");
+                                    }}
+                                    validationError={
+                                        validationError.city ? validationError.city : ""
+                                    }
+                                />
+                            </div>
+                            <div className="adress-line">
+                                Street:{" "}
+                                <TextInput
+                                    type="text"
+                                    placeHolder=""
+                                    id="billingStreet"
+                                    value={dataBilling.streetName}
+                                    className={`inter-400-font font-size_m registration__input ${
+                                        !validationError.city ? "" : "input__outline-error"
+                                    }`}
+                                    name="streetName"
+                                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                                        inputBillingAddressHandler(event, "streetName");
+                                    }}
+                                    onFocus={(e: FocusEvent) => {
+                                        inputOnFocusHandler(e, "streetName");
+                                    }}
+                                    validationError={
+                                        validationError.streetName ? validationError.streetName : ""
+                                    }
+                                />
+                            </div>
+                            <div className="adress-line">
+                                Postal Code:{" "}
+                                <TextInput
+                                    type="text"
+                                    placeHolder=""
+                                    id="billingCode"
+                                    value={dataBilling.postalCode}
+                                    className={`inter-400-font font-size_m registration__input ${
+                                        !validationError.city ? "" : "input__outline-error"
+                                    }`}
+                                    name="postalCode"
+                                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                                        inputBillingAddressHandler(event, "postalCode");
+                                    }}
+                                    onFocus={(e: FocusEvent) => {
+                                        inputOnFocusHandler(e, "postalCode");
+                                    }}
+                                    validationError={
+                                        validationError.postalCode ? validationError.postalCode : ""
+                                    }
+                                />
+                            </div>
+                        </>
                     ) : (
-                        <EditButton
-                            onClick={() => {
-                                setEditBilling(!editBilling);
-                            }}
-                        />
+                        <>
+                            <div>{dataBilling.country}</div>
+                            <div>{dataBilling.city}</div>
+                            <div>{dataBilling.streetName}</div>
+                            <div>{dataBilling.postalCode}</div>
+                        </>
                     )}
                 </div>
-                {editBilling ? (
-                    <>
-                        <div>
-                            Country:{" "}
-                            <select
-                                value={dataBilling.country}
-                                className="inter-400-font font-size_m color_grey-dark"
-                                name="country"
-                                onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-                                    const { value } = e.target;
-                                    setdataBilling((prevState) => ({
-                                        ...prevState,
-                                        country: value,
-                                    }));
-                                }}
-                            >
-                                <option value="US">USA</option>
-                                <option value="RU">Russia</option>
-                                <option value="BE">Belarus</option>
-                            </select>
-                            <TextValidationError errorMessage={validationError.country} />
-                        </div>
-                        <div>
-                            City:{" "}
-                            <TextInput
-                                type="text"
-                                placeHolder=""
-                                value={dataBilling.city}
-                                className={`inter-400-font font-size_m registration__input ${
-                                    !validationError.city ? "" : "input__outline-error"
-                                }`}
-                                name="city"
-                                id="billingCity"
-                                onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                                    inputBillingAddressHandler(event, "city");
-                                }}
-                                // onFocus={(e: FocusEvent) => {
-                                //     inputOnFocusHandler(e, "city");
-                                // }}
-                                validationError={validationError.city ? validationError.city : ""}
-                            />
-                        </div>
-                        <div>
-                            Street:{" "}
-                            <input
-                                type="text"
-                                value={dataBilling.streetName}
-                                className="inter-400-font font-size_m"
-                                name="streetName"
-                                onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                                    inputBillingAddressHandler(event, "streetName");
-                                }}
-                            />
-                        </div>
-                        <div>
-                            Postal Code:{" "}
-                            <input
-                                type="text"
-                                value={dataBilling.postalCode}
-                                className="inter-400-font font-size_m"
-                                name="postalCode"
-                                onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                                    inputBillingAddressHandler(event, "postalCode");
-                                }}
-                            />
-                        </div>
-                    </>
-                ) : (
-                    <>
-                        <div>{dataBilling.country}</div>
-                        <div>{dataBilling.city}</div>
-                        <div>{dataBilling.streetName}</div>
-                        <div>{dataBilling.postalCode}</div>
-                    </>
-                )}
             </div>
-        </div>
+        </form>
     );
 }

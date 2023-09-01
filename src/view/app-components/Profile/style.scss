@@ -122,3 +122,16 @@ background: var(--white, #FFF);
     border-radius: 6px;
     cursor: pointer;
 }
+
+.registration__error {
+    padding-top: 10px;
+    width: 100%;
+    color: #e61010;
+}
+
+.adress-line {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    justify-content: space-between;
+}
