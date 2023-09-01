@@ -13,7 +13,7 @@ import { DateInput } from "shared/components/DateInput/DateInput";
 //     target: EventTarget & T;
 // }
 
-export type UserDataComponentPropsType = {
+export type UserDataInputPropsType = {
     formDataProps: ISignUpForm;
     validationErrorProps: IStateErrors;
     inputTextHandler: (
@@ -22,12 +22,12 @@ export type UserDataComponentPropsType = {
     inputOnFocusHandler: (e: React.FocusEvent<HTMLInputElement>) => void;
 };
 
-function UserDataComponent({
+function UserDataInput({
     formDataProps,
     validationErrorProps,
     inputTextHandler,
     inputOnFocusHandler,
-}: UserDataComponentPropsType) {
+}: UserDataInputPropsType) {
     const formData = formDataProps;
     const validationError = validationErrorProps;
 
@@ -110,4 +110,4 @@ function UserDataComponent({
     );
 }
 
-export default UserDataComponent;
+export default UserDataInput;

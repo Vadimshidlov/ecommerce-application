@@ -27,21 +27,13 @@ class AxiosSignUpService {
     private createResponseInterceptor(): void {
         this.request.interceptors.request.use((config) => {
             const loginStore = LoginStore.getLoginStore();
-            const isAuth = loginStore.getAuthStatus();
             const returnConfig = config;
-            const token = loginStore.getAuthStatus()
-                ? this.AuthDataStoreApi.getAccessAuthToken()
-                : this.AuthDataStoreApi.getAnonymousAccessToken();
-            console.log(token, `<--- token from inters sign_up`, isAuth, "<-- isAuth");
 
             returnConfig.headers.Authorization = `Bearer ${
                 loginStore.getAuthStatus()
                     ? this.AuthDataStoreApi.getAccessAuthToken()
                     : this.AuthDataStoreApi.getAnonymousAccessToken()
             }`;
-            // returnConfig.headers.Authorization = `Basic ${btoa(
-            //     `OLQF6DvQqgu9NiEaNj5l-ngD:6x4a7bsRL81dJoq1vsQ81yf3C0BiJrYH`,
-            // )}`;
 
             return returnConfig;
         });
@@ -60,8 +52,8 @@ class AxiosSignUpService {
                         const authRefreshToken = this.AuthDataStoreApi.getAuthRefreshToken();
 
                         if (error.response?.status === 401 && authAccessToken && authRefreshToken) {
-                            const CTP_CLIENT_SECRET = "6x4a7bsRL81dJoq1vsQ81yf3C0BiJrYH";
-                            const CTP_CLIENT_ID = "OLQF6DvQqgu9NiEaNj5l-ngD";
+                            const CTP_CLIENT_SECRET = process.env.REACT_APP_CLIENT_SECRET ?? "";
+                            const CTP_CLIENT_ID = process.env.REACT_APP_CTP_CLIENT_ID ?? "";
                             console.log("inter auth 1");
 
                             const response401Token = await axios.post<AnonymousAccessType>(
@@ -99,8 +91,10 @@ class AxiosSignUpService {
                             anonymousAccessToken &&
                             anonymousRefreshToken
                         ) {
-                            const CTP_CLIENT_SECRET = "6x4a7bsRL81dJoq1vsQ81yf3C0BiJrYH";
-                            const CTP_CLIENT_ID = "OLQF6DvQqgu9NiEaNj5l-ngD";
+                            // const CTP_CLIENT_SECRET = "6x4a7bsRL81dJoq1vsQ81yf3C0BiJrYH";
+                            // const CTP_CLIENT_ID = "OLQF6DvQqgu9NiEaNj5l-ngD";
+                            const CTP_CLIENT_SECRET = process.env.REACT_APP_CLIENT_SECRET ?? "";
+                            const CTP_CLIENT_ID = process.env.REACT_APP_CTP_CLIENT_ID ?? "";
                             console.log("inter auth anon 2");
 
                             const response401Token = await axios.post<AnonymousAccessType>(

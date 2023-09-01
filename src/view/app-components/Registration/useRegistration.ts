@@ -44,8 +44,6 @@ function useRegistration(): UseRegistrationType {
         defaultBillingAddress: boolean,
         defaultShippingAddress: boolean,
     ): Promise<void> => {
-        console.log(formData, `formData from hook`);
-
         try {
             await registrationService.current.createCustomer(
                 formData,

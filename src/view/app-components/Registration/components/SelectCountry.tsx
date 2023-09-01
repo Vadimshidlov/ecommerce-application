@@ -8,14 +8,11 @@ export type CountriesListType = {
     text: string;
 };
 
-export type CountrySelectPropsType = {
-    value: string;
+export interface ICountrySelectPropsType extends React.ComponentPropsWithRef<"select"> {
     setFormData: (e: React.ChangeEvent<HTMLSelectElement>) => void;
-    name: string;
-    id: string;
-};
+}
 
-function CountrySelect({ value, setFormData, name, id }: CountrySelectPropsType) {
+function CountrySelect({ setFormData, ...rest }: ICountrySelectPropsType) {
     const countriesList: CountriesListType[] = [
         { value: "US", text: "USA" },
         { value: "RU", text: "Russia" },
@@ -24,11 +21,9 @@ function CountrySelect({ value, setFormData, name, id }: CountrySelectPropsType)
 
     return (
         <select
-            value={value}
             className="block-address_select inter-400-font font-size_m color_grey-dark"
-            name={name}
-            id={id}
             onChange={setFormData}
+            {...rest}
         >
             {countriesList.map((el, index) => {
                 const itemKey = `key-${index + 1}`;
