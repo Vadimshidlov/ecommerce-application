@@ -44,19 +44,21 @@ a {
     margin-top: 2rem;
 }
 
-.adress {
+.adress,
+.details {
     display: flex;
-width: 424px;
-padding: 32px;
-flex-direction: column;
-align-items: flex-start;
-gap: 10px;
-border-radius: 6px;
-border: 1px solid var(--black-300, #CBCBCB);
-background: var(--white, #FFF);
+    width: 424px;
+    padding: 32px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    border-radius: 6px;
+    border: 1px solid var(--black-300, #CBCBCB);
+    background: var(--white, #FFF);
 }
 
-.adress-edit {
+.adress-edit,
+.details-edit {
     display: flex;
     width: 424px;
     padding: 32px;
@@ -87,7 +89,7 @@ background: var(--white, #FFF);
 }
 
 .adresses,
-.details,
+.details-form,
 .change-password {
     margin-left: 3rem;
 }
@@ -156,4 +158,10 @@ background: var(--white, #FFF);
     display: flex;
     flex-direction: column;
     gap: 1rem;
+}
+
+.details-tittle {
+    display: flex;
+    width: 100%;
+    justify-content: flex-end;
 }

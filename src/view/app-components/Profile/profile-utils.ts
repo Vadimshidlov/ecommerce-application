@@ -1,11 +1,12 @@
 import { getCustomer } from "view/app-components/Profile/axiosProfile";
 
-// type AdressType = {
-//     street: string;
-//     postal: string;
-//     city: string;
-//     country: string;
-// };
+export type DetailsType = {
+    firstName: string;
+    lastName: string;
+    email: string;
+    birthdayDate: string;
+};
+
 export type BillingAdressType = {
     id: string;
     streetName: string;
@@ -40,4 +41,14 @@ export async function isShippingDefault() {
         if (key === "defaultShippingAddressId") response = true;
     }
     return response;
+}
+
+export async function getProfileDetails() {
+    const data = await getCustomer();
+    return {
+        firstName: data.firstName,
+        lastName: data.lastName,
+        email: data.email,
+        birthdayDate: "",
+    };
 }

@@ -1,13 +1,13 @@
 import * as yup from "yup";
 
-export function getValidationErrorsAdress(errorsList: yup.ValidationError[]): {
+export function getValidationErrorsDetails(errorsList: yup.ValidationError[]): {
     [key: string]: string;
 } {
     const formErrorsObject: { [key: string]: string } = {
-        streetName: "",
-        city: "",
-        postalCode: "",
-        country: "",
+        firstName: "",
+        lastName: "",
+        email: "",
+        birthdayDate: "",
     };
 
     errorsList.forEach((error) => {

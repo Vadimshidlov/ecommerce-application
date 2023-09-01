@@ -20,17 +20,12 @@ const AUTH_DATA_STORE: AuthDataStore = new AuthDataStore();
 const urlAPI = "https://api.europe-west1.gcp.commercetools.com/uwoc_ecm-app/me";
 
 export async function getCustomer() {
-    // console.log(token);
     const token = AUTH_DATA_STORE.getAccessAuthToken();
     const responce = await axios.get(urlAPI, {
         headers: {
             Authorization: `Bearer ${token}`,
         },
     });
-    // console.log(responce.data);
-    // console.log("version", responce.data.version);
-    // console.log("shippingAddressIds", responce.data.shippingAddressIds[0]);
-    // console.log("billingAddressIds", responce.data.billingAddressIds[0]);
     return responce.data;
 }
 
