@@ -6,7 +6,7 @@ import "swiper/scss";
 import "swiper/scss/navigation";
 import "swiper/scss/pagination";
 import "swiper/scss/scrollbar";
-import { ProductResponseType } from "view/app-components/ProductPage/ProductPage";
+import { ProductResponseType } from "view/app-components/ProductPage/types";
 
 export type ProductSwiperType = {
     productResponse: ProductResponseType;

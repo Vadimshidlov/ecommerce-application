@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState } from "react";
 import { Button } from "shared/components/button/Button";
-import { ProductResponseType } from "view/app-components/ProductPage/ProductPage";
 import plusButton from "assets/svg/Plus.svg";
 import minusButton from "assets/svg/Minus.svg";
 import { ButtonIcon } from "shared/components/ButtonIcon/ButtonIcon";
+import { ProductResponseType } from "view/app-components/ProductPage/types";
 
 export type ProductBodyType = {
     productResponse: ProductResponseType;
