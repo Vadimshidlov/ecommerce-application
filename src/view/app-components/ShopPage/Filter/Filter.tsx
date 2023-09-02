@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import React from "react";
+import React, { useState } from "react";
 import Text from "shared/components/Text/text";
 import { Button } from "shared/components/button/Button";
 import ProductService from "service/ProductService";
@@ -10,37 +10,35 @@ export interface IQueryParams {
     type: string;
 }
 interface IValue {
-    onChangeColor: ({ param, type }: IQueryParams) => void;
+    onChangeFn: ({ param, type }: IQueryParams) => void;
     onChangeCategory: (param: string) => void;
 }
 
-export function Filter({ onChangeColor, onChangeCategory }: IValue) {
-    // const { setCategorie } = useCategorie();
+export function Filter({ onChangeFn, onChangeCategory }: IValue) {
     const PRODUCT_SREVICE = new ProductService();
-
-    // const [queryParams, setQueryParams] = useState("");
+    const [activeButton, setActiveButton] = useState("");
 
     async function filterCategories(key: string) {
         try {
             const { id } = (await PRODUCT_SREVICE.getCategoryByKey(key)).data;
-            // const { results } = await (await PRODUCT_SREVICE.getProductsByCategoriId()).data;
 
-            // setCategorie(results);
             onChangeCategory(`filter=categories.id:"${id}"`);
         } catch (error) {
             onChangeCategory("");
-
-            // const { results } = await (await PRODUCT_SREVICE.getAllProducts()).data;
-
-            // setCategorie(results);
         }
     }
 
-    // async function getAllCategories() {
-    //     const { results } = await (await PRODUCT_SREVICE.getAllProducts()).data;
+    const handleButtonClick = (category: string) => {
+        setActiveButton(category);
+        if (category === "") {
+            onChangeCategory(category);
+        } else {
+            filterCategories(category);
+        }
+    };
 
-    //     setCategorie(results);
-    // }
+    const buttonClasses = (category: string) =>
+        `filter__button ${category === activeButton ? "filter__button_active" : ""}`;
 
     return (
         <div className="filter">
@@ -51,32 +49,32 @@ export function Filter({ onChangeColor, onChangeCategory }: IValue) {
                     <Button
                         text="All products"
                         textClasses={["inter-400-font", "font-size_xl", "color_black"]}
-                        buttonClasses="filter__button"
-                        onClick={() => onChangeCategory("")}
+                        buttonClasses={buttonClasses("")}
+                        onClick={() => handleButtonClick("")}
                     />
                 </div>
                 <div className="filter__categorie">
                     <Button
                         text="Shoes"
                         textClasses={["inter-400-font", "font-size_xl", "color_black"]}
-                        buttonClasses="filter__button"
-                        onClick={() => filterCategories("shoes")}
+                        buttonClasses={buttonClasses("shoes")}
+                        onClick={() => handleButtonClick("shoes")}
                     />
                     <ul className="filter__subcategories">
                         <li>
                             <Button
                                 text="Sneakers"
                                 textClasses={["inter-400-font", "font-size_m", "color_black"]}
-                                buttonClasses="filter__button"
-                                onClick={() => filterCategories("shoes_sneakers")}
+                                buttonClasses={buttonClasses("shoes_sneakers")}
+                                onClick={() => handleButtonClick("shoes_sneakers")}
                             />
                         </li>
                         <li>
                             <Button
                                 text="Slippers"
                                 textClasses={["inter-400-font", "font-size_m", "color_black"]}
-                                buttonClasses="filter__button"
-                                onClick={() => filterCategories("shoes_slippers")}
+                                buttonClasses={buttonClasses("shoes_slippers")}
+                                onClick={() => handleButtonClick("shoes_slippers")}
                             />
                         </li>
                     </ul>
@@ -85,24 +83,24 @@ export function Filter({ onChangeColor, onChangeCategory }: IValue) {
                     <Button
                         text="Clothes"
                         textClasses={["inter-400-font", "font-size_xl", "color_black"]}
-                        buttonClasses="filter__button"
-                        onClick={() => filterCategories("clothes")}
+                        buttonClasses={buttonClasses("clothes")}
+                        onClick={() => handleButtonClick("clothes")}
                     />
                     <ul className="filter__subcategories">
                         <li>
                             <Button
                                 text="T-short"
                                 textClasses={["inter-400-font", "font-size_m", "color_black"]}
-                                buttonClasses="filter__button"
-                                onClick={() => filterCategories("t-shirt")}
+                                buttonClasses={buttonClasses("t-shirt")}
+                                onClick={() => handleButtonClick("t-shirt")}
                             />
                         </li>
                         <li>
                             <Button
                                 text="Shorts"
                                 textClasses={["inter-400-font", "font-size_m", "color_black"]}
-                                buttonClasses="filter__button"
-                                onClick={() => filterCategories("shorts")}
+                                buttonClasses={buttonClasses("shorts")}
+                                onClick={() => handleButtonClick("shorts")}
                             />
                         </li>
                     </ul>
@@ -116,7 +114,7 @@ export function Filter({ onChangeColor, onChangeCategory }: IValue) {
                         id="color-yellow"
                         className="filter__colors-item"
                         onChange={() => {
-                            onChangeColor({ param: "yellow", type: "color" });
+                            onChangeFn({ param: "%22yellow%22", type: "color" });
                         }}
                     />
                     <input
@@ -124,7 +122,7 @@ export function Filter({ onChangeColor, onChangeCategory }: IValue) {
                         id="color-black"
                         className="filter__colors-item"
                         onChange={() => {
-                            onChangeColor({ param: "black", type: "color" });
+                            onChangeFn({ param: "%22black%22", type: "color" });
                         }}
                     />
                     <input
@@ -132,7 +130,7 @@ export function Filter({ onChangeColor, onChangeCategory }: IValue) {
                         id="color-blue"
                         className="filter__colors-item"
                         onChange={() => {
-                            onChangeColor({ param: "blue", type: "color" });
+                            onChangeFn({ param: "%22blue%22", type: "color" });
                         }}
                     />
                     <input
@@ -140,7 +138,7 @@ export function Filter({ onChangeColor, onChangeCategory }: IValue) {
                         id="color-green"
                         className="filter__colors-item"
                         onChange={() => {
-                            onChangeColor({ param: "green", type: "color" });
+                            onChangeFn({ param: "%22green%22", type: "color" });
                         }}
                     />
                 </div>
@@ -154,7 +152,7 @@ export function Filter({ onChangeColor, onChangeCategory }: IValue) {
                             id="size-xs"
                             className="filter__size-item"
                             onChange={() => {
-                                onChangeColor({ param: "xs", type: "size" });
+                                onChangeFn({ param: "%22xs%22", type: "size" });
                             }}
                         />
                         <label htmlFor="size-xs">XS</label>
@@ -165,7 +163,7 @@ export function Filter({ onChangeColor, onChangeCategory }: IValue) {
                             id="size-s"
                             className="filter__size-item"
                             onChange={() => {
-                                onChangeColor({ param: "s", type: "size" });
+                                onChangeFn({ param: "%22s%22", type: "size" });
                             }}
                         />
                         <label htmlFor="size-s">S</label>
@@ -176,7 +174,7 @@ export function Filter({ onChangeColor, onChangeCategory }: IValue) {
                             id="size-m"
                             className="filter__size-item"
                             onChange={() => {
-                                onChangeColor({ param: "m", type: "size" });
+                                onChangeFn({ param: "%22m%22", type: "size" });
                             }}
                         />
                         <label htmlFor="size-m">M</label>
@@ -187,7 +185,7 @@ export function Filter({ onChangeColor, onChangeCategory }: IValue) {
                             id="size-l"
                             className="filter__size-item"
                             onChange={() => {
-                                onChangeColor({ param: "l", type: "size" });
+                                onChangeFn({ param: "%22l%22", type: "size" });
                             }}
                         />
                         <label htmlFor="size-l">L</label>
@@ -198,7 +196,7 @@ export function Filter({ onChangeColor, onChangeCategory }: IValue) {
                             id="size-xl"
                             className="filter__size-item"
                             onChange={() => {
-                                onChangeColor({ param: "xl", type: "size" });
+                                onChangeFn({ param: "%22xl%22", type: "size" });
                             }}
                         />
                         <label htmlFor="size-xl">XL</label>
@@ -209,7 +207,7 @@ export function Filter({ onChangeColor, onChangeCategory }: IValue) {
                             id="size-xxl"
                             className="filter__size-item"
                             onChange={() => {
-                                onChangeColor({ param: "xxl", type: "size" });
+                                onChangeFn({ param: "%22xxl%22", type: "size" });
                             }}
                         />
                         <label htmlFor="size-2xl">XXL</label>
@@ -221,6 +219,15 @@ export function Filter({ onChangeColor, onChangeCategory }: IValue) {
                 <div className="filter__price-wrapper">
                     <input type="range" />
                 </div>
+            </div>
+            <div className="filter__reset">
+                <Button
+                    type="button"
+                    text="Reset filters"
+                    textClasses={["space-grotesk-500-font", "font-size_l", "color_white"]}
+                    buttonClasses="button"
+                    onClick={() => console.log("btn-press")}
+                />
             </div>
         </div>
     );

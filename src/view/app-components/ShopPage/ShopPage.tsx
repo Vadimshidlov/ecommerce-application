@@ -10,11 +10,18 @@ import { AuthDataStore } from "service/AuthDataStore";
 import { useCategorie } from "providers/FilterProvider";
 import { useNavigate } from "react-router-dom";
 
+export interface IState {
+    [type: string]: string[];
+}
+
 export interface IProduct {
     categories: [];
     id: string;
     key: string;
     name: {
+        "en-US": string;
+    };
+    description: {
         "en-US": string;
     };
     masterVariant: {
@@ -50,66 +57,75 @@ let { results } = (await PRODUCT_SREVICE.getAllProducts()).data;
 
 export function ShopPage() {
     const navigate = useNavigate();
-    const [queryParams, setQueryParams] = useState<string>("");
+    // const [queryParams, setQueryParams] = useState<string>("");
+    const [sortParams, setSortParams] = useState<string>("");
     const [categoryParams, setCategoryParams] = useState<string>("");
-    // const [url, setUrl] = useState<string>("");
     const [products, setProducts] = useState<IProduct[]>([]);
     const { categorie } = useCategorie();
 
-    function collectColorParams({ param, type }: IQueryParams) {
-        if (type === "sort") {
-            setQueryParams((prevState) => {
-                if (prevState === "") {
-                    return `sort=price%20${param}`;
-                }
-                if (prevState.includes(param)) {
-                    const newUrl = `${prevState.replace(param, "").replace(/,""/g, "")}`;
+    const [objParams, setObjParams] = useState<IState>({});
 
-                    if (newUrl === 'filter=variants.attributes.color.key:""') {
-                        console.log("color--ok");
-                        return "";
-                    }
+    // function collectUrlParams() {
+    //     const keys = Object.keys(objParams);
+    //     const param: string[] = [];
+    //     keys.forEach((key) => {
+    //         param.push(`filter=variants.attributes.${key}.key:${objParams[key].join(",")}`);
+    //     });
 
-                    return newUrl;
-                }
-                return `sort=price%20${param}`;
-            });
-        }
-        if (type === "color") {
-            setQueryParams((prevState) => {
-                if (prevState === "") {
-                    return `filter=variants.attributes.color.key:"${param}"`;
-                }
-                if (prevState.includes(param)) {
-                    const newUrl = `${prevState.replace(param, "").replace(/,""/g, "")}`;
+    //     console.log(param.join("&"));
+    // }
+    // collectUrlParams();
 
-                    if (newUrl === 'filter=variants.attributes.color.key:""') {
-                        console.log("color--ok");
-                        return "";
-                    }
+    // function collectColorParams({ param, type }: IQueryParams) {
+    //     if (type === "color") {
+    //         setQueryParams((prevState) => {
+    //             if (prevState === "") {
+    //                 return `filter=variants.attributes.color.key:${param}`;
+    //             }
+    //             if (prevState.includes(param)) {
+    //                 const newUrl = `${prevState.replace(param, "").replace(/,/g, "")}`;
 
-                    return newUrl;
-                }
-                return `${prevState},"${param}"`;
-            });
-        } else if (type === "size") {
-            setQueryParams((prevState) => {
-                if (prevState === "") {
-                    return `filter=variants.attributes.size.key:"${param}"`;
-                }
-                if (prevState.includes(param)) {
-                    const newUrl = `${prevState.replace(param, "").replace(/,""/g, "")}`;
+    //                 // console.log(newUrl);
+    //                 if (newUrl === "filter=variants.attributes.color.key:") {
+    //                     console.log("color--ok");
+    //                     return "";
+    //                 }
 
-                    if (newUrl === 'filter=variants.attributes.size.key:""') {
-                        console.log("size--ok");
-                        return "";
-                    }
+    //                 return newUrl;
+    //             }
+    //             return [prevState, param].join(",");
+    //         });
+    //     } else if (type === "size") {
+    //         setQueryParams((prevState) => {
+    //             if (prevState === "") {
+    //                 return `filter=variants.attributes.size.key:"${param}"`;
+    //             }
+    //             if (prevState.includes(param)) {
+    //                 const newUrl = `${prevState.replace(param, "").replace(/,""/g, "")}`;
 
-                    return newUrl;
-                }
-                return `${prevState},"${param}"`;
-            });
-        }
+    //                 if (newUrl === 'filter=variants.attributes.size.key:""') {
+    //                     console.log("size--ok");
+    //                     return "";
+    //                 }
+
+    //                 return newUrl;
+    //             }
+    //             return `${prevState},"${param}"`;
+    //         });
+    //     }
+    // }
+
+    function collectParams({ param, type }: IQueryParams) {
+        setObjParams((prevData) => {
+            const values = prevData[type] || [];
+            const newValues = values.includes(param)
+                ? values.filter((value) => value !== param)
+                : [...values, param];
+            return {
+                ...prevData,
+                [type]: newValues,
+            };
+        });
     }
 
     useEffect(() => {
@@ -122,20 +138,31 @@ export function ShopPage() {
 
     useEffect(() => {
         async function setParams() {
-            const url = `${categoryParams || ""}&${queryParams || ""}`;
+            const keys = Object.keys(objParams);
+            const params: string[] = [];
+            keys.forEach((key) => {
+                if (objParams[key].length > 0) {
+                    params.push(
+                        `filter=variants.attributes.${key}.key:${objParams[key].join(",")}`,
+                    );
+                }
+            });
+
+            const queryParams = [categoryParams, params.join("&"), sortParams].filter(Boolean);
+            const url = queryParams.join("&");
 
             console.log(url);
 
             if (url) {
                 results = (await PRODUCT_SREVICE.getProductURL(url)).data.results;
-                console.log(url);
-                setProducts(results);
-                // console.log(results);
+            } else {
+                results = (await PRODUCT_SREVICE.getAllProducts()).data.results;
             }
+            setProducts(results);
         }
 
         setParams();
-    }, [categoryParams, queryParams]);
+    }, [categoryParams, objParams, sortParams]);
 
     // console.log(products);
 
@@ -149,8 +176,9 @@ export function ShopPage() {
             />
             <div className="shop-page__wrapper">
                 <Filter
-                    onChangeColor={({ param, type }) => {
-                        collectColorParams({ param, type });
+                    onChangeFn={({ param, type }) => {
+                        // collectColorParams({ param, type });
+                        collectParams({ param, type });
                     }}
                     onChangeCategory={(param: string) => {
                         setCategoryParams(param);
@@ -159,13 +187,14 @@ export function ShopPage() {
                 <div className="shop-page__product-cards">
                     <Sorting
                         count={products.length}
-                        onChangeSort={({ param, type }) => {
-                            collectColorParams({ param, type });
+                        onChangeSort={(param) => {
+                            setSortParams(param);
                         }}
                     />
                     <div className="shop-page__cards-container">
                         {products.map((product) => (
                             <ProductCard
+                                sale={!!product?.masterVariant?.prices[0]?.discounted}
                                 key={product.id}
                                 id={product.id}
                                 img={
@@ -175,15 +204,16 @@ export function ShopPage() {
                                         : img
                                 }
                                 title={product.name["en-US"]}
+                                description={`${product.description["en-US"].slice(0, 60)}...`}
                                 price={`$${
                                     product?.masterVariant?.prices[0]?.discounted
                                         ? product.masterVariant.prices[0].discounted.value
                                               .centAmount / 100
-                                        : ""
+                                        : product.masterVariant.prices[0].value.centAmount / 100
                                 }`}
                                 discountPrice={`${
                                     product.masterVariant.prices &&
-                                    product.masterVariant.prices.length > 0
+                                    product?.masterVariant?.prices[0]?.discounted
                                         ? `$${
                                               product.masterVariant.prices[0].value.centAmount / 100
                                           }`

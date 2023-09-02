@@ -34,6 +34,22 @@
         outline: none;
         cursor: pointer;
 
+        &_active {
+            span {
+                border-bottom: 1px solid #000;
+                font-weight: 600;
+                &::before {
+                    content: "";
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 2px;
+                    background-color: #121212;
+                }
+            }
+        }
+
         // &_active {
         //     background: none;
         //     border: none;
