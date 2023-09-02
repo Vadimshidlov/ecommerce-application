@@ -11,7 +11,7 @@ function useGetProductDate() {
                 const axiosApi = AxiosSignUpService;
                 const productResponse = await axiosApi.get<ProductResponseType>(
                     {},
-                    "/product-projections/b781ba58-ed3c-42c4-9f63-de9146939a17",
+                    "/product-projections/c97e1aa9-08e0-4b77-aca5-b306c3eabb81",
                     // "/product-projections/c97e1aa9-08e0-4b77-aca5-b306c3eabb81",
                 );
                 setProductData(productResponse.data);
