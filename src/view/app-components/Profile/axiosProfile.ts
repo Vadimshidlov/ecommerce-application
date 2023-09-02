@@ -1,6 +1,6 @@
 import axios from "axios";
 import { AuthDataStore } from "service/AuthDataStore";
-import { BillingAdressType } from "view/app-components/Profile/profile-utils";
+import { BillingAdressType, DetailsType } from "view/app-components/Profile/profile-utils";
 
 // const CTP_AUTH_URL = "https://auth.europe-west1.gcp.commercetools.com";
 
@@ -209,4 +209,49 @@ export async function removeDefaultShippingAddressAPI() {
     axios.request(config).then((response) => {
         AUTH_DATA_STORE.setProfileVersion(JSON.stringify(response.data.version));
     });
+}
+
+export async function changeDetailsProfile(details: DetailsType) {
+    const version = +AUTH_DATA_STORE.getProfileVersion();
+    const token = AUTH_DATA_STORE.getAccessAuthToken();
+
+    const data = JSON.stringify({
+        version,
+        actions: [
+            {
+                action: "setFirstName",
+                firstName: details.firstName,
+            },
+            {
+                action: "setLastName",
+                lastName: details.lastName,
+            },
+            {
+                action: "changeEmail",
+                email: details.email,
+            },
+            {
+                action: "setDateOfBirth",
+                dateOfBirth: details.birthdayDate,
+            },
+        ],
+    });
+
+    const config = {
+        method: "post",
+        maxBodyLength: Infinity,
+        url: urlAPI,
+        headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+        },
+        data,
+    };
+
+    axios
+        .request(config)
+        .then((response) => {
+            AUTH_DATA_STORE.setProfileVersion(JSON.stringify(response.data.version));
+        })
+        .catch((e) => console.log(e));
 }

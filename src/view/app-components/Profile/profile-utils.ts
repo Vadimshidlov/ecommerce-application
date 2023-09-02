@@ -49,6 +49,6 @@ export async function getProfileDetails() {
         firstName: data.firstName,
         lastName: data.lastName,
         email: data.email,
-        birthdayDate: "",
+        birthdayDate: data.dateOfBirth,
     };
 }

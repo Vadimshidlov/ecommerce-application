@@ -8,6 +8,8 @@ import EditButton from "view/app-components/Profile/EditButton";
 import Text from "view/app-components/Text/text";
 import { getValidationErrorsDetails } from "shared/utils/getValidationErrorsDetails";
 import { TextInput } from "shared/components/TextInput/TextInput";
+import { DateInput } from "shared/components/DateInput/DateInput";
+import { changeDetailsProfile } from "view/app-components/Profile/axiosProfile";
 
 const getInitialDetails = (): DetailsType => ({
     firstName: "",
@@ -19,18 +21,16 @@ const getInitialDetails = (): DetailsType => ({
 export default function ProfileDetails() {
     const [edit, setEdit] = useState<boolean>(false);
     const [data, setData] = useState<DetailsType>(getInitialDetails());
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [validationError, setValidationError] = useState<DetailsType>(getInitialDetails());
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const detailsScheme = yup.object({
-        firstname: yup
+        firstName: yup
             .string()
             .required("Firstname is required field")
             .min(1, "Very short firstname")
             .max(25, "Very large firstname")
             .matches(/^[a-zA-Zа-яА-Я]*$/, "Only letters allowed"),
-        lastname: yup
+        lastName: yup
             .string()
             .required("Lastname is required field")
             .min(1, "Very short lastname")
@@ -61,8 +61,8 @@ export default function ProfileDetails() {
 
     const detailsHandler = async (userDetails: DetailsType) => {
         try {
-            console.log(userDetails);
             await detailsScheme.validate(userDetails, { abortEarly: false });
+            await changeDetailsProfile(data);
             setEdit(!edit);
         } catch (err) {
             if (err instanceof ValidationError) {
@@ -93,7 +93,6 @@ export default function ProfileDetails() {
 
         try {
             await detailsHandler(data);
-            // await changeBillingAdress(dataBilling);
         } catch (err) {
             if (err instanceof ValidationError) {
                 const errorsList = [...err.inner];
@@ -124,7 +123,7 @@ export default function ProfileDetails() {
                     </div>
                     {edit ? (
                         <>
-                            <div className="adress-line">
+                            <div className="details-line">
                                 First name:{" "}
                                 <TextInput
                                     type="text"
@@ -134,7 +133,7 @@ export default function ProfileDetails() {
                                         !validationError.firstName ? "" : "input__outline-error"
                                     }`}
                                     name="firstName"
-                                    id="fName"
+                                    id="firstDetailsName"
                                     onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                                         inputDetailsHandler(event, "firstName");
                                     }}
@@ -156,7 +155,7 @@ export default function ProfileDetails() {
                                         !validationError.lastName ? "" : "input__outline-error"
                                     }`}
                                     name="lastName"
-                                    id="lName"
+                                    id="lastName"
                                     onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                                         inputDetailsHandler(event, "lastName");
                                     }}
@@ -192,19 +191,19 @@ export default function ProfileDetails() {
                             </div>
                             <div className="adress-line">
                                 Birthday date:{" "}
-                                <TextInput
-                                    type="text"
-                                    placeHolder=""
+                                <DateInput
                                     value={data.birthdayDate}
-                                    className={`inter-400-font font-size_m adress__input ${
-                                        !validationError.firstName ? "" : "input__outline-error"
+                                    className={`birthday-date inter-400-font font-size_m adress__input ${
+                                        !validationError.birthdayDate ? "" : "input__outline-error"
                                     }`}
                                     name="birthdayDate"
-                                    id="bDate"
-                                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                                    id="birthdayDate"
+                                    onChangeHandler={(
+                                        event: React.ChangeEvent<HTMLInputElement>,
+                                    ) => {
                                         inputDetailsHandler(event, "birthdayDate");
                                     }}
-                                    onFocus={(e: FocusEvent) => {
+                                    onFocusHandler={(e: FocusEvent) => {
                                         inputDetailsOnFocusHandler(e, "birthdayDate");
                                     }}
                                     validationError={
