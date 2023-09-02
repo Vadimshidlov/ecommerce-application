@@ -12,6 +12,10 @@ class AxiosAuthService {
 
     private readonly AuthDataStoreApi = new AuthDataStore();
 
+    private readonly CTP_CLIENT_SECRET = process.env.REACT_APP_CTP_CLIENT_SECRET ?? "";
+
+    private readonly CTP_CLIENT_ID = process.env.REACT_APP_CTP_CLIENT_ID ?? "";
+
     constructor() {
         this.request = axios.create({
             baseURL: "https://auth.europe-west1.gcp.commercetools.com",
@@ -23,7 +27,7 @@ class AxiosAuthService {
         this.request.interceptors.request.use((config) => {
             const returnConfig = config;
             returnConfig.headers.Authorization = `Basic ${btoa(
-                `OLQF6DvQqgu9NiEaNj5l-ngD:6x4a7bsRL81dJoq1vsQ81yf3C0BiJrYH`,
+                `${this.CTP_CLIENT_ID}:${this.CTP_CLIENT_SECRET}`,
             )}`;
 
             return returnConfig;
@@ -45,9 +49,6 @@ class AxiosAuthService {
                         anonymousAccessToken &&
                         anonymousAccessToken
                     ) {
-                        const CTP_CLIENT_SECRET = process.env.REACT_APP_CLIENT_SECRET ?? "";
-                        const CTP_CLIENT_ID = process.env.REACT_APP_CTP_CLIENT_ID ?? "";
-
                         const response401Token = await axios.post<AnonymousAccessType>(
                             `https://auth.europe-west1.gcp.commercetools.com/oauth/token`,
                             {},
@@ -58,7 +59,7 @@ class AxiosAuthService {
                                 },
                                 headers: {
                                     Authorization: `Basic ${btoa(
-                                        `${CTP_CLIENT_ID}:${CTP_CLIENT_SECRET}`,
+                                        `${this.CTP_CLIENT_ID}:${this.CTP_CLIENT_SECRET}`,
                                     )}`,
                                     "Content-Type": "application/x-www-form-urlencoded",
                                 },

@@ -24,8 +24,9 @@ function ProductBody({ productResponse, checkedSize, setCheckedSize }: ProductBo
     const productSizes = productResponse.variants.map(
         (productVariant) => productVariant.attributes[0].value.key,
     );
-    const productDiscountPrice =
-        productResponse.masterVariant.prices[0].discounted.value.centAmount / 100;
+    const productDiscountPriceCent =
+        productResponse.masterVariant.prices[0].discounted?.value?.centAmount;
+    const productDiscountPrice = productDiscountPriceCent / 100;
     const productPrice = productResponse.masterVariant.prices[0].value.centAmount / 100;
     const [productCount, setProductCount] = useState<number>(1);
 

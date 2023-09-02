@@ -16,6 +16,10 @@ class AxiosApiService {
 
     private readonly API_URL = "https://api.europe-west1.gcp.commercetools.com/uwoc_ecm-app/";
 
+    private readonly CTP_CLIENT_SECRET = process.env.REACT_APP_CTP_CLIENT_SECRET ?? "";
+
+    private readonly CTP_CLIENT_ID = process.env.REACT_APP_CTP_CLIENT_ID ?? "";
+
     constructor() {
         this.request = axios.create({
             baseURL: `${this.API_URL}`,
@@ -51,12 +55,6 @@ class AxiosApiService {
                         const authRefreshToken = this.AuthDataStoreApi.getAuthRefreshToken();
 
                         if (error.response?.status === 401 && authAccessToken && authRefreshToken) {
-                            // const CTP_CLIENT_SECRET = "6x4a7bsRL81dJoq1vsQ81yf3C0BiJrYH";
-                            // const CTP_CLIENT_ID = "OLQF6DvQqgu9NiEaNj5l-ngD";
-                            const CTP_CLIENT_SECRET = process.env.REACT_APP_CLIENT_SECRET ?? "";
-                            const CTP_CLIENT_ID = process.env.REACT_APP_CTP_CLIENT_ID ?? "";
-                            console.log("inter auth 1");
-
                             const response401Token = await axios.post<AccessTokenType>(
                                 `https://auth.europe-west1.gcp.commercetools.com/oauth/token`,
                                 {},
@@ -67,7 +65,7 @@ class AxiosApiService {
                                     },
                                     headers: {
                                         Authorization: `Basic ${btoa(
-                                            `${CTP_CLIENT_ID}:${CTP_CLIENT_SECRET}`,
+                                            `${this.CTP_CLIENT_ID}:${this.CTP_CLIENT_SECRET}`,
                                         )}`,
                                         "Content-Type": "application/x-www-form-urlencoded",
                                     },
@@ -90,10 +88,6 @@ class AxiosApiService {
                             anonymousAccessToken &&
                             anonymousRefreshToken
                         ) {
-                            const CTP_CLIENT_SECRET = process.env.REACT_APP_CLIENT_SECRET ?? "";
-                            const CTP_CLIENT_ID = process.env.REACT_APP_CTP_CLIENT_ID ?? "";
-                            console.log("inter auth anon 2");
-
                             const response401Token = await axios.post<AnonymousAccessType>(
                                 `https://auth.europe-west1.gcp.commercetools.com/oauth/token`,
                                 {},
@@ -104,7 +98,7 @@ class AxiosApiService {
                                     },
                                     headers: {
                                         Authorization: `Basic ${btoa(
-                                            `${CTP_CLIENT_ID}:${CTP_CLIENT_SECRET}`,
+                                            `${this.CTP_CLIENT_ID}:${this.CTP_CLIENT_SECRET}`,
                                         )}`,
                                         "Content-Type": "application/x-www-form-urlencoded",
                                     },

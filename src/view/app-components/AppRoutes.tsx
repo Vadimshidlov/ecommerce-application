@@ -12,7 +12,7 @@ function AppRoutes() {
             <Route path="/" element={<MainPage />} />
             <Route path="login" element={<LoginPage />} />
             <Route path="registration" element={<RegistrationPage />} />
-            <Route path="product_page" element={<ProductPage />} />
+            <Route path="product_page/:productId" element={<ProductPage />} />
             <Route path="*" element={<PageNotFound />} />
         </Routes>
     );
