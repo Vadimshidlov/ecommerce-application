@@ -37,7 +37,7 @@ export default function ProductCard({
                         {price}
                     </Text>
                     <Text
-                        classes={["inter-600-font", "font-size_l", "color_grey", "discount-price"]}
+                        classes={["inter-400-font", "font-size_l", "color_grey", "discount-price"]}
                     >
                         {discountPrice}
                     </Text>

@@ -62,14 +62,11 @@ export function AuthForm() {
             await schema.validate({ email, password }, { abortEarly: false });
 
             await LOGIN_SERVICE.getAuthToken({ email, password });
-            console.log("1");
 
             await LOGIN_SERVICE.authenticateCustomer({ email, password });
-            console.log("2");
 
             successAuthorizationMessage();
             setIsAuth(true);
-            console.log("3");
 
             loginStore.setAuthStatus(true);
             console.log(loginStore.getAuthStatus(), `<--- after logint isAuth`);

@@ -3,7 +3,7 @@ import { ButtonIcon } from "shared/components/ButtonIcon/ButtonIcon";
 import { TextInput } from "shared/components/TextInput/TextInput";
 import { ISignUpForm } from "shared/utils/getInitialFormData";
 import { IStateErrors } from "shared/utils/getInitialFormErrorsData";
-import Text from "view/app-components/Text/text";
+import Text from "shared/components/Text/text";
 import closedEye from "assets/svg/closedEye.svg";
 import openEye from "assets/svg/openEye.svg";
 import { DateInput } from "shared/components/DateInput/DateInput";

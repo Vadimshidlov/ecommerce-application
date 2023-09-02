@@ -5,6 +5,7 @@ import plusButton from "assets/svg/Plus.svg";
 import minusButton from "assets/svg/Minus.svg";
 import { ButtonIcon } from "shared/components/ButtonIcon/ButtonIcon";
 import { ProductResponseType } from "view/app-components/ProductPage/types";
+import Text from "shared/components/Text/text";
 
 export type ProductBodyType = {
     productResponse: ProductResponseType;
@@ -32,8 +33,12 @@ function ProductBody({ productResponse, checkedSize, setCheckedSize }: ProductBo
 
     return (
         <div className="product__body">
-            <h2 className="product__name">{productResponse.name["en-US"]}</h2>
-            <div className="product__description">{productResponse.description["en-US"]}</div>
+            <h2 className="space-grotesk-500-font font-size_heading-5 color_black">
+                {productResponse.name["en-US"]}
+            </h2>
+            <Text classes={["inter-400-font", "font-size_s", "color_grey-dark"]}>
+                {productResponse.description["en-US"]}
+            </Text>
             <div className="product__price">
                 {productDiscountPrice ? (
                     <div className="product__price-container">

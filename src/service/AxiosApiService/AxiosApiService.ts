@@ -132,7 +132,7 @@ class AxiosApiService {
         config: AxiosRequestConfig | undefined,
         queryParams = "",
     ): Promise<AxiosResponse<D>> {
-        console.log("AxiosApiService ---> get");
+        // console.log("AxiosApiService ---> get");
         return this.request.get(queryParams, config);
     }
 }

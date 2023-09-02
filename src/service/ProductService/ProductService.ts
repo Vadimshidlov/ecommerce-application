@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from "axios";
-import { AuthDataStore } from "service/AuthDataStore";
-import { AuthService } from "service/AuthService";
+import { AuthDataStore } from "service/AuthDataStore/AuthDataStore";
+import { AuthService } from "service/AuthService/AuthService";
 // import { QueryParamsType } from "view/app-components/ShopPage/Filter/Filter";
 
 export default class ProductService {

@@ -1,7 +1,8 @@
 .product__container {
     display: flex;
-    column-gap: 20px;
-    max-width: 1128px;
+    padding: 52px 0;
+    column-gap: 60px;
+    max-width: 920px;
     padding-left: 10px;
     padding-right: 10px;
     margin: 0 auto;
@@ -13,10 +14,11 @@
     }
 
     .swiper__container-two {
-        min-width: 50%;
+        max-width: 50%;
         min-height: 500px;
 
         @media (max-width: 768px) {
+            max-width: 100%;
             min-height: 25rem;
             margin-bottom: 15px;
         }
@@ -95,6 +97,15 @@
         opacity: 0.7;
     }
 
+    .swiper-button-next,
+    .swiper-button-prev {
+        color: #121212;
+    }
+
+    .swiper-pagination-bullet-active {
+        background: #121212;
+    }
+
     .swiper-slide img {
         display: block;
         width: 100%;
@@ -164,37 +175,37 @@
 
     .product__color__black {
         background-color: black;
-        outline: 2px solid #CCC;
+        outline: 2px solid #ccc;
         border: 1px solid #999;
     }
 
     .product__color__white {
         background-color: whitesmoke;
-        outline: 2px solid #CCC;
+        outline: 2px solid #ccc;
         border: 1px solid #999;
     }
 
     .product__color__brown {
         background-color: brown;
-        outline: 2px solid #CCC;
+        outline: 2px solid #ccc;
         border: 1px solid #999;
     }
 
     .product__color__blue {
         background-color: blue;
-        outline: 2px solid #CCC;
+        outline: 2px solid #ccc;
         border: 1px solid #999;
     }
 
-    .product__color__yellow{
+    .product__color__yellow {
         background-color: yellow;
-        outline: 2px solid #CCC;
+        outline: 2px solid #ccc;
         border: 1px solid #999;
     }
 
-    .product__color__green{
+    .product__color__green {
         background-color: green;
-        outline: 2px solid #CCC;
+        outline: 2px solid #ccc;
         border: 1px solid #999;
     }
 

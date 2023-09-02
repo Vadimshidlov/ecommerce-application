@@ -3,12 +3,12 @@ import ProductCard from "shared/components/ProductCard/ProductCard";
 import PageHeading from "shared/components/PageHeading/PageHeading";
 import { Filter, IQueryParams } from "view/app-components/ShopPage/Filter/Filter";
 import { Sorting } from "view/app-components/ShopPage/Sorting/Sorting";
-import img from "assets/test-img.jpg";
-import ProductService from "service/ProductService";
-import { AuthService } from "service/AuthService";
-import { AuthDataStore } from "service/AuthDataStore";
+import img from "assets/no-img.png";
+import ProductService from "service/ProductService/ProductService";
+import { AuthService } from "service/AuthService/AuthService";
+import { AuthDataStore } from "service/AuthDataStore/AuthDataStore";
 import { useCategorie } from "providers/FilterProvider";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export interface IState {
     [type: string]: string[];
@@ -56,7 +56,7 @@ if (!token) {
 let { results } = (await PRODUCT_SREVICE.getAllProducts()).data;
 
 export function ShopPage() {
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
     // const [queryParams, setQueryParams] = useState<string>("");
     const [sortParams, setSortParams] = useState<string>("");
     const [categoryParams, setCategoryParams] = useState<string>("");
@@ -193,37 +193,36 @@ export function ShopPage() {
                     />
                     <div className="shop-page__cards-container">
                         {products.map((product) => (
-                            <ProductCard
-                                sale={!!product?.masterVariant?.prices[0]?.discounted}
-                                key={product.id}
-                                id={product.id}
-                                img={
-                                    product.masterVariant.images &&
-                                    product.masterVariant.images.length > 0
-                                        ? product.masterVariant.images[0].url
-                                        : img
-                                }
-                                title={product.name["en-US"]}
-                                description={`${product.description["en-US"].slice(0, 60)}...`}
-                                price={`$${
-                                    product?.masterVariant?.prices[0]?.discounted
-                                        ? product.masterVariant.prices[0].discounted.value
-                                              .centAmount / 100
-                                        : product.masterVariant.prices[0].value.centAmount / 100
-                                }`}
-                                discountPrice={`${
-                                    product.masterVariant.prices &&
-                                    product?.masterVariant?.prices[0]?.discounted
-                                        ? `$${
-                                              product.masterVariant.prices[0].value.centAmount / 100
-                                          }`
-                                        : ""
-                                }`}
-                                onClick={() => {
-                                    navigate(`/shop/${product.id}`);
-                                    console.log(product.id);
-                                }}
-                            />
+                            <Link key={product.id} to={`/shop/${product.id}`}>
+                                <ProductCard
+                                    sale={!!product?.masterVariant?.prices[0]?.discounted}
+                                    key={product.id}
+                                    id={product.id}
+                                    img={
+                                        product.masterVariant.images &&
+                                        product.masterVariant.images.length > 0
+                                            ? product.masterVariant.images[0].url
+                                            : img
+                                    }
+                                    title={product.name["en-US"]}
+                                    description={`${product.description["en-US"].slice(0, 60)}...`}
+                                    price={`$${
+                                        product?.masterVariant?.prices[0]?.discounted
+                                            ? product.masterVariant.prices[0].discounted.value
+                                                  .centAmount / 100
+                                            : product.masterVariant.prices[0].value.centAmount / 100
+                                    }`}
+                                    discountPrice={`${
+                                        product.masterVariant.prices &&
+                                        product?.masterVariant?.prices[0]?.discounted
+                                            ? `$${
+                                                  product.masterVariant.prices[0].value.centAmount /
+                                                  100
+                                              }`
+                                            : ""
+                                    }`}
+                                />
+                            </Link>
                         ))}
                     </div>
                 </div>

@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import Text from "shared/components/Text/text";
 import { Button } from "shared/components/button/Button";
-import ProductService from "service/ProductService";
+import ProductService from "service/ProductService/ProductService";
 // import { useCategorie } from "providers/FilterProvider";
 
 export interface IQueryParams {
