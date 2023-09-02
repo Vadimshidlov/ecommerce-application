@@ -10,6 +10,8 @@
     width: 228px;
     // height: 370px;
     gap: 12px;
+    cursor: pointer;
+
     // transition: box-shadow 0.3s;
     // &:hover {
     //     box-shadow: 0 0 5px #ccc;
@@ -36,7 +38,6 @@
             height: 100%;
             object-fit: cover;
             object-position: center;
-            cursor: pointer;
             transition: all 0.3s;
 
             &:hover {

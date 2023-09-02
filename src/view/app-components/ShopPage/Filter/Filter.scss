@@ -38,15 +38,15 @@
             span {
                 border-bottom: 1px solid #000;
                 font-weight: 600;
-                &::before {
-                    content: "";
-                    position: absolute;
-                    top: 0;
-                    left: 0;
-                    width: 100%;
-                    height: 2px;
-                    background-color: #121212;
-                }
+                // &::before {
+                //     content: "";
+                //     position: absolute;
+                //     top: 0;
+                //     left: 0;
+                //     width: 100%;
+                //     height: 2px;
+                //     background-color: #121212;
+                // }
             }
         }
 
@@ -109,6 +109,10 @@
 
         #color-green {
             background-color: $color-green;
+        }
+
+        #color-red {
+            background-color: $color-red;
         }
     }
 

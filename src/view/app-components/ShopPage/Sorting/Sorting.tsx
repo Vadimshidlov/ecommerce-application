@@ -29,17 +29,20 @@ export function Sorting({ count, onChangeSort }: ISorting) {
             <Text classes={["inter-400-font", "font-size_m", "color_grey-dark"]}>{`${
                 count > 1 ? `${count} products` : `${count} product`
             }`}</Text>
-            <select
-                name="sorting__option"
-                id="sorting-select"
-                className="inter-400-font font-size_m color_black"
-                onChange={clickOption}
-            >
-                <option value="price-asc">Price ascending</option>
-                <option value="price-desc">Price descending</option>
-                <option value="name-asc">Name A-Z</option>
-                <option value="name-desc">Name Z-A</option>
-            </select>
+            <div className="sorting__wrapper">
+                <Text classes={["inter-400-font", "font-size_m", "color_grey-dark"]}>Sort by:</Text>
+                <select
+                    name="sorting__option"
+                    id="sorting-select"
+                    className="inter-400-font font-size_m color_black"
+                    onChange={clickOption}
+                >
+                    <option value="price-asc">Price ascending</option>
+                    <option value="price-desc">Price descending</option>
+                    <option value="name-asc">Name A-Z</option>
+                    <option value="name-desc">Name Z-A</option>
+                </select>
+            </div>
         </div>
     );
 }

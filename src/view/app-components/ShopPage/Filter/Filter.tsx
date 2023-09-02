@@ -141,6 +141,14 @@ export function Filter({ onChangeFn, onChangeCategory }: IValue) {
                             onChangeFn({ param: "%22green%22", type: "color" });
                         }}
                     />
+                    <input
+                        type="checkbox"
+                        id="color-red"
+                        className="filter__colors-item"
+                        onChange={() => {
+                            onChangeFn({ param: "%22red%22", type: "color" });
+                        }}
+                    />
                 </div>
             </div>
             <div className="filter__size">
