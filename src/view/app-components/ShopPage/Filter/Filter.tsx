@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import Text from "shared/components/Text/text";
 import { Button } from "shared/components/button/Button";
 import ProductService from "service/ProductService/ProductService";
+import { Search } from "shared/components/Search/Search";
 // import { useCategorie } from "providers/FilterProvider";
 
 export interface IQueryParams {
@@ -43,7 +44,7 @@ export function Filter({ onChangeFn, onChangeCategory }: IValue) {
     return (
         <div className="filter">
             <Text classes={["inter-600-font", "font-size_2xl", "color_black"]}>Filter</Text>
-
+            <Search onChangeFn={onChangeFn} />
             <div className="filter__categories-list">
                 <div className="filter__categorie">
                     <Button
@@ -157,68 +158,68 @@ export function Filter({ onChangeFn, onChangeCategory }: IValue) {
                     <div className="filter__size-items">
                         <input
                             type="checkbox"
-                            id="size-xs"
+                            id="size-2"
                             className="filter__size-item"
                             onChange={() => {
-                                onChangeFn({ param: "%22xs%22", type: "size" });
+                                onChangeFn({ param: "%222%22", type: "size" });
                             }}
                         />
-                        <label htmlFor="size-xs">XS</label>
+                        <label htmlFor="size-xs">2</label>
                     </div>
                     <div className="filter__size-items">
                         <input
                             type="checkbox"
-                            id="size-s"
+                            id="size-4"
                             className="filter__size-item"
                             onChange={() => {
-                                onChangeFn({ param: "%22s%22", type: "size" });
+                                onChangeFn({ param: "%224%22", type: "size" });
                             }}
                         />
-                        <label htmlFor="size-s">S</label>
+                        <label htmlFor="size-s">4</label>
                     </div>
                     <div className="filter__size-items">
                         <input
                             type="checkbox"
-                            id="size-m"
+                            id="size-6"
                             className="filter__size-item"
                             onChange={() => {
-                                onChangeFn({ param: "%22m%22", type: "size" });
+                                onChangeFn({ param: "%226%22", type: "size" });
                             }}
                         />
-                        <label htmlFor="size-m">M</label>
+                        <label htmlFor="size-m">6</label>
                     </div>
                     <div className="filter__size-items">
                         <input
                             type="checkbox"
-                            id="size-l"
+                            id="size-10"
                             className="filter__size-item"
                             onChange={() => {
-                                onChangeFn({ param: "%22l%22", type: "size" });
+                                onChangeFn({ param: "%2210%22", type: "size" });
                             }}
                         />
-                        <label htmlFor="size-l">L</label>
+                        <label htmlFor="size-l">10</label>
                     </div>
                     <div className="filter__size-items">
                         <input
                             type="checkbox"
-                            id="size-xl"
+                            id="size-14"
                             className="filter__size-item"
                             onChange={() => {
-                                onChangeFn({ param: "%22xl%22", type: "size" });
+                                onChangeFn({ param: "%2214%22", type: "size" });
                             }}
                         />
-                        <label htmlFor="size-xl">XL</label>
+                        <label htmlFor="size-xl">14</label>
                     </div>
                     <div className="filter__size-items">
                         <input
                             type="checkbox"
-                            id="size-xxl"
+                            id="size-16"
                             className="filter__size-item"
                             onChange={() => {
-                                onChangeFn({ param: "%22xxl%22", type: "size" });
+                                onChangeFn({ param: "%2216%22", type: "size" });
                             }}
                         />
-                        <label htmlFor="size-2xl">XXL</label>
+                        <label htmlFor="size-2xl">16</label>
                     </div>
                 </div>
             </div>

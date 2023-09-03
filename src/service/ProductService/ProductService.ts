@@ -112,13 +112,13 @@ export default class ProductService {
     //     return response;
     // }
 
-    public async getProductURL(path: string): Promise<AxiosResponse> {
+    public async getProductURL(param: string): Promise<AxiosResponse> {
         const token =
             this.AUTH_DATA_STORE.getAccessAuthToken() ||
             this.AUTH_DATA_STORE.getAnonymousAccessToken();
 
         const response: AxiosResponse = await axios({
-            url: `${this.API_URL}/${this.PROJECT_KEY}/product-projections/search?${path}`,
+            url: `${this.API_URL}/${this.PROJECT_KEY}/product-projections/search?${param}`,
             method: "GET",
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -128,4 +128,21 @@ export default class ProductService {
 
         return response;
     }
+
+    // public async getProductsSearch(param: string): Promise<AxiosResponse> {
+    //     const token =
+    //         this.AUTH_DATA_STORE.getAccessAuthToken() ||
+    //         this.AUTH_DATA_STORE.getAnonymousAccessToken();
+
+    //     const response: AxiosResponse = await axios({
+    //         url: `${this.API_URL}/${this.PROJECT_KEY}/product-projections/search?fuzzy=true&text.en-US=${param}`,
+    //         method: "GET",
+    //         headers: {
+    //             Authorization: `Bearer ${token}`,
+    //             "Content-Type": "application/json",
+    //         },
+    //     });
+
+    //     return response;
+    // }
 }

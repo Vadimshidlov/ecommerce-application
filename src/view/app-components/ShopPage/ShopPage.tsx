@@ -56,70 +56,23 @@ if (!token) {
 let { results } = (await PRODUCT_SREVICE.getAllProducts()).data;
 
 export function ShopPage() {
-    // const navigate = useNavigate();
-    // const [queryParams, setQueryParams] = useState<string>("");
+    const { categorie } = useCategorie();
     const [sortParams, setSortParams] = useState<string>("");
     const [categoryParams, setCategoryParams] = useState<string>("");
     const [products, setProducts] = useState<IProduct[]>([]);
-    const { categorie } = useCategorie();
-
     const [objParams, setObjParams] = useState<IState>({});
-
-    // function collectUrlParams() {
-    //     const keys = Object.keys(objParams);
-    //     const param: string[] = [];
-    //     keys.forEach((key) => {
-    //         param.push(`filter=variants.attributes.${key}.key:${objParams[key].join(",")}`);
-    //     });
-
-    //     console.log(param.join("&"));
-    // }
-    // collectUrlParams();
-
-    // function collectColorParams({ param, type }: IQueryParams) {
-    //     if (type === "color") {
-    //         setQueryParams((prevState) => {
-    //             if (prevState === "") {
-    //                 return `filter=variants.attributes.color.key:${param}`;
-    //             }
-    //             if (prevState.includes(param)) {
-    //                 const newUrl = `${prevState.replace(param, "").replace(/,/g, "")}`;
-
-    //                 // console.log(newUrl);
-    //                 if (newUrl === "filter=variants.attributes.color.key:") {
-    //                     console.log("color--ok");
-    //                     return "";
-    //                 }
-
-    //                 return newUrl;
-    //             }
-    //             return [prevState, param].join(",");
-    //         });
-    //     } else if (type === "size") {
-    //         setQueryParams((prevState) => {
-    //             if (prevState === "") {
-    //                 return `filter=variants.attributes.size.key:"${param}"`;
-    //             }
-    //             if (prevState.includes(param)) {
-    //                 const newUrl = `${prevState.replace(param, "").replace(/,""/g, "")}`;
-
-    //                 if (newUrl === 'filter=variants.attributes.size.key:""') {
-    //                     console.log("size--ok");
-    //                     return "";
-    //                 }
-
-    //                 return newUrl;
-    //             }
-    //             return `${prevState},"${param}"`;
-    //         });
-    //     }
-    // }
 
     function collectParams({ param, type }: IQueryParams) {
         setObjParams((prevData) => {
+            if (type === "search") {
+                return {
+                    ...prevData,
+                    [type]: param ? [param] : [],
+                };
+            }
             const values = prevData[type] || [];
             const newValues = values.includes(param)
-                ? values.filter((value) => value !== param)
+                ? (values as string[]).filter((value) => value !== param)
                 : [...values, param];
             return {
                 ...prevData,
@@ -140,8 +93,11 @@ export function ShopPage() {
         async function setParams() {
             const keys = Object.keys(objParams);
             const params: string[] = [];
+
             keys.forEach((key) => {
-                if (objParams[key].length > 0) {
+                if (key === "search" && objParams[key].length > 0) {
+                    params.push(`fuzzy=true&text.en-US=${objParams[key].join("")}`);
+                } else if (objParams[key].length > 0) {
                     params.push(
                         `filter=variants.attributes.${key}.key:${objParams[key].join(",")}`,
                     );
@@ -177,7 +133,6 @@ export function ShopPage() {
             <div className="shop-page__wrapper">
                 <Filter
                     onChangeFn={({ param, type }) => {
-                        // collectColorParams({ param, type });
                         collectParams({ param, type });
                     }}
                     onChangeCategory={(param: string) => {
