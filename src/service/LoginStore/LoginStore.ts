@@ -1,7 +1,7 @@
 export class LoginStore {
     private static instance: LoginStore;
 
-    private isAuth: boolean = false;
+    private isAuthState: boolean = false;
 
     public static getLoginStore(): LoginStore {
         if (!this.instance) {
@@ -11,11 +11,11 @@ export class LoginStore {
         return this.instance;
     }
 
-    public getAuthStatus(): boolean {
-        return this.isAuth;
+    public isAuth(): boolean {
+        return this.isAuthState;
     }
 
     public setAuthStatus(value: boolean) {
-        this.isAuth = value;
+        this.isAuthState = value;
     }
 }

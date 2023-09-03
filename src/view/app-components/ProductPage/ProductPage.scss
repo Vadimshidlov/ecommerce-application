@@ -44,7 +44,7 @@
         top: 9%;
 
         @media (max-width: 768px) {
-            width: 100%;
+            width: 91%;
         }
     }
 
@@ -153,6 +153,18 @@
 
     .swiper__image-container {
         cursor: pointer;
+    }
+
+    .swiper__image-container__modal {
+        cursor: pointer;
+    }
+
+    .swiper__image-container__modal img{
+        height: 45rem;
+
+        @media (max-width: 768px) {
+            height: 30rem;
+        }
     }
 
     .swiper_modal-background {

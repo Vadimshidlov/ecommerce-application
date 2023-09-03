@@ -41,6 +41,8 @@ function ProductBody({ productResponse, checkedSize, setCheckedSize }: ProductBo
 
             console.log(categoriesNamesList, `categoriesNamesList`);
             setCategoriesName(categoriesNamesList);
+
+            console.log(productResponse, "productResponse");
         };
 
         getProductCategories();
@@ -54,9 +56,25 @@ function ProductBody({ productResponse, checkedSize, setCheckedSize }: ProductBo
     });
 
     const productColorClass = `product__color product__color__${productColor}`;
-    const productSizes = productResponse.variants.map(
-        (productVariant) => productVariant.attributes[0].value.key,
-    );
+    const masterSize: string[] = [];
+    productResponse.masterVariant.attributes.forEach((attribute) => {
+        if (attribute.name === "size") {
+            masterSize.push(attribute.value.key);
+        }
+    });
+
+    const productSizesVariants = productResponse.variants.map((productVariant) => {
+        let size = "";
+        productVariant.attributes.forEach((attribute) => {
+            if (attribute.name === "size") {
+                size = attribute.value.key;
+            }
+        });
+
+        return size;
+    });
+
+    const productSizes: string[] = [...masterSize, ...productSizesVariants];
     const productDiscountPriceCent =
         productResponse.masterVariant.prices[0].discounted?.value?.centAmount;
     const productDiscountPrice = productDiscountPriceCent / 100;
