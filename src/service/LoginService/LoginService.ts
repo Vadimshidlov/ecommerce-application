@@ -86,6 +86,7 @@ export default class LoginService {
 
     public async authenticateCustomer({ email, password }: LoginType): Promise<void> {
         const ACCESS_TOKEN = this.AUTH_DATA_STORE.getAccessAuthToken();
+        console.log(ACCESS_TOKEN);
         const response: AxiosResponse<CustomerType> = await axios({
             url: `${this.API_URL}/${this.PROJECT_KEY}/login`,
             method: "POST",

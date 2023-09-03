@@ -1,6 +1,10 @@
 import axios from "axios";
 import { AuthDataStore } from "service/AuthDataStore";
-import { BillingAdressType, DetailsType } from "view/app-components/Profile/profile-utils";
+import {
+    BillingAdressType,
+    ChangePasswordType,
+    DetailsType,
+} from "view/app-components/Profile/profile-utils";
 
 // const CTP_AUTH_URL = "https://auth.europe-west1.gcp.commercetools.com";
 
@@ -254,4 +258,36 @@ export async function changeDetailsProfile(details: DetailsType) {
             AUTH_DATA_STORE.setProfileVersion(JSON.stringify(response.data.version));
         })
         .catch((e) => console.log(e));
+}
+
+export async function changePasswordProfile(dataPasswords: ChangePasswordType) {
+    const version = +AUTH_DATA_STORE.getProfileVersion();
+    const token = AUTH_DATA_STORE.getAccessAuthToken();
+    const url = `${urlAPI}/password`;
+
+    const data = JSON.stringify({
+        version,
+        currentPassword: dataPasswords.currentPassword,
+        newPassword: dataPasswords.newPassword,
+    });
+
+    const config = {
+        method: "post",
+        maxBodyLength: Infinity,
+        url,
+        headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+        },
+        data,
+    };
+
+    axios
+        .request(config)
+        .then((response) => {
+            AUTH_DATA_STORE.setProfileVersion(JSON.stringify(response.data.version));
+        })
+        .catch((error) => {
+            console.log(error);
+        });
 }

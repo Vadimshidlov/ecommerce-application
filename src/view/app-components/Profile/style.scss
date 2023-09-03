@@ -40,17 +40,18 @@ a {
 .profile-container {
     display: grid;
     grid-template-columns: 20% auto;
-    margin-left: 4rem;
+    margin-left: 5vw;
     margin-top: 2rem;
 }
 
 .adress,
-.details {
+.details,
+.password {
     display: flex;
-    width: 424px;
-    padding: 32px;
+    width: 55vw;
+    padding: 4vw;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
     gap: 10px;
     border-radius: 6px;
     border: 1px solid var(--black-300, #CBCBCB);
@@ -58,10 +59,11 @@ a {
 }
 
 .adress-edit,
-.details-edit {
+.details-edit,
+.password-edit {
     display: flex;
-    width: 424px;
-    padding: 32px;
+    width: 55vw;
+    padding: 4vw;
     flex-direction: column;
     align-items: flex-start;
     gap: 10px;
@@ -90,7 +92,7 @@ a {
 
 .adresses,
 .details-form,
-.change-password {
+.password {
     margin-left: 3rem;
 }
 

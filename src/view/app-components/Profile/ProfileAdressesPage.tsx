@@ -111,7 +111,6 @@ export default function ProfileAdressesPage() {
             setDefaultShippingAddress(await isShippingDefault());
         };
         fetchData();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const inputBillingAddressHandler = async (

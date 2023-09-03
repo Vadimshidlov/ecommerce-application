@@ -15,6 +15,11 @@ export type BillingAdressType = {
     country: string;
 };
 
+export type ChangePasswordType = {
+    currentPassword: string;
+    newPassword: string;
+};
+
 export async function getInitialProfileAdressBilling() {
     const data = await getCustomer();
     return data.addresses[0];
@@ -51,4 +56,9 @@ export async function getProfileDetails() {
         email: data.email,
         birthdayDate: data.dateOfBirth,
     };
+}
+
+export async function getEmail() {
+    const data = await getCustomer();
+    return data.email;
 }
