@@ -9,7 +9,10 @@ import openEye from "assets/svg/openEye.svg";
 import { TextInput } from "shared/components/TextInput/TextInput";
 import { ChangePasswordType, getEmail } from "view/app-components/Profile/profile-utils";
 import { getValidationErrorsPassword } from "shared/utils/getValidationErrorsPassword";
-import { successAuthorizationMessage } from "shared/utils/notifyMessages";
+import {
+    errorAuthorizationMessage,
+    successAuthorizationMessage,
+} from "shared/utils/notifyMessages";
 import { ButtonIcon } from "shared/components/ButtonIcon/ButtonIcon";
 import { changePasswordProfile } from "view/app-components/Profile/axiosProfile";
 import LoginService from "service/LoginService/LoginService";
@@ -18,6 +21,7 @@ import { useNavigate } from "react-router-dom";
 import { AuthService } from "service/AuthService/AuthService";
 import { LoginStore } from "service/LoginStore/LoginStore";
 import { AuthDataStore } from "service/AuthDataStore/AuthDataStore";
+import { AxiosError } from "axios";
 
 const getInitialPasswords = (): ChangePasswordType => ({
     currentPassword: "",
@@ -98,6 +102,8 @@ export default function ProfilePassword() {
         try {
             await passwordScheme.validate(data, { abortEarly: false });
             await changePasswordProfile(data);
+
+            console.log(`AFTER ERROR PASSWORD`);
             authDataStore.removeTokenFromStore("accessAuthToken");
             authDataStore.removeTokenFromStore("refreshAuthToken");
             await loginService.current.getAuthToken({ email, password: data.newPassword });
@@ -105,12 +111,15 @@ export default function ProfilePassword() {
             await loginService.current.authenticateCustomer({ email, password: data.newPassword });
             setData(getInitialPasswords());
         } catch (err) {
+            console.log("catch err");
             if (err instanceof ValidationError) {
                 const errorsList = [...err.inner];
                 setValidationError((prevState) => ({
                     ...prevState,
                     ...getValidationErrorsPassword(errorsList),
                 }));
+            } else {
+                errorAuthorizationMessage();
             }
         }
     };

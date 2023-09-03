@@ -270,32 +270,50 @@ export async function changePasswordProfile(dataPasswords: ChangePasswordType) {
     const token = AUTH_DATA_STORE.getAccessAuthToken();
     const url = `${urlAPI}/password`;
 
-    const data = JSON.stringify({
+    // const data = JSON.stringify({
+    //     version,
+    //     currentPassword: dataPasswords.currentPassword,
+    //     newPassword: dataPasswords.newPassword,
+    // });
+    //
+    const data = {
         version,
         currentPassword: dataPasswords.currentPassword,
         newPassword: dataPasswords.newPassword,
-    });
+    };
 
-    const config = {
-        method: "post",
-        maxBodyLength: Infinity,
-        url,
+    // const config = {
+    //     method: "post",
+    //     maxBodyLength: Infinity,
+    //     url,
+    //     headers: {
+    //         Authorization: `Bearer ${token}`,
+    //         "Content-Type": "application/json",
+    //     },
+    //     data,
+    // };
+
+    const response = await axios.post<ChangePasswordType>(url, data, {
         headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
         },
-        data,
-    };
+    });
 
-    axios
-        .request(config)
-        .then((response) => {
-            if (response.status !== 200) {
-                throw Error("User with such credentials was not found");
-            }
-            AUTH_DATA_STORE.setProfileVersion(JSON.stringify(response.data.version));
-        })
-        .catch((error) => {
-            console.log(error);
-        });
+    if (response.status !== 200) {
+        throw Error("User with such credentials was not found");
+    }
+
+    // axios
+    //     .request(config)
+    //     .then((response) => {
+    //         AUTH_DATA_STORE.setProfileVersion(JSON.stringify(response.data.version));
+    //     })
+    //     .catch((error) => {
+    //         console.log(error, `123,error`);
+    //         throw new Error("123");
+    //         // if (axios.isAxiosError(error)) {
+    //         //     throw error;
+    //         // }
+    //     });
 }
