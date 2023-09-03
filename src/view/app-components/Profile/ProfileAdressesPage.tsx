@@ -250,7 +250,7 @@ export default function ProfileAdressesPage() {
                                     City:{" "}
                                     <TextInput
                                         type="text"
-                                        placeHolder=""
+                                        placeholder=""
                                         value={dataBilling.city}
                                         className={`inter-400-font font-size_m adress__input ${
                                             !validationError.city ? "" : "input__outline-error"
@@ -272,7 +272,7 @@ export default function ProfileAdressesPage() {
                                     Street:{" "}
                                     <TextInput
                                         type="text"
-                                        placeHolder=""
+                                        placeholder=""
                                         id="billingStreet"
                                         value={dataBilling.streetName}
                                         className={`inter-400-font font-size_m adress__input ${
@@ -298,7 +298,7 @@ export default function ProfileAdressesPage() {
                                     Postal Code:{" "}
                                     <TextInput
                                         type="text"
-                                        placeHolder=""
+                                        placeholder=""
                                         id="billingCode"
                                         value={dataBilling.postalCode}
                                         className={`inter-400-font font-size_m adress__input ${
@@ -393,7 +393,7 @@ export default function ProfileAdressesPage() {
                                     City:{" "}
                                     <TextInput
                                         type="text"
-                                        placeHolder=""
+                                        placeholder=""
                                         value={dataShipping.city}
                                         className={`inter-400-font font-size_m adress__input ${
                                             !validationErrorShipping.city
@@ -419,7 +419,7 @@ export default function ProfileAdressesPage() {
                                     Street:{" "}
                                     <TextInput
                                         type="text"
-                                        placeHolder=""
+                                        placeholder=""
                                         id="shippingStreet"
                                         value={dataShipping.streetName}
                                         className={`inter-400-font font-size_m adress__input ${
@@ -445,7 +445,7 @@ export default function ProfileAdressesPage() {
                                     Postal Code:{" "}
                                     <TextInput
                                         type="text"
-                                        placeHolder=""
+                                        placeholder=""
                                         id="shippingCode"
                                         value={dataShipping.postalCode}
                                         className={`inter-400-font font-size_m adress__input ${

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { AuthDataStore } from "service/AuthDataStore";
+import { AuthDataStore } from "service/AuthDataStore/AuthDataStore";
 import {
     BillingAdressType,
     ChangePasswordType,

@@ -127,7 +127,7 @@ export default function ProfileDetails() {
                                 First name:{" "}
                                 <TextInput
                                     type="text"
-                                    placeHolder=""
+                                    placeholder=""
                                     value={data.firstName}
                                     className={`inter-400-font font-size_m adress__input ${
                                         !validationError.firstName ? "" : "input__outline-error"
@@ -149,7 +149,7 @@ export default function ProfileDetails() {
                                 Last name:{" "}
                                 <TextInput
                                     type="text"
-                                    placeHolder=""
+                                    placeholder=""
                                     value={data.lastName}
                                     className={`inter-400-font font-size_m adress__input ${
                                         !validationError.lastName ? "" : "input__outline-error"
@@ -171,7 +171,7 @@ export default function ProfileDetails() {
                                 Email:{" "}
                                 <TextInput
                                     type="text"
-                                    placeHolder=""
+                                    placeholder=""
                                     value={data.email}
                                     className={`inter-400-font font-size_m adress__input ${
                                         !validationError.email ? "" : "input__outline-error"
@@ -198,12 +198,10 @@ export default function ProfileDetails() {
                                     }`}
                                     name="birthdayDate"
                                     id="birthdayDate"
-                                    onChangeHandler={(
-                                        event: React.ChangeEvent<HTMLInputElement>,
-                                    ) => {
+                                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                                         inputDetailsHandler(event, "birthdayDate");
                                     }}
-                                    onFocusHandler={(e: FocusEvent) => {
+                                    onFocus={(e: FocusEvent) => {
                                         inputDetailsOnFocusHandler(e, "birthdayDate");
                                     }}
                                     validationError={

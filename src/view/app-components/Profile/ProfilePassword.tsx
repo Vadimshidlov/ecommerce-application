@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { FocusEvent, useEffect, useState } from "react";
+import React, { FocusEvent, useEffect, useRef, useState } from "react";
 import * as yup from "yup";
 import { ValidationError } from "yup";
 import { Button } from "shared/components/button/Button";
@@ -14,8 +14,9 @@ import { ButtonIcon } from "shared/components/ButtonIcon/ButtonIcon";
 import { changePasswordProfile } from "view/app-components/Profile/axiosProfile";
 import LoginService from "service/LoginService/LoginService";
 import { useAuth } from "auth-context";
-import { AuthService } from "service/AuthService";
 import { useNavigate } from "react-router-dom";
+import { AuthService } from "service/AuthService/AuthService";
+import { LoginStore } from "service/LoginStore/LoginStore";
 
 const getInitialPasswords = (): ChangePasswordType => ({
     currentPassword: "",
@@ -35,6 +36,8 @@ export default function ProfilePassword() {
     );
     const [inputTypeOld, setInputTypeOld] = useState<string>("password");
     const [inputTypeNew, setInputTypeNew] = useState<string>("password");
+    const loginService = useRef(new LoginService());
+    const loginStore = LoginStore.getLoginStore();
 
     useEffect(() => {
         const fetchData = async () => {
@@ -93,7 +96,9 @@ export default function ProfilePassword() {
         try {
             await passwordScheme.validate(data, { abortEarly: false });
             await changePasswordProfile(data);
-            // const password = data.newPassword;
+            await loginService.current.getAuthToken({ email, password: data.newPassword });
+            loginStore.setAuthStatus(true);
+            await loginService.current.authenticateCustomer({ email, password: data.newPassword });
             console.log(data.newPassword, email);
         } catch (err) {
             if (err instanceof ValidationError) {
@@ -124,7 +129,7 @@ export default function ProfilePassword() {
                     }`}
                     id="currentPassword"
                     value={data.currentPassword}
-                    placeHolder="type password..."
+                    placeholder="type password..."
                     validationError={
                         validationError.currentPassword ? validationError.currentPassword : ""
                     }
@@ -152,7 +157,7 @@ export default function ProfilePassword() {
                     }`}
                     id="newPassword"
                     value={data.newPassword}
-                    placeHolder="type password..."
+                    placeholder="type password..."
                     validationError={validationError.newPassword ? validationError.newPassword : ""}
                 />
                 <ButtonIcon
@@ -170,4 +175,7 @@ export default function ProfilePassword() {
             />
         </form>
     );
+}
+function handleSuccessRegistration() {
+    throw new Error("Function not implemented.");
 }

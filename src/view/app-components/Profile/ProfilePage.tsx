@@ -5,7 +5,7 @@ import Navbar from "view/app-components/Profile/Navbar";
 import Text from "view/app-components/Text/text";
 import "view/app-components/Profile/style.scss";
 import { getCustomer } from "view/app-components/Profile/axiosProfile";
-import { AuthDataStore } from "service/AuthDataStore";
+import { AuthDataStore } from "service/AuthDataStore/AuthDataStore";
 
 export default function ProfilePage() {
     const navigate = useNavigate();

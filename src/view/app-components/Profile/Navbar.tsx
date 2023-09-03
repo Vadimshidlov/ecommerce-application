@@ -1,7 +1,7 @@
 import { useAuth } from "auth-context";
 import React from "react";
 import { NavLink } from "react-router-dom";
-import { AuthService } from "service/AuthService";
+import { AuthService } from "service/AuthService/AuthService";
 import "view/app-components/Profile/style.scss";
 
 export default function Navbar() {
