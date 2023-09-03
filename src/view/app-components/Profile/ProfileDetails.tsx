@@ -10,6 +10,8 @@ import { getValidationErrorsDetails } from "shared/utils/getValidationErrorsDeta
 import { TextInput } from "shared/components/TextInput/TextInput";
 import { DateInput } from "shared/components/DateInput/DateInput";
 import { changeDetailsProfile } from "view/app-components/Profile/axiosProfile";
+import { AxiosError } from "axios";
+import { errorRegistrationMessage } from "shared/utils/notifyMessages";
 
 const getInitialDetails = (): DetailsType => ({
     firstName: "",
@@ -63,7 +65,7 @@ export default function ProfileDetails() {
         try {
             await detailsScheme.validate(userDetails, { abortEarly: false });
             await changeDetailsProfile(data);
-            setEdit(!edit);
+            // setEdit(!edit);
         } catch (err) {
             if (err instanceof ValidationError) {
                 const errorsList = [...err.inner];
@@ -93,13 +95,19 @@ export default function ProfileDetails() {
 
         try {
             await detailsHandler(data);
-        } catch (err) {
-            if (err instanceof ValidationError) {
-                const errorsList = [...err.inner];
-                setValidationError((prevState) => ({
-                    ...prevState,
-                    ...getValidationErrorsDetails(errorsList),
-                }));
+            // setEdit(!edit);
+        } catch (error) {
+            // if (err instanceof ValidationError) {
+            //     const errorsList = [...err.inner];
+            //     setValidationError((prevState) => ({
+            //         ...prevState,
+            //         ...getValidationErrorsDetails(errorsList),
+            //     }));
+            // }
+            if (error instanceof AxiosError) {
+                errorRegistrationMessage();
+            } else if (error instanceof Error) {
+                console.log(error.message, "instanceof Error");
             }
         }
     };

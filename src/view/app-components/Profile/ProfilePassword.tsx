@@ -17,6 +17,7 @@ import { useAuth } from "auth-context";
 import { useNavigate } from "react-router-dom";
 import { AuthService } from "service/AuthService/AuthService";
 import { LoginStore } from "service/LoginStore/LoginStore";
+import { AuthDataStore } from "service/AuthDataStore/AuthDataStore";
 
 const getInitialPasswords = (): ChangePasswordType => ({
     currentPassword: "",
@@ -38,6 +39,7 @@ export default function ProfilePassword() {
     const [inputTypeNew, setInputTypeNew] = useState<string>("password");
     const loginService = useRef(new LoginService());
     const loginStore = LoginStore.getLoginStore();
+    const authDataStore = AuthDataStore.getAuthDataStore();
 
     useEffect(() => {
         const fetchData = async () => {
@@ -96,10 +98,12 @@ export default function ProfilePassword() {
         try {
             await passwordScheme.validate(data, { abortEarly: false });
             await changePasswordProfile(data);
+            authDataStore.removeTokenFromStore("accessAuthToken");
+            authDataStore.removeTokenFromStore("refreshAuthToken");
             await loginService.current.getAuthToken({ email, password: data.newPassword });
             loginStore.setAuthStatus(true);
             await loginService.current.authenticateCustomer({ email, password: data.newPassword });
-            console.log(data.newPassword, email);
+            setData(getInitialPasswords());
         } catch (err) {
             if (err instanceof ValidationError) {
                 const errorsList = [...err.inner];

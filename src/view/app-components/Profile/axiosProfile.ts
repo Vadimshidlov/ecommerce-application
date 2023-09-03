@@ -255,9 +255,14 @@ export async function changeDetailsProfile(details: DetailsType) {
     axios
         .request(config)
         .then((response) => {
+            if (response.status !== 200) {
+                throw Error("User with such credentials was not found");
+            }
             AUTH_DATA_STORE.setProfileVersion(JSON.stringify(response.data.version));
         })
-        .catch((e) => console.log(e));
+        .catch((e) => {
+            throw e;
+        });
 }
 
 export async function changePasswordProfile(dataPasswords: ChangePasswordType) {
@@ -285,6 +290,9 @@ export async function changePasswordProfile(dataPasswords: ChangePasswordType) {
     axios
         .request(config)
         .then((response) => {
+            if (response.status !== 200) {
+                throw Error("User with such credentials was not found");
+            }
             AUTH_DATA_STORE.setProfileVersion(JSON.stringify(response.data.version));
         })
         .catch((error) => {
