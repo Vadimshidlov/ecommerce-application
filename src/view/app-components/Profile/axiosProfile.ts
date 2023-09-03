@@ -219,7 +219,7 @@ export async function changeDetailsProfile(details: DetailsType) {
     const version = +AUTH_DATA_STORE.getProfileVersion();
     const token = AUTH_DATA_STORE.getAccessAuthToken();
 
-    const data = JSON.stringify({
+    const data = {
         version,
         actions: [
             {
@@ -239,30 +239,42 @@ export async function changeDetailsProfile(details: DetailsType) {
                 dateOfBirth: details.birthdayDate,
             },
         ],
-    });
+    };
 
-    const config = {
-        method: "post",
-        maxBodyLength: Infinity,
-        url: urlAPI,
+    const response = await axios.post(urlAPI, data, {
         headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
         },
-        data,
-    };
+    });
 
-    axios
-        .request(config)
-        .then((response) => {
-            if (response.status !== 200) {
-                throw Error("User with such credentials was not found");
-            }
-            AUTH_DATA_STORE.setProfileVersion(JSON.stringify(response.data.version));
-        })
-        .catch((e) => {
-            throw e;
-        });
+    AUTH_DATA_STORE.setProfileVersion(response.data.version);
+
+    if (response.status !== 200) {
+        throw Error("User with such credentials was not found");
+    }
+    // const config = {
+    //     method: "post",
+    //     maxBodyLength: Infinity,
+    //     url: urlAPI,
+    //     headers: {
+    //         Authorization: `Bearer ${token}`,
+    //         "Content-Type": "application/json",
+    //     },
+    //     data,
+    // };
+
+    // axios
+    //     .request(config)
+    //     .then((response) => {
+    //         if (response.status !== 200) {
+    //             throw Error("User with such credentials was not found");
+    //         }
+    //         AUTH_DATA_STORE.setProfileVersion(JSON.stringify(response.data.version));
+    //     })
+    //     .catch((e) => {
+    //         throw e;
+    //     });
 }
 
 export async function changePasswordProfile(dataPasswords: ChangePasswordType) {
@@ -293,12 +305,14 @@ export async function changePasswordProfile(dataPasswords: ChangePasswordType) {
     //     data,
     // };
 
-    const response = await axios.post<ChangePasswordType>(url, data, {
+    const response = await axios.post(url, data, {
         headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
         },
     });
+
+    AUTH_DATA_STORE.setProfileVersion(response.data.version);
 
     if (response.status !== 200) {
         throw Error("User with such credentials was not found");

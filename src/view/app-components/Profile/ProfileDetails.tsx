@@ -10,7 +10,6 @@ import { getValidationErrorsDetails } from "shared/utils/getValidationErrorsDeta
 import { TextInput } from "shared/components/TextInput/TextInput";
 import { DateInput } from "shared/components/DateInput/DateInput";
 import { changeDetailsProfile } from "view/app-components/Profile/axiosProfile";
-import { AxiosError } from "axios";
 import { errorRegistrationMessage } from "shared/utils/notifyMessages";
 
 const getInitialDetails = (): DetailsType => ({
@@ -61,22 +60,6 @@ export default function ProfileDetails() {
         fetchData();
     }, []);
 
-    const detailsHandler = async (userDetails: DetailsType) => {
-        try {
-            await detailsScheme.validate(userDetails, { abortEarly: false });
-            await changeDetailsProfile(data);
-            // setEdit(!edit);
-        } catch (err) {
-            if (err instanceof ValidationError) {
-                const errorsList = [...err.inner];
-                setValidationError((prevState) => ({
-                    ...prevState,
-                    ...getValidationErrorsDetails(errorsList),
-                }));
-            }
-        }
-    };
-
     const inputDetailsHandler = async (
         e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>,
         key: keyof DetailsType,
@@ -94,20 +77,18 @@ export default function ProfileDetails() {
         e.preventDefault();
 
         try {
-            await detailsHandler(data);
-            // setEdit(!edit);
+            await detailsScheme.validate(data, { abortEarly: false });
+            await changeDetailsProfile(data);
+            setEdit(!edit);
         } catch (error) {
-            // if (err instanceof ValidationError) {
-            //     const errorsList = [...err.inner];
-            //     setValidationError((prevState) => ({
-            //         ...prevState,
-            //         ...getValidationErrorsDetails(errorsList),
-            //     }));
-            // }
-            if (error instanceof AxiosError) {
+            if (error instanceof ValidationError) {
+                const errorsList = [...error.inner];
+                setValidationError((prevState) => ({
+                    ...prevState,
+                    ...getValidationErrorsDetails(errorsList),
+                }));
+            } else {
                 errorRegistrationMessage();
-            } else if (error instanceof Error) {
-                console.log(error.message, "instanceof Error");
             }
         }
     };

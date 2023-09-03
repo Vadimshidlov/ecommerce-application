@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { FocusEvent, useEffect, useRef, useState } from "react";
 import * as yup from "yup";
 import { ValidationError } from "yup";
@@ -9,19 +8,12 @@ import openEye from "assets/svg/openEye.svg";
 import { TextInput } from "shared/components/TextInput/TextInput";
 import { ChangePasswordType, getEmail } from "view/app-components/Profile/profile-utils";
 import { getValidationErrorsPassword } from "shared/utils/getValidationErrorsPassword";
-import {
-    errorAuthorizationMessage,
-    successAuthorizationMessage,
-} from "shared/utils/notifyMessages";
+import { errorPasswordMessage } from "shared/utils/notifyMessages";
 import { ButtonIcon } from "shared/components/ButtonIcon/ButtonIcon";
 import { changePasswordProfile } from "view/app-components/Profile/axiosProfile";
 import LoginService from "service/LoginService/LoginService";
-import { useAuth } from "auth-context";
-import { useNavigate } from "react-router-dom";
-import { AuthService } from "service/AuthService/AuthService";
 import { LoginStore } from "service/LoginStore/LoginStore";
 import { AuthDataStore } from "service/AuthDataStore/AuthDataStore";
-import { AxiosError } from "axios";
 
 const getInitialPasswords = (): ChangePasswordType => ({
     currentPassword: "",
@@ -29,11 +21,6 @@ const getInitialPasswords = (): ChangePasswordType => ({
 });
 
 export default function ProfilePassword() {
-    const navigate = useNavigate();
-    const { setIsAuth } = useAuth();
-    const authContextApi = useAuth();
-    const AuthServiceApi = new AuthService();
-    const LOGIN_SERVICE: LoginService = new LoginService();
     const [data, setData] = useState<ChangePasswordType>(getInitialPasswords());
     const [email, setEmail] = useState<string>("");
     const [validationError, setValidationError] = useState<ChangePasswordType>(
@@ -90,12 +77,6 @@ export default function ProfilePassword() {
         setValidationError({ ...validationError, [key]: "" });
     };
 
-    const logoutHandler = async () => {
-        localStorage.clear();
-        await AuthServiceApi.createAnonymousToken();
-        setIsAuth(false);
-    };
-
     const onPasswordSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
@@ -103,7 +84,6 @@ export default function ProfilePassword() {
             await passwordScheme.validate(data, { abortEarly: false });
             await changePasswordProfile(data);
 
-            console.log(`AFTER ERROR PASSWORD`);
             authDataStore.removeTokenFromStore("accessAuthToken");
             authDataStore.removeTokenFromStore("refreshAuthToken");
             await loginService.current.getAuthToken({ email, password: data.newPassword });
@@ -119,7 +99,7 @@ export default function ProfilePassword() {
                     ...getValidationErrorsPassword(errorsList),
                 }));
             } else {
-                errorAuthorizationMessage();
+                errorPasswordMessage();
             }
         }
     };
@@ -188,7 +168,4 @@ export default function ProfilePassword() {
             />
         </form>
     );
-}
-function handleSuccessRegistration() {
-    throw new Error("Function not implemented.");
 }
