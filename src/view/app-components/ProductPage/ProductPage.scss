@@ -55,6 +55,47 @@
         justify-content: space-between;
     }
 
+    .product__category-list {
+        display: flex;
+        align-items: center;
+        column-gap: 3px;
+        list-style-type: none;
+        padding-left: 0;
+        text-transform: capitalize;
+    }
+
+    .product__category-list a{
+        text-decoration: none;
+        color: #605F5F;
+        transition: all 0.5s;
+
+        &:hover {
+            opacity: 0.5;
+        }
+    }
+
+    .product__category-list__separator{
+        content: url("../../../assets/svg/category-separator.svg");
+        width: 15px;
+        height: 13px;
+    }
+
+    //.product__category-list > li {
+    //    display: inline;
+    //}
+    //
+    //.product__category-list > li:before {
+    //    content:'>'; /* Non-breaking space */
+    //}
+    //.product__category-list > li:first-child:before {
+    //    content: normal;
+    //}
+
+    .product__category-item{
+        display: flex;
+        column-gap: 5px;
+    }
+
     .product__name {
         font-family: Space Grotesk;
         font-size: 34px;

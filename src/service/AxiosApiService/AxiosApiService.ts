@@ -1,8 +1,9 @@
+/* eslint-disable no-underscore-dangle */
 import axios, {
     AxiosInstance,
     AxiosRequestConfig,
     AxiosResponse,
-    InternalAxiosRequestConfig,
+    // InternalAxiosRequestConfig,
 } from "axios";
 import { AuthDataStore } from "service/AuthDataStore/AuthDataStore";
 import { LoginStore } from "service/LoginStore/LoginStore";
@@ -45,75 +46,81 @@ class AxiosApiService {
             async (config) => config,
 
             async (error) => {
-                if (axios.isAxiosError(error)) {
-                    const originalRequest: InternalAxiosRequestConfig<AxiosInstance> | undefined =
-                        error.config;
-                    const loginStore = LoginStore.getLoginStore();
+                // if (axios.isAxiosError(error)) {
+                const originalRequest = error.config;
+                // const originalRequest: InternalAxiosRequestConfig<AxiosInstance> | undefined =
+                //     error.config;
+                const loginStore = LoginStore.getLoginStore();
 
-                    if (loginStore.getAuthStatus()) {
-                        const authAccessToken = this.AuthDataStoreApi.getAccessAuthToken();
-                        const authRefreshToken = this.AuthDataStoreApi.getAuthRefreshToken();
+                if (loginStore.getAuthStatus()) {
+                    const authAccessToken = this.AuthDataStoreApi.getAccessAuthToken();
+                    const authRefreshToken = this.AuthDataStoreApi.getAuthRefreshToken();
 
-                        if (error.response?.status === 401 && authAccessToken && authRefreshToken) {
-                            const response401Token = await axios.post<AccessTokenType>(
-                                `https://auth.europe-west1.gcp.commercetools.com/oauth/token`,
-                                {},
-                                {
-                                    params: {
-                                        grant_type: `refresh_token`,
-                                        refresh_token: `${authRefreshToken}`,
-                                    },
-                                    headers: {
-                                        Authorization: `Basic ${btoa(
-                                            `${this.CTP_CLIENT_ID}:${this.CTP_CLIENT_SECRET}`,
-                                        )}`,
-                                        "Content-Type": "application/x-www-form-urlencoded",
-                                    },
+                    if (
+                        error.response?.status === 401 &&
+                        authAccessToken &&
+                        authRefreshToken &&
+                        error.config &&
+                        !originalRequest._isRetry
+                    ) {
+                        originalRequest._isRetry = true;
+                        const response401Token = await axios.post<AccessTokenType>(
+                            `https://auth.europe-west1.gcp.commercetools.com/oauth/token`,
+                            {},
+                            {
+                                params: {
+                                    grant_type: `refresh_token`,
+                                    refresh_token: `${authRefreshToken}`,
                                 },
-                            );
-
-                            this.AuthDataStoreApi.setAuthTokens(
-                                response401Token.data.access_token,
-                                authRefreshToken,
-                            );
-                        }
-                    } else if (!loginStore.getAuthStatus()) {
-                        const anonymousAccessToken =
-                            this.AuthDataStoreApi.getAnonymousAccessToken();
-                        const anonymousRefreshToken =
-                            this.AuthDataStoreApi.getAnonymousRefreshToken();
-
-                        if (
-                            error.response?.status === 401 &&
-                            anonymousAccessToken &&
-                            anonymousRefreshToken
-                        ) {
-                            const response401Token = await axios.post<AnonymousAccessType>(
-                                `https://auth.europe-west1.gcp.commercetools.com/oauth/token`,
-                                {},
-                                {
-                                    params: {
-                                        grant_type: `refresh_token`,
-                                        refresh_token: `${anonymousRefreshToken}`,
-                                    },
-                                    headers: {
-                                        Authorization: `Basic ${btoa(
-                                            `${this.CTP_CLIENT_ID}:${this.CTP_CLIENT_SECRET}`,
-                                        )}`,
-                                        "Content-Type": "application/x-www-form-urlencoded",
-                                    },
+                                headers: {
+                                    Authorization: `Basic ${btoa(
+                                        `${this.CTP_CLIENT_ID}:${this.CTP_CLIENT_SECRET}`,
+                                    )}`,
+                                    "Content-Type": "application/x-www-form-urlencoded",
                                 },
-                            );
+                            },
+                        );
 
-                            this.AuthDataStoreApi.setAnonymousTokens(
-                                response401Token.data.access_token,
-                                anonymousRefreshToken,
-                            );
-                        }
+                        this.AuthDataStoreApi.setAuthTokens(
+                            response401Token.data.access_token,
+                            authRefreshToken,
+                        );
                     }
+                } else if (!loginStore.getAuthStatus()) {
+                    const anonymousAccessToken = this.AuthDataStoreApi.getAnonymousAccessToken();
+                    const anonymousRefreshToken = this.AuthDataStoreApi.getAnonymousRefreshToken();
 
-                    return this.request(originalRequest || {});
+                    if (
+                        error.response?.status === 401 &&
+                        anonymousAccessToken &&
+                        anonymousRefreshToken
+                    ) {
+                        const response401Token = await axios.post<AnonymousAccessType>(
+                            `https://auth.europe-west1.gcp.commercetools.com/oauth/token`,
+                            {},
+                            {
+                                params: {
+                                    grant_type: `refresh_token`,
+                                    refresh_token: `${anonymousRefreshToken}`,
+                                },
+                                headers: {
+                                    Authorization: `Basic ${btoa(
+                                        `${this.CTP_CLIENT_ID}:${this.CTP_CLIENT_SECRET}`,
+                                    )}`,
+                                    "Content-Type": "application/x-www-form-urlencoded",
+                                },
+                            },
+                        );
+
+                        this.AuthDataStoreApi.setAnonymousTokens(
+                            response401Token.data.access_token,
+                            anonymousRefreshToken,
+                        );
+                    }
                 }
+
+                return this.request(originalRequest || {});
+                // }
 
                 return null;
             },

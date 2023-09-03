@@ -1,5 +1,5 @@
 import React from "react";
-import Text from "view/app-components/Text/text";
+import Text from "shared/components/Text/text";
 import CountrySelect from "view/app-components/Registration/components/SelectCountry";
 import TextValidationError from "view/app-components/Registration/components/ErrorsComponents/TextValidationError";
 import { TextInput } from "shared/components/TextInput/TextInput";
