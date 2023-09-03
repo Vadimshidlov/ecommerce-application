@@ -1,34 +1,11 @@
 import { AxiosResponse } from "axios";
 import { ISignUpForm } from "shared/utils/getInitialFormData";
-import { AuthDataStore } from "service/AuthDataStore";
-import AxiosSignUpAuth from "service/AxiosSignUpFlow";
-
-export type CustomerAddressType = {
-    streetName: string;
-    postalCode: string;
-    city: string;
-    country: string;
-};
-
-export type CustomerDataType = {
-    email: string;
-    firstName: string;
-    lastName: string;
-    password: string;
-    addresses: CustomerAddressType[];
-    shippingAddresses: number[];
-    billingAddresses: number[];
-    defaultBillingAddress?: number;
-    defaultShippingAddress?: number;
-};
-
-export type AuthCustomerDataType = {
-    email: string;
-    password: string;
-};
+import { AuthDataStore } from "service/AuthDataStore/AuthDataStore";
+import AxiosSignUpService from "service/AxiosApiService/AxiosApiService";
+import { CustomerDataType } from "service/RegistrationService/types";
 
 export class RegistrationService {
-    private readonly requestApi = AxiosSignUpAuth;
+    private AxiosSignUpServiceApi = AxiosSignUpService;
 
     private readonly AuthDataStoreApi = AuthDataStore.getAuthDataStore();
 
@@ -37,13 +14,26 @@ export class RegistrationService {
         defaultBillingAddress: boolean,
         defaultShippingAddress: boolean,
     ): Promise<void> {
-        const token = this.AuthDataStoreApi.getAnonymousAccessToken();
+        const customerData = this.getCustomerData(
+            formData,
+            defaultBillingAddress,
+            defaultShippingAddress,
+        );
 
+        await this.AxiosSignUpServiceApi.post<AxiosResponse>({}, customerData, "customers");
+    }
+
+    private getCustomerData(
+        formData: ISignUpForm,
+        defaultBillingAddress: boolean,
+        defaultShippingAddress: boolean,
+    ): CustomerDataType {
         const customerData: CustomerDataType = {
             email: formData.email,
             firstName: formData.firstname,
             lastName: formData.lastname,
             password: formData.password,
+            dateOfBirth: formData.birthdayDate,
             addresses: [
                 {
                     streetName: formData.billingStreet,
@@ -71,13 +61,6 @@ export class RegistrationService {
             customerData.defaultShippingAddress = 1;
         }
 
-        await this.requestApi.post<AxiosResponse>(
-            {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            },
-            customerData,
-        );
+        return customerData;
     }
 }

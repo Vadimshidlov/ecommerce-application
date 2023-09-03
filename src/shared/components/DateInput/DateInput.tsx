@@ -1,42 +1,20 @@
-import React, { FocusEvent } from "react";
+import React from "react";
 import TextValidationError from "view/app-components/Registration/components/ErrorsComponents/TextValidationError";
 
-export interface IDateInput {
-    name: string;
-    value: string;
-    id: string;
-    className: string;
+export interface IDateInput extends React.ComponentPropsWithRef<"input"> {
     validationError: string;
-    onChangeHandler: (e: React.ChangeEvent<HTMLInputElement>, key: string) => void;
-    onFocusHandler: (e: FocusEvent, key: string) => void;
 }
 
-export function DateInput({
-    name,
-    value,
-    id,
-    className,
-    onChangeHandler,
-    onFocusHandler,
-    validationError,
-}: IDateInput) {
+export function DateInput({ validationError, ...rest }: IDateInput) {
     return (
         <div className="date-input__component">
-            {/* <label htmlFor={name}> */}
             <input
-                onChange={(e) => {
-                    onChangeHandler(e, name);
-                }}
-                onFocus={(e: FocusEvent) => {
-                    onFocusHandler(e, name);
-                }}
-                className={className}
+                className={`registration__birthday-date inter-400-font font-size_m color_grey-dark ${
+                    !validationError ? "" : "input__outline-error"
+                }`}
                 type="date"
-                name={name}
-                id={id}
-                value={value}
+                {...rest}
             />
-            {/* </label> */}
             <TextValidationError errorMessage={validationError} />
         </div>
     );
