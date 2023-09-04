@@ -12,9 +12,10 @@ export interface IQueryParams {
     param: string;
     type: string;
 }
-interface IValue {
+interface IFilter {
     onChangeFn: (newProducts: IProduct[]) => void;
     sortingParam: string;
+    activeCategory?: string;
 }
 
 export interface IState {
@@ -61,8 +62,8 @@ if (!token) {
     AUTH_SERVICE.createAnonymousToken();
 }
 
-export function Filter({ onChangeFn, sortingParam }: IValue) {
-    const [activeButton, setActiveButton] = useState("");
+export function Filter({ onChangeFn, sortingParam, activeCategory }: IFilter) {
+    const [activeButton, setActiveButton] = useState(activeCategory);
 
     // const [products, setProducts] = useState<IProduct[]>([]);
     // const [sortParams, setSortParams] = useState<string>("");
@@ -88,6 +89,32 @@ export function Filter({ onChangeFn, sortingParam }: IValue) {
         });
     }
 
+    async function filterCategories(key: string) {
+        try {
+            const { id } = (await PRODUCT_SREVICE.getCategoryByKey(key)).data;
+
+            setCategoryParams(`filter=categories.id:"${id}"`);
+        } catch (error) {
+            setCategoryParams("");
+        }
+    }
+
+    // const handleButtonClick = (category: string) => {
+    //     // setActiveButton(category);
+    //     if (category === "") {
+    //         setCategoryParams(category);
+    //     } else {
+    //         filterCategories(category);
+    //     }
+    // };
+
+    // setActiveButton(activeCategory);
+
+    // console.log("~~~~~~~~~~~~", activeButton, activeCategory);
+
+    const buttonClasses = (category: string) =>
+        `filter__button ${category === activeButton ? "filter__button_active" : ""}`;
+
     useEffect(() => {
         async function setParams() {
             const keys: string[] = Object.keys(objParams);
@@ -104,6 +131,11 @@ export function Filter({ onChangeFn, sortingParam }: IValue) {
                 }
             });
 
+            if (activeCategory) {
+                // buttonClasses(activeCategory);
+                filterCategories(activeCategory);
+            }
+
             const queryParams = [categoryParams, params.join("&"), sortingParam].filter(Boolean);
             const url = queryParams.join("&");
 
@@ -118,29 +150,7 @@ export function Filter({ onChangeFn, sortingParam }: IValue) {
         }
 
         setParams();
-    }, [categoryParams, objParams, onChangeFn, sortingParam]);
-
-    async function filterCategories(key: string) {
-        try {
-            const { id } = (await PRODUCT_SREVICE.getCategoryByKey(key)).data;
-
-            setCategoryParams(`filter=categories.id:"${id}"`);
-        } catch (error) {
-            setCategoryParams("");
-        }
-    }
-
-    const handleButtonClick = (category: string) => {
-        setActiveButton(category);
-        if (category === "") {
-            setCategoryParams(category);
-        } else {
-            filterCategories(category);
-        }
-    };
-
-    const buttonClasses = (category: string) =>
-        `filter__button ${category === activeButton ? "filter__button_active" : ""}`;
+    }, [activeCategory, categoryParams, objParams, onChangeFn, sortingParam]);
 
     return (
         <div className="filter">
@@ -150,12 +160,14 @@ export function Filter({ onChangeFn, sortingParam }: IValue) {
             />
             <div className="filter__categories-list">
                 <div className="filter__categorie">
-                    <Button
-                        text="All products"
-                        textClasses={["inter-400-font", "font-size_xl", "color_black"]}
-                        buttonClasses={buttonClasses("")}
-                        onClick={() => handleButtonClick("")}
-                    />
+                    <Link to="/shop">
+                        <Button
+                            text="All products"
+                            textClasses={["inter-400-font", "font-size_xl", "color_black"]}
+                            buttonClasses={buttonClasses("")}
+                            onClick={() => setActiveButton("")}
+                        />
+                    </Link>
                 </div>
                 <div className="filter__categorie">
                     <Link to="/shop/shoes">
@@ -164,7 +176,7 @@ export function Filter({ onChangeFn, sortingParam }: IValue) {
                             textClasses={["inter-400-font", "font-size_xl", "color_black"]}
                             buttonClasses={buttonClasses("shoes")}
                             onClick={() => {
-                                handleButtonClick("shoes");
+                                setActiveButton("shoes");
                             }}
                         />
                     </Link>
@@ -174,44 +186,52 @@ export function Filter({ onChangeFn, sortingParam }: IValue) {
                                 <Button
                                     text="Sneakers"
                                     textClasses={["inter-400-font", "font-size_m", "color_black"]}
-                                    buttonClasses={buttonClasses("shoes_sneakers")}
-                                    onClick={() => handleButtonClick("shoes_sneakers")}
+                                    buttonClasses={buttonClasses("sneakers")}
+                                    onClick={() => setActiveButton("sneakers")}
                                 />
                             </Link>
                         </li>
                         <li>
-                            <Button
-                                text="Slippers"
-                                textClasses={["inter-400-font", "font-size_m", "color_black"]}
-                                buttonClasses={buttonClasses("shoes_slippers")}
-                                onClick={() => handleButtonClick("shoes_slippers")}
-                            />
+                            <Link to="/shop/slippers">
+                                <Button
+                                    text="Slippers"
+                                    textClasses={["inter-400-font", "font-size_m", "color_black"]}
+                                    buttonClasses={buttonClasses("slippers")}
+                                    onClick={() => setActiveButton("slippers")}
+                                />
+                            </Link>
                         </li>
                     </ul>
                 </div>
                 <div className="filter__categorie">
-                    <Button
-                        text="Clothes"
-                        textClasses={["inter-400-font", "font-size_xl", "color_black"]}
-                        buttonClasses={buttonClasses("clothes")}
-                        onClick={() => handleButtonClick("clothes")}
-                    />
+                    <Link to="/shop/clothes">
+                        <Button
+                            text="Clothes"
+                            textClasses={["inter-400-font", "font-size_xl", "color_black"]}
+                            buttonClasses={buttonClasses("clothes")}
+                            onClick={() => setActiveButton("clothes")}
+                        />
+                    </Link>
                     <ul className="filter__subcategories">
                         <li>
-                            <Button
-                                text="T-short"
-                                textClasses={["inter-400-font", "font-size_m", "color_black"]}
-                                buttonClasses={buttonClasses("t-shirt")}
-                                onClick={() => handleButtonClick("t-shirt")}
-                            />
+                            <Link to="/shop/t-shirt">
+                                <Button
+                                    text="T-short"
+                                    textClasses={["inter-400-font", "font-size_m", "color_black"]}
+                                    buttonClasses={buttonClasses("t-shirt")}
+                                    onClick={() => setActiveButton("t-shirt")}
+                                />
+                            </Link>
                         </li>
                         <li>
-                            <Button
-                                text="Shorts"
-                                textClasses={["inter-400-font", "font-size_m", "color_black"]}
-                                buttonClasses={buttonClasses("shorts")}
-                                onClick={() => handleButtonClick("shorts")}
-                            />
+                            <Link to="/shop/shorts">
+                                <Button
+                                    text="Shorts"
+                                    textClasses={["inter-400-font", "font-size_m", "color_black"]}
+                                    buttonClasses={buttonClasses("shorts")}
+                                    onClick={() => setActiveButton("shorts")}
+                                />
+                            </Link>
                         </li>
                     </ul>
                 </div>
@@ -372,3 +392,7 @@ export function Filter({ onChangeFn, sortingParam }: IValue) {
         </div>
     );
 }
+
+Filter.defaultProps = {
+    activeCategory: "",
+};

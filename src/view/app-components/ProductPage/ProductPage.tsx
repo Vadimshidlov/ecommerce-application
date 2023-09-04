@@ -7,7 +7,7 @@ import { useParams } from "react-router-dom";
 
 function ProductPage() {
     const { productId } = useParams();
-    const { productData } = useGetProductDate(productId?.slice(1, productId.length));
+    const { productData } = useGetProductDate(productId);
 
     const [checkedSize, setCheckedSize] = useState(0);
 

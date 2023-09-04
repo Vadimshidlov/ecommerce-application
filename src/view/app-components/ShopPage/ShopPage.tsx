@@ -4,7 +4,7 @@ import PageHeading from "shared/components/PageHeading/PageHeading";
 import { Filter } from "view/app-components/ShopPage/Filter/Filter";
 import { Sorting } from "view/app-components/ShopPage/Sorting/Sorting";
 import img from "assets/no-img.png";
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export interface IProduct {
     categories: [];
@@ -38,9 +38,6 @@ export interface IProduct {
 }
 
 export function ShopPage() {
-    const { productId, categoryKey } = useParams();
-    console.log("id~~", productId);
-    console.log("key~~", categoryKey);
     const [products, setProducts] = useState<IProduct[]>([]);
     const [sortParams, setSortParams] = useState<string>("");
 
@@ -67,7 +64,7 @@ export function ShopPage() {
                     />
                     <div className="shop-page__cards-container">
                         {products.map((product) => (
-                            <Link key={product.id} to={`/shop/${product.id}`}>
+                            <Link key={product.id} to={`/shop/product/${product.id}`}>
                                 <ProductCard
                                     sale={!!product?.masterVariant?.prices[0]?.discounted}
                                     key={product.id}

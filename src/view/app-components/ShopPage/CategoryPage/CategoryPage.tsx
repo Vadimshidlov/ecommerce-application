@@ -42,9 +42,8 @@ export interface IProduct {
 }
 
 export function CategoryPage() {
-    const { productId, categoryKey } = useParams();
+    const { categoryKey } = useParams();
     console.log(categoryKey);
-    console.log(productId);
 
     const [products, setProducts] = useState<IProduct[]>([]);
     const [sortParams, setSortParams] = useState<string>("");
@@ -62,7 +61,11 @@ export function CategoryPage() {
                     voluptatum deleniti."
             />
             <div className="shop-page__wrapper">
-                <Filter onChangeFn={onChangeFilter} sortingParam={sortParams} />
+                <Filter
+                    onChangeFn={onChangeFilter}
+                    sortingParam={sortParams}
+                    activeCategory={categoryKey}
+                />
                 <div className="shop-page__product-cards">
                     <Sorting
                         count={products.length}

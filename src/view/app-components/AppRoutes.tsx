@@ -16,8 +16,8 @@ function AppRoutes() {
             <Route path="registration" element={<RegistrationPage />} />
             <Route path="shop" element={<ShopPage />} />
             <Route path="shop/:categoryKey/:productId" element={<ProductPage />} />
-            {/* <Route path="shop/:productId" element={<ProductPage />} /> */}
             <Route path="shop/:categoryKey" element={<CategoryPage />} />
+            <Route path="shop/product/:productId" element={<ProductPage />} />
             <Route path="*" element={<PageNotFound />} />
         </Routes>
     );
