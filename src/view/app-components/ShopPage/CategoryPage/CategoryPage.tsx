@@ -47,8 +47,6 @@ export function CategoryPage() {
     const [products, setProducts] = useState<IProduct[]>([]);
     const [sortParams, setSortParams] = useState<string>("");
 
-    console.log("123");
-
     const onChangeFilter = useCallback((newProducts: IProduct[]) => {
         setProducts(newProducts);
     }, []);
