@@ -61,7 +61,11 @@ function ProductSwiper({ productResponse }: ProductSwiperType) {
                             onKeyDown={() => {
                                 console.log("Swiper-container click");
                             }}
-                            className="swiper__image-container"
+                            className={
+                                modalVersion
+                                    ? "swiper__image-container__modal"
+                                    : "swiper__image-container"
+                            }
                         >
                             <img src={image} alt={String(index)} />
                         </div>

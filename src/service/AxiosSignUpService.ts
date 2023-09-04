@@ -30,7 +30,7 @@ class AxiosSignUpService {
             const returnConfig = config;
 
             returnConfig.headers.Authorization = `Bearer ${
-                loginStore.getAuthStatus()
+                loginStore.isAuth()
                     ? this.AuthDataStoreApi.getAccessAuthToken()
                     : this.AuthDataStoreApi.getAnonymousAccessToken()
             }`;
@@ -47,7 +47,7 @@ class AxiosSignUpService {
                         error.config;
                     const loginStore = LoginStore.getLoginStore();
 
-                    if (loginStore.getAuthStatus()) {
+                    if (loginStore.isAuth()) {
                         const authAccessToken = this.AuthDataStoreApi.getAccessAuthToken();
                         const authRefreshToken = this.AuthDataStoreApi.getAuthRefreshToken();
 
@@ -80,7 +80,7 @@ class AxiosSignUpService {
 
                             // return this.request(originalRequest || {});
                         }
-                    } else if (!loginStore.getAuthStatus()) {
+                    } else if (!loginStore.isAuth()) {
                         const anonymousAccessToken =
                             this.AuthDataStoreApi.getAnonymousAccessToken();
                         const anonymousRefreshToken =
