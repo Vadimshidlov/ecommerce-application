@@ -13,9 +13,7 @@ class AxiosSignUpService {
 
     private readonly AuthDataStoreApi = new AuthDataStore();
 
-    private readonly API_URL =
-        // "https://api.europe-west1.gcp.commercetools.com/uwoc_ecm-app/customers";
-        "https://api.europe-west1.gcp.commercetools.com/uwoc_ecm-app/";
+    private readonly API_URL = "https://api.europe-west1.gcp.commercetools.com/uwoc_ecm-app/";
 
     constructor() {
         this.request = axios.create({
@@ -54,7 +52,6 @@ class AxiosSignUpService {
                         if (error.response?.status === 401 && authAccessToken && authRefreshToken) {
                             const CTP_CLIENT_SECRET = process.env.REACT_APP_CLIENT_SECRET ?? "";
                             const CTP_CLIENT_ID = process.env.REACT_APP_CTP_CLIENT_ID ?? "";
-                            console.log("inter auth 1");
 
                             const response401Token = await axios.post<AnonymousAccessType>(
                                 `https://auth.europe-west1.gcp.commercetools.com/oauth/token`,
@@ -77,8 +74,6 @@ class AxiosSignUpService {
                                 response401Token.data.access_token,
                                 authRefreshToken,
                             );
-
-                            // return this.request(originalRequest || {});
                         }
                     } else if (!loginStore.isAuth()) {
                         const anonymousAccessToken =
@@ -91,11 +86,8 @@ class AxiosSignUpService {
                             anonymousAccessToken &&
                             anonymousRefreshToken
                         ) {
-                            // const CTP_CLIENT_SECRET = "6x4a7bsRL81dJoq1vsQ81yf3C0BiJrYH";
-                            // const CTP_CLIENT_ID = "OLQF6DvQqgu9NiEaNj5l-ngD";
                             const CTP_CLIENT_SECRET = process.env.REACT_APP_CLIENT_SECRET ?? "";
                             const CTP_CLIENT_ID = process.env.REACT_APP_CTP_CLIENT_ID ?? "";
-                            console.log("inter auth anon 2");
 
                             const response401Token = await axios.post<AnonymousAccessType>(
                                 `https://auth.europe-west1.gcp.commercetools.com/oauth/token`,
@@ -118,8 +110,6 @@ class AxiosSignUpService {
                                 response401Token.data.access_token,
                                 anonymousRefreshToken,
                             );
-
-                            // return this.request(originalRequest || {});
                         }
                     }
 
@@ -143,7 +133,6 @@ class AxiosSignUpService {
         config: AxiosRequestConfig | undefined,
         queryParams = "",
     ): Promise<AxiosResponse<D>> {
-        console.log("AxiosSignUpService ---> get");
         return this.request.get(queryParams, config);
     }
 }

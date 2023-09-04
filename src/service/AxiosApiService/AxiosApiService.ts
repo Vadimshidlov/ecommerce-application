@@ -1,10 +1,5 @@
 /* eslint-disable no-underscore-dangle */
-import axios, {
-    AxiosInstance,
-    AxiosRequestConfig,
-    AxiosResponse,
-    // InternalAxiosRequestConfig,
-} from "axios";
+import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
 import { AuthDataStore } from "service/AuthDataStore/AuthDataStore";
 import { LoginStore } from "service/LoginStore/LoginStore";
 import { AccessTokenType } from "service/AxiosApiService/types";
@@ -54,7 +49,6 @@ class AxiosApiService {
 
                 if (loginStore.isAuth() && error.config && !originalRequest._isRetry) {
                     originalRequest._isRetry = true;
-                    console.log("inter 1");
                     const authAccessToken = this.AuthDataStoreApi.getAccessAuthToken();
                     const authRefreshToken = this.AuthDataStoreApi.getAuthRefreshToken();
 
@@ -139,7 +133,6 @@ class AxiosApiService {
         config: AxiosRequestConfig | undefined,
         queryParams = "",
     ): Promise<AxiosResponse<D>> {
-        console.log("AxiosApiService ---> get");
         return this.requestApiInstance.get(queryParams, config);
     }
 }

@@ -19,7 +19,6 @@ function useGetProductDate(id: string = "c97e1aa9-08e0-4b77-aca5-b306c3eabb81") 
     useEffect(() => {
         const getProducts = async () => {
             try {
-                // const axiosApi = AxiosSignUpService;
                 const productResponse = await axiosApi.current.get<ProductResponseType>(
                     {},
                     `/product-projections/${id}`,

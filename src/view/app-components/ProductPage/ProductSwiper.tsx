@@ -44,11 +44,9 @@ function ProductSwiper({ productResponse }: ProductSwiperType) {
                 slidesPerView={1}
                 autoHeight={false}
                 navigation
-                // scrollbar={modalVersion}
-                // pagination={modalVersion ? false : { clickable: true }}
                 pagination={{ clickable: true }}
                 onSlideChange={() => {}}
-                onSwiper={(swiper) => console.log(swiper)}
+                onSwiper={(swiper) => {}}
                 breakpoints={{}}
             >
                 {imagesList.map((image, index) => (
@@ -59,9 +57,7 @@ function ProductSwiper({ productResponse }: ProductSwiperType) {
                                     setModalVersion((currentVersion) => !currentVersion);
                                 }
                             }}
-                            onKeyDown={() => {
-                                console.log("Swiper-container click");
-                            }}
+                            onKeyDown={() => {}}
                             className={
                                 modalVersion
                                     ? "swiper__image-container__modal"

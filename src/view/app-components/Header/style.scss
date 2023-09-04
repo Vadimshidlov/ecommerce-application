@@ -21,4 +21,9 @@
     transform: translateX(-50%);
     padding-top: 19px;
     padding-bottom: 19px;
+
+    @media (max-width: 570px) {
+        display: flex;
+        flex-wrap: wrap;
+    }
 }

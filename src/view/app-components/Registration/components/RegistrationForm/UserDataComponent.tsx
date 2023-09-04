@@ -8,11 +8,6 @@ import closedEye from "assets/svg/closedEye.svg";
 import openEye from "assets/svg/openEye.svg";
 import { DateInput } from "shared/components/DateInput/DateInput";
 
-// interface FocusEvent<T = Element> extends SyntheticEvent<T> {
-//     relatedTarget: EventTarget | null;
-//     target: EventTarget & T;
-// }
-
 export type UserDataInputPropsType = {
     formDataProps: ISignUpForm;
     validationErrorProps: IStateErrors;

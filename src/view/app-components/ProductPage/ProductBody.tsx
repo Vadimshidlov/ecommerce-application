@@ -40,10 +40,7 @@ function ProductBody({ productResponse, checkedSize, setCheckedSize }: ProductBo
                 categoriesNamesList.push(categoryIdResponse.data.name["en-US"]),
             );
 
-            // console.log(categoriesNamesList, `categoriesNamesList`);
             setCategoriesName(categoriesNamesList);
-
-            // console.log(productResponse, "productResponse");
         };
 
         getProductCategories();
