@@ -1,15 +1,10 @@
 import React, { ChangeEvent } from "react";
-// import { IQueryParams } from "view/app-components/ShopPage/Filter/Filter";
 import Text from "shared/components/Text/text";
 
 interface ISorting {
     count: number;
     onChangeSort: (param: string) => void;
 }
-
-// type SortType = {
-//     onChangeSort: ({ param, type }: IQueryParams) => void;
-// };
 
 export function Sorting({ count, onChangeSort }: ISorting) {
     function clickOption(event: ChangeEvent<HTMLSelectElement>) {

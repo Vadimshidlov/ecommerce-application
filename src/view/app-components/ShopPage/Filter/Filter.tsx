@@ -54,8 +54,6 @@ export interface IProduct {
 const PRODUCT_SREVICE = new ProductService();
 
 export function Filter({ onChangeFn, sortingParam, activeCategory }: IFilter) {
-    // const [products, setProducts] = useState<IProduct[]>([]);
-    // const [sortParams, setSortParams] = useState<string>("");
     const [categoryParams, setCategoryParams] = useState<string>("");
     const [objParams, setObjParams] = useState<IState>({});
 
@@ -113,8 +111,6 @@ export function Filter({ onChangeFn, sortingParam, activeCategory }: IFilter) {
 
             const queryParams = [categoryParams, params.join("&"), sortingParam].filter(Boolean);
             const url = queryParams.join("&");
-
-            console.log(url);
 
             if (url) {
                 results.push(...(await PRODUCT_SREVICE.getProductURL(url)).data.results);

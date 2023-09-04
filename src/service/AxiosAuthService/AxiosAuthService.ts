@@ -74,7 +74,6 @@ class AxiosAuthService {
                     }
                 }
 
-                // return null;
                 throw error;
             },
         );

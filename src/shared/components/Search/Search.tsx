@@ -38,29 +38,4 @@ export function Search({ onChangeSearch }: SearchType) {
             </div>
         </div>
     );
-
-    // return (
-    //     <>
-    //         <div className="search-overlay" />
-    //         <div className="search">
-    //             <div className="search__header container">
-    //                 <LogoLink />
-    //                 <ButtonIcon
-    //                     url={close}
-    //                     altText="close-btn"
-    //                     classes="search__close-btn"
-    //                     onClick={handleClose}
-    //                 />
-    //             </div>
-    //             <div className="search__input-wrapper container">
-    //                 <input
-    //                     type="text"
-    //                     className="inter-400-font font-size_m search__input"
-    //                     placeholder="Search products"
-    //                 />
-    //                 <ButtonIcon url={search} altText="close-btn" classes="search__btn" />
-    //             </div>
-    //         </div>
-    //     </>
-    // );
 }

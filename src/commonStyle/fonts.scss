@@ -59,8 +59,12 @@ $font-size-12: 12px;
 .font-size_heading-3 {
     font-size: $font-size-54;
 
-    @media (max-width: 490px) {
+    @media (max-width: 760px) {
         font-size: $font-size-40;
+    }
+
+    @media (max-width: 490px) {
+        font-size: $font-size-28;
     }
 }
 

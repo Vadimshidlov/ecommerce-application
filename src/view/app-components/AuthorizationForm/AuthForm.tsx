@@ -69,7 +69,6 @@ export function AuthForm() {
             setIsAuth(true);
 
             loginStore.setAuthStatus(true);
-            console.log(loginStore.isAuth(), `<--- after logint isAuth`);
 
             navigate("/");
         } catch (error) {
@@ -86,27 +85,6 @@ export function AuthForm() {
             }
         }
     };
-
-    // async function valid(): Promise<void> {
-    //     try {
-    //         await schema.validate({ email, password }, { abortEarly: false });
-    //     } catch (error) {
-    //         if (error instanceof Yup.ValidationError) {
-    //             error.inner.forEach((err) => {
-    //                 if (err.path === "email") {
-    //                     setEmailError(err.message);
-    //                 } else {
-    //                     setPassError(err.message);
-    //                 }
-    //             });
-    //         }
-    //     }
-    // }
-
-    // useEffect(() => {
-    //     valid();
-    //     console.log(email);
-    // }, [email, valid]);
 
     return (
         <form className="login__form" onSubmit={handleSubmit}>
