@@ -54,7 +54,7 @@ export function CategoryPage() {
     return (
         <section className="shop-page container">
             <PageHeading
-                navigation={`home > shop > ${categoryKey}`}
+                navigation={`${categoryKey}`}
                 title={`${categoryKey?.charAt(0).toUpperCase()}${categoryKey?.slice(1)}`}
                 description="At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis
                     voluptatum deleniti."

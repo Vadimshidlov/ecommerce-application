@@ -48,7 +48,7 @@ export function ShopPage() {
     return (
         <section className="shop-page container">
             <PageHeading
-                navigation="home > shop"
+                navigation=""
                 title="Shop"
                 description="At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis
                     voluptatum deleniti."

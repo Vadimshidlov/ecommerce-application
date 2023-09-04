@@ -5,8 +5,6 @@ import { Button } from "shared/components/button/Button";
 import ProductService from "service/ProductService/ProductService";
 import { Search } from "shared/components/Search/Search";
 import { Link } from "react-router-dom";
-import { AuthService } from "service/AuthService/AuthService";
-import { AuthDataStore } from "service/AuthDataStore/AuthDataStore";
 
 export interface IQueryParams {
     param: string;
@@ -54,17 +52,8 @@ export interface IProduct {
 }
 
 const PRODUCT_SREVICE = new ProductService();
-const AUTH_SERVICE = new AuthService();
-const AUTH_DATA_STORE = new AuthDataStore();
-const token = AUTH_DATA_STORE.getAccessAuthToken() || AUTH_DATA_STORE.getAnonymousAccessToken();
-
-if (!token) {
-    AUTH_SERVICE.createAnonymousToken();
-}
 
 export function Filter({ onChangeFn, sortingParam, activeCategory }: IFilter) {
-    const [activeButton, setActiveButton] = useState(activeCategory);
-
     const [categoryParams, setCategoryParams] = useState<string>("");
     const [objParams, setObjParams] = useState<IState>({});
 
@@ -98,7 +87,7 @@ export function Filter({ onChangeFn, sortingParam, activeCategory }: IFilter) {
     }
 
     const buttonClasses = (category: string) =>
-        `filter__button ${category === activeButton ? "filter__button_active" : ""}`;
+        `filter__button ${category === activeCategory ? "filter__button_active" : ""}`;
 
     useEffect(() => {
         async function setParams() {
@@ -147,7 +136,6 @@ export function Filter({ onChangeFn, sortingParam, activeCategory }: IFilter) {
                             text="All products"
                             textClasses={["inter-400-font", "font-size_xl", "color_black"]}
                             buttonClasses={buttonClasses("")}
-                            onClick={() => setActiveButton("")}
                         />
                     </Link>
                 </div>
@@ -157,9 +145,6 @@ export function Filter({ onChangeFn, sortingParam, activeCategory }: IFilter) {
                             text="Shoes"
                             textClasses={["inter-400-font", "font-size_xl", "color_black"]}
                             buttonClasses={buttonClasses("shoes")}
-                            onClick={() => {
-                                setActiveButton("shoes");
-                            }}
                         />
                     </Link>
                     <ul className="filter__subcategories">
@@ -169,7 +154,6 @@ export function Filter({ onChangeFn, sortingParam, activeCategory }: IFilter) {
                                     text="Sneakers"
                                     textClasses={["inter-400-font", "font-size_m", "color_black"]}
                                     buttonClasses={buttonClasses("sneakers")}
-                                    onClick={() => setActiveButton("sneakers")}
                                 />
                             </Link>
                         </li>
@@ -179,7 +163,6 @@ export function Filter({ onChangeFn, sortingParam, activeCategory }: IFilter) {
                                     text="Slippers"
                                     textClasses={["inter-400-font", "font-size_m", "color_black"]}
                                     buttonClasses={buttonClasses("slippers")}
-                                    onClick={() => setActiveButton("slippers")}
                                 />
                             </Link>
                         </li>
@@ -191,17 +174,15 @@ export function Filter({ onChangeFn, sortingParam, activeCategory }: IFilter) {
                             text="Clothes"
                             textClasses={["inter-400-font", "font-size_xl", "color_black"]}
                             buttonClasses={buttonClasses("clothes")}
-                            onClick={() => setActiveButton("clothes")}
                         />
                     </Link>
                     <ul className="filter__subcategories">
                         <li>
                             <Link to="/shop/t-shirt">
                                 <Button
-                                    text="T-short"
+                                    text="T-shirt"
                                     textClasses={["inter-400-font", "font-size_m", "color_black"]}
                                     buttonClasses={buttonClasses("t-shirt")}
-                                    onClick={() => setActiveButton("t-shirt")}
                                 />
                             </Link>
                         </li>
@@ -211,7 +192,6 @@ export function Filter({ onChangeFn, sortingParam, activeCategory }: IFilter) {
                                     text="Shorts"
                                     textClasses={["inter-400-font", "font-size_m", "color_black"]}
                                     buttonClasses={buttonClasses("shorts")}
-                                    onClick={() => setActiveButton("shorts")}
                                 />
                             </Link>
                         </li>
@@ -356,14 +336,39 @@ export function Filter({ onChangeFn, sortingParam, activeCategory }: IFilter) {
                     </div>
                 </div>
             </div>
-
+            <div className="filter__brand">
+                <Text classes={["inter-600-font", "font-size_xl", "color_blue-dark"]}>Brand</Text>
+                <div className="filter__brand-wrapper">
+                    <div className="filter__brand-item">
+                        <input
+                            type="checkbox"
+                            id="adidas"
+                            className="filter__size-item"
+                            onChange={() => {
+                                collectParams({ param: "%22adidas%22", type: "brand" });
+                            }}
+                        />
+                        <label htmlFor="adidas">Adidas</label>
+                    </div>
+                    <div className="filter__brand-item">
+                        <input
+                            type="checkbox"
+                            id="nike"
+                            className="filter__size-item"
+                            onChange={() => {
+                                collectParams({ param: "%22nike%22", type: "brand" });
+                            }}
+                        />
+                        <label htmlFor="nike">Nike</label>
+                    </div>
+                </div>
+            </div>
             <div className="filter__reset">
                 <Button
                     type="button"
                     text="Reset filters"
                     textClasses={["space-grotesk-500-font", "font-size_l", "color_white"]}
                     buttonClasses="button"
-                    onClick={() => {}}
                 />
             </div>
         </div>
