@@ -4,6 +4,14 @@
     background-size: cover;
     height: 75vh;
     padding-top: 10vh;
+
+    @media (max-width: 590px) {
+        padding-top: 14vh;
+    }
+
+    @media (max-width: 345px) {
+        padding-top: 18vh;
+    }
 }
 
 .some-content {
