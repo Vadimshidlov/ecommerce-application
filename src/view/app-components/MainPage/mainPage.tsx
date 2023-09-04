@@ -25,6 +25,14 @@ export default function MainPage() {
                         buttonClasses="button"
                     />
                 </NavLink>
+                <NavLink to="/profile">
+                    <Button
+                        type="button"
+                        text="Profile"
+                        textClasses={["space-grotesk-500-font", "font-size_2xl", "color_white"]}
+                        buttonClasses="button"
+                    />
+                </NavLink>
             </div>
         </div>
     );

@@ -26,6 +26,9 @@
     }
 
     .registration__error {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
         padding-top: 10px;
         width: 100%;
         color: #e61010;
