@@ -1,6 +1,6 @@
 import React from "react";
 import { LogoLink } from "view/app-components/Header/LogoLink/LogoLink";
-import Text from "view/app-components/Text/text";
+import Text from "shared/components/Text/text";
 
 export default function Footer() {
     return (

@@ -1,6 +1,6 @@
 import React from "react";
 import { AuthForm } from "view/app-components//AuthorizationForm/AuthForm";
-import Text from "view/app-components/Text/text";
+import Text from "shared/components/Text/text";
 import { NavLink, Navigate } from "react-router-dom";
 import { useAuth } from "auth-context";
 

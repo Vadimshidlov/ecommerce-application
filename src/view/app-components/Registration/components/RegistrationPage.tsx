@@ -2,7 +2,7 @@ import React from "react";
 import RegistrationForm from "view/app-components/Registration/components/RegistrationForm/RegistrationForm";
 import { Navigate, NavLink } from "react-router-dom";
 import { useAuth } from "auth-context";
-import Text from "view/app-components/Text/text";
+import Text from "shared/components/Text/text";
 import useRegistration from "view/app-components/Registration/useRegistration";
 
 function RegistrationPage() {

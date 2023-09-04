@@ -1,10 +1,14 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Button } from "shared/components/button/Button";
 import plusButton from "assets/svg/Plus.svg";
 import minusButton from "assets/svg/Minus.svg";
 import { ButtonIcon } from "shared/components/ButtonIcon/ButtonIcon";
 import { ProductResponseType } from "view/app-components/ProductPage/types";
+import { CategoryNameType } from "view/app-components/ProductPage/useGetProductDate";
+import AxiosSignUpService from "service/AxiosApiService/AxiosApiService";
+import { AxiosResponse } from "axios";
+import { Link } from "react-router-dom";
 
 export type ProductBodyType = {
     productResponse: ProductResponseType;
@@ -13,6 +17,37 @@ export type ProductBodyType = {
 };
 
 function ProductBody({ productResponse, checkedSize, setCheckedSize }: ProductBodyType) {
+    const axiosApi = useRef(AxiosSignUpService);
+    const [categoriesName, setCategoriesName] = useState<string[]>();
+
+    useEffect(() => {
+        const getProductCategories = async () => {
+            const categoriesIdList = productResponse.categories.map((el) => el.id);
+            const categoryNamesResponse = await Promise.all(
+                categoriesIdList?.map((categoryId) => {
+                    const categoryIdResponse = axiosApi.current.get<CategoryNameType>(
+                        {},
+                        `/categories/${categoryId}`,
+                    );
+
+                    return categoryIdResponse;
+                }),
+            );
+
+            const categoriesNamesList: string[] = [];
+            categoryNamesResponse.forEach((categoryIdResponse) =>
+                categoriesNamesList.push(categoryIdResponse.data.name["en-US"]),
+            );
+
+            console.log(categoriesNamesList, `categoriesNamesList`);
+            setCategoriesName(categoriesNamesList);
+
+            console.log(productResponse, "productResponse");
+        };
+
+        getProductCategories();
+    }, [productResponse]);
+
     let productColor: string = "";
     productResponse.masterVariant.attributes.forEach((variant) => {
         if (variant.name === "color") {
@@ -21,9 +56,25 @@ function ProductBody({ productResponse, checkedSize, setCheckedSize }: ProductBo
     });
 
     const productColorClass = `product__color product__color__${productColor}`;
-    const productSizes = productResponse.variants.map(
-        (productVariant) => productVariant.attributes[0].value.key,
-    );
+    const masterSize: string[] = [];
+    productResponse.masterVariant.attributes.forEach((attribute) => {
+        if (attribute.name === "size") {
+            masterSize.push(attribute.value.key);
+        }
+    });
+
+    const productSizesVariants = productResponse.variants.map((productVariant) => {
+        let size = "";
+        productVariant.attributes.forEach((attribute) => {
+            if (attribute.name === "size") {
+                size = attribute.value.key;
+            }
+        });
+
+        return size;
+    });
+
+    const productSizes: string[] = [...masterSize, ...productSizesVariants];
     const productDiscountPriceCent =
         productResponse.masterVariant.prices[0].discounted?.value?.centAmount;
     const productDiscountPrice = productDiscountPriceCent / 100;
@@ -32,6 +83,30 @@ function ProductBody({ productResponse, checkedSize, setCheckedSize }: ProductBo
 
     return (
         <div className="product__body">
+            <ul className="product__category-list">
+                <li>
+                    <Link to="/">Home</Link>
+                </li>
+                <li className="product__category-list__separator" />
+                {categoriesName?.map((categoryName, index, array) => {
+                    if (index !== array.length - 1) {
+                        return (
+                            <React.Fragment key={categoryName}>
+                                <li>
+                                    <Link to="/">{categoryName}</Link>
+                                </li>
+                                <li className="product__category-list__separator" />
+                            </React.Fragment>
+                        );
+                    }
+
+                    return (
+                        <li key={categoryName}>
+                            <Link to="/">{categoryName}</Link>
+                        </li>
+                    );
+                })}
+            </ul>
             <h2 className="product__name">{productResponse.name["en-US"]}</h2>
             <div className="product__description">{productResponse.description["en-US"]}</div>
             <div className="product__price">
