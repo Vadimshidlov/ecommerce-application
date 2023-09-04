@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useAuth } from "auth-context";
 import { useNavigate, Outlet, Navigate } from "react-router-dom";
 import Navbar from "view/app-components/Profile/Navbar";
-import Text from "view/app-components/Text/text";
+import Text from "shared/components/Text/text";
 import "view/app-components/Profile/style.scss";
 import { getCustomer } from "view/app-components/Profile/axiosProfile";
 import { AuthDataStore } from "service/AuthDataStore/AuthDataStore";

@@ -1,5 +1,5 @@
 import React, { FocusEvent, useEffect, useState } from "react";
-import Text from "view/app-components/Text/text";
+import Text from "shared/components/Text/text";
 import EditButton from "view/app-components/Profile/EditButton";
 import {
     getInitialProfileAdressBilling,

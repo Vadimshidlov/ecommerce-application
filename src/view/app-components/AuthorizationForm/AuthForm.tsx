@@ -62,14 +62,11 @@ export function AuthForm() {
             await schema.validate({ email, password }, { abortEarly: false });
 
             await LOGIN_SERVICE.getAuthToken({ email, password });
-            console.log("1");
 
             await LOGIN_SERVICE.authenticateCustomer({ email, password });
-            console.log("2");
 
             successAuthorizationMessage();
             setIsAuth(true);
-            console.log("3");
 
             loginStore.setAuthStatus(true);
             console.log(loginStore.isAuth(), `<--- after logint isAuth`);
@@ -90,6 +87,27 @@ export function AuthForm() {
         }
     };
 
+    // async function valid(): Promise<void> {
+    //     try {
+    //         await schema.validate({ email, password }, { abortEarly: false });
+    //     } catch (error) {
+    //         if (error instanceof Yup.ValidationError) {
+    //             error.inner.forEach((err) => {
+    //                 if (err.path === "email") {
+    //                     setEmailError(err.message);
+    //                 } else {
+    //                     setPassError(err.message);
+    //                 }
+    //             });
+    //         }
+    //     }
+    // }
+
+    // useEffect(() => {
+    //     valid();
+    //     console.log(email);
+    // }, [email, valid]);
+
     return (
         <form className="login__form" onSubmit={handleSubmit}>
             <div className="input__container">
@@ -100,7 +118,9 @@ export function AuthForm() {
                     id="email"
                     type="text"
                     className={`registration__input ${!emailError ? "" : "input__outline-error"}`}
-                    onInput={() => setEmailError("")}
+                    onInput={(event) => {
+                        setEmail((event.target as HTMLInputElement).value);
+                    }}
                     onFocus={() => setEmailError("")}
                     onChange={(event) => setEmail(event.target.value)}
                     validationError={emailError || ""}

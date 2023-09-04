@@ -1,0 +1,17 @@
+.page__header {
+    padding: 60px 20px;
+    margin: 52px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 12px;
+    border-radius: 6px;
+    background: url("../../../assets/bg-page-header.png") center center/cover no-repeat;
+
+    .page__description {
+        max-width: 600px;
+        line-height: 30px;
+    }
+}

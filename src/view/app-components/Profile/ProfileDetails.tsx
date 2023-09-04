@@ -5,7 +5,7 @@ import "view/app-components/Profile/style.scss";
 import { DetailsType, getProfileDetails } from "view/app-components/Profile/profile-utils";
 import { maxValidBirthdayDate } from "shared/utils/getInitialFormData";
 import EditButton from "view/app-components/Profile/EditButton";
-import Text from "view/app-components/Text/text";
+import Text from "shared/components/Text/text";
 import { getValidationErrorsDetails } from "shared/utils/getValidationErrorsDetails";
 import { TextInput } from "shared/components/TextInput/TextInput";
 import { DateInput } from "shared/components/DateInput/DateInput";

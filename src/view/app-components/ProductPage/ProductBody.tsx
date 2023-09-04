@@ -5,6 +5,7 @@ import plusButton from "assets/svg/Plus.svg";
 import minusButton from "assets/svg/Minus.svg";
 import { ButtonIcon } from "shared/components/ButtonIcon/ButtonIcon";
 import { ProductResponseType } from "view/app-components/ProductPage/types";
+import Text from "shared/components/Text/text";
 import { CategoryNameType } from "view/app-components/ProductPage/useGetProductDate";
 import AxiosSignUpService from "service/AxiosApiService/AxiosApiService";
 import { AxiosResponse } from "axios";
@@ -39,10 +40,10 @@ function ProductBody({ productResponse, checkedSize, setCheckedSize }: ProductBo
                 categoriesNamesList.push(categoryIdResponse.data.name["en-US"]),
             );
 
-            console.log(categoriesNamesList, `categoriesNamesList`);
+            // console.log(categoriesNamesList, `categoriesNamesList`);
             setCategoriesName(categoriesNamesList);
 
-            console.log(productResponse, "productResponse");
+            // console.log(productResponse, "productResponse");
         };
 
         getProductCategories();
@@ -87,13 +88,19 @@ function ProductBody({ productResponse, checkedSize, setCheckedSize }: ProductBo
                 <li>
                     <Link to="/">Home</Link>
                 </li>
+                {/* <li className="product__category-list__separator" />
+                <li>
+                    <Link to="/shop">Shop</Link>
+                </li> */}
                 <li className="product__category-list__separator" />
                 {categoriesName?.map((categoryName, index, array) => {
                     if (index !== array.length - 1) {
                         return (
                             <React.Fragment key={categoryName}>
                                 <li>
-                                    <Link to="/">{categoryName}</Link>
+                                    <Link to={`/shop/${categoryName.toLowerCase()}`}>
+                                        {categoryName}
+                                    </Link>
                                 </li>
                                 <li className="product__category-list__separator" />
                             </React.Fragment>
@@ -102,13 +109,17 @@ function ProductBody({ productResponse, checkedSize, setCheckedSize }: ProductBo
 
                     return (
                         <li key={categoryName}>
-                            <Link to="/">{categoryName}</Link>
+                            <Link to={`/shop/${categoryName.toLowerCase()}`}>{categoryName}</Link>
                         </li>
                     );
                 })}
             </ul>
-            <h2 className="product__name">{productResponse.name["en-US"]}</h2>
-            <div className="product__description">{productResponse.description["en-US"]}</div>
+            <h2 className="space-grotesk-500-font font-size_heading-5 color_black">
+                {productResponse.name["en-US"]}
+            </h2>
+            <div className="inter-400-font font-size_s color_grey-dark">
+                {productResponse.description["en-US"]}
+            </div>
             <div className="product__price">
                 {productDiscountPrice ? (
                     <div className="product__price-container">

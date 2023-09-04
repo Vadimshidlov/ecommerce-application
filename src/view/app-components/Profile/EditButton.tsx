@@ -1,7 +1,7 @@
 import React from "react";
 import { ReactComponent as IcoEdit } from "assets/svg/edit.svg";
 import "view/app-components/Profile/style.scss";
-import Text from "view/app-components/Text/text";
+import Text from "shared/components/Text/text";
 
 export default function EditButton({ ...props }) {
     return (
