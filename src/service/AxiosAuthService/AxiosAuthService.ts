@@ -1,14 +1,10 @@
-import axios, {
-    AxiosInstance,
-    AxiosRequestConfig,
-    AxiosResponse,
-    InternalAxiosRequestConfig,
-} from "axios";
+/* eslint-disable no-underscore-dangle */
+import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
 import { AuthDataStore } from "service/AuthDataStore/AuthDataStore";
 import { AnonymousAccessType } from "service/AxiosAuthService/types";
 
 class AxiosAuthService {
-    public request: AxiosInstance;
+    public requestApiInstance: AxiosInstance;
 
     private readonly AuthDataStoreApi = new AuthDataStore();
 
@@ -17,14 +13,15 @@ class AxiosAuthService {
     private readonly CTP_CLIENT_ID = process.env.REACT_APP_CTP_CLIENT_ID ?? "";
 
     constructor() {
-        this.request = axios.create({
+        this.requestApiInstance = axios.create({
             baseURL: "https://auth.europe-west1.gcp.commercetools.com",
         });
+        this.createRequestInterceptor();
         this.createResponseInterceptor();
     }
 
-    private createResponseInterceptor(): void {
-        this.request.interceptors.request.use((config) => {
+    private createRequestInterceptor(): void {
+        this.requestApiInstance.interceptors.request.use((config) => {
             const returnConfig = config;
             returnConfig.headers.Authorization = `Basic ${btoa(
                 `${this.CTP_CLIENT_ID}:${this.CTP_CLIENT_SECRET}`,
@@ -32,15 +29,17 @@ class AxiosAuthService {
 
             return returnConfig;
         });
+    }
 
-        this.request.interceptors.response.use(
+    public createResponseInterceptor(): void {
+        this.requestApiInstance.interceptors.response.use(
             async (config) => config,
 
             async (error) => {
-                if (axios.isAxiosError(error)) {
-                    const originalRequest: InternalAxiosRequestConfig<AxiosInstance> | undefined =
-                        error.config;
+                const originalRequest = error.config;
 
+                if (axios.isAxiosError(error) && error.config && !originalRequest._isRetry) {
+                    originalRequest._isRetry = true;
                     const anonymousAccessToken = this.AuthDataStoreApi.getAnonymousAccessToken();
                     const anonymousRefreshToken = this.AuthDataStoreApi.getAnonymousRefreshToken();
 
@@ -71,11 +70,12 @@ class AxiosAuthService {
                             anonymousRefreshToken,
                         );
 
-                        return this.request(originalRequest || {});
+                        return this.requestApiInstance.request(originalRequest);
                     }
                 }
 
-                return null;
+                // return null;
+                throw error;
             },
         );
     }
@@ -85,11 +85,11 @@ class AxiosAuthService {
         data: object | undefined = {},
         queryParams: string = "",
     ): Promise<AxiosResponse<D>> {
-        return this.request.post(queryParams, data, config);
+        return this.requestApiInstance.post(queryParams, data, config);
     }
 
     public get<D>(url: string, config: AxiosRequestConfig | undefined): Promise<AxiosResponse<D>> {
-        return this.request.get(url, config);
+        return this.requestApiInstance.get(url, config);
     }
 }
 
