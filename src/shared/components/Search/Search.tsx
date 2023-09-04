@@ -1,15 +1,13 @@
 import React, { useState } from "react";
-// import { LogoLink } from "view/app-components/Header/LogoLink/LogoLink";
 import { ButtonIcon } from "shared/components/ButtonIcon/ButtonIcon";
-// import close from "assets/svg/close.svg";
 import search from "assets/svg/search.svg";
 import { IQueryParams } from "view/app-components/ShopPage/Filter/Filter";
 
 type SearchType = {
-    onChangeFn: ({ param, type }: IQueryParams) => void;
+    onChangeSearch: ({ param, type }: IQueryParams) => void;
 };
 
-export function Search({ onChangeFn }: SearchType) {
+export function Search({ onChangeSearch }: SearchType) {
     const [searchValue, setSearchValue] = useState("");
 
     return (
@@ -21,11 +19,12 @@ export function Search({ onChangeFn }: SearchType) {
                     placeholder="Search products"
                     onChange={(event) => setSearchValue(event.target.value)}
                     onKeyDown={(event) =>
-                        event.key === "Enter" && onChangeFn({ param: searchValue, type: "search" })
+                        event.key === "Enter" &&
+                        onChangeSearch({ param: searchValue, type: "search" })
                     }
                     onInput={(event) =>
                         !(event.target as HTMLInputElement).value &&
-                        onChangeFn({ param: "", type: "search" })
+                        onChangeSearch({ param: "", type: "search" })
                     }
                 />
                 <ButtonIcon
@@ -33,7 +32,7 @@ export function Search({ onChangeFn }: SearchType) {
                     altText="close-btn"
                     classes="search__btn"
                     onClick={() =>
-                        searchValue && onChangeFn({ param: searchValue, type: "search" })
+                        searchValue && onChangeSearch({ param: searchValue, type: "search" })
                     }
                 />
             </div>

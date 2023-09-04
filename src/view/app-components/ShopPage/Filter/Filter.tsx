@@ -1,38 +1,139 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Text from "shared/components/Text/text";
 import { Button } from "shared/components/button/Button";
 import ProductService from "service/ProductService/ProductService";
 import { Search } from "shared/components/Search/Search";
-// import { useCategorie } from "providers/FilterProvider";
+import { Link } from "react-router-dom";
+import { AuthService } from "service/AuthService/AuthService";
+import { AuthDataStore } from "service/AuthDataStore/AuthDataStore";
 
 export interface IQueryParams {
     param: string;
     type: string;
 }
 interface IValue {
-    onChangeFn: ({ param, type }: IQueryParams) => void;
-    onChangeCategory: (param: string) => void;
+    onChangeFn: (newProducts: IProduct[]) => void;
+    sortingParam: string;
 }
 
-export function Filter({ onChangeFn, onChangeCategory }: IValue) {
-    const PRODUCT_SREVICE = new ProductService();
+export interface IState {
+    [type: string]: string[];
+}
+
+export interface IProduct {
+    categories: [];
+    id: string;
+    key: string;
+    name: {
+        "en-US": string;
+    };
+    description: {
+        "en-US": string;
+    };
+    masterVariant: {
+        images: [
+            {
+                url: string;
+            },
+        ];
+        prices: [
+            {
+                discounted: {
+                    value: {
+                        centAmount: number;
+                    };
+                };
+                value: {
+                    centAmount: number;
+                };
+            },
+        ];
+    };
+}
+
+const PRODUCT_SREVICE = new ProductService();
+const AUTH_SERVICE = new AuthService();
+const AUTH_DATA_STORE = new AuthDataStore();
+const token = AUTH_DATA_STORE.getAccessAuthToken() || AUTH_DATA_STORE.getAnonymousAccessToken();
+
+if (!token) {
+    AUTH_SERVICE.createAnonymousToken();
+}
+
+export function Filter({ onChangeFn, sortingParam }: IValue) {
     const [activeButton, setActiveButton] = useState("");
+
+    // const [products, setProducts] = useState<IProduct[]>([]);
+    // const [sortParams, setSortParams] = useState<string>("");
+    const [categoryParams, setCategoryParams] = useState<string>("");
+    const [objParams, setObjParams] = useState<IState>({});
+
+    function collectParams({ param, type }: IQueryParams) {
+        setObjParams((prevData) => {
+            if (type === "search") {
+                return {
+                    ...prevData,
+                    [type]: param ? [param] : [],
+                };
+            }
+            const values = prevData[type] || [];
+            const newValues = values.includes(param)
+                ? (values as string[]).filter((value) => value !== param)
+                : [...values, param];
+            return {
+                ...prevData,
+                [type]: newValues,
+            };
+        });
+    }
+
+    useEffect(() => {
+        async function setParams() {
+            const keys: string[] = Object.keys(objParams);
+            const params: string[] = [];
+            const results: IProduct[] = [];
+
+            keys.forEach((key) => {
+                if (key === "search" && objParams[key].length > 0) {
+                    params.push(`fuzzy=true&text.en-US=${objParams[key].join("")}`);
+                } else if (objParams[key].length > 0) {
+                    params.push(
+                        `filter=variants.attributes.${key}.key:${objParams[key].join(",")}`,
+                    );
+                }
+            });
+
+            const queryParams = [categoryParams, params.join("&"), sortingParam].filter(Boolean);
+            const url = queryParams.join("&");
+
+            console.log(url);
+
+            if (url) {
+                results.push(...(await PRODUCT_SREVICE.getProductURL(url)).data.results);
+            } else {
+                results.push(...(await PRODUCT_SREVICE.getAllProducts()).data.results);
+            }
+            onChangeFn(results);
+        }
+
+        setParams();
+    }, [categoryParams, objParams, onChangeFn, sortingParam]);
 
     async function filterCategories(key: string) {
         try {
             const { id } = (await PRODUCT_SREVICE.getCategoryByKey(key)).data;
 
-            onChangeCategory(`filter=categories.id:"${id}"`);
+            setCategoryParams(`filter=categories.id:"${id}"`);
         } catch (error) {
-            onChangeCategory("");
+            setCategoryParams("");
         }
     }
 
     const handleButtonClick = (category: string) => {
         setActiveButton(category);
         if (category === "") {
-            onChangeCategory(category);
+            setCategoryParams(category);
         } else {
             filterCategories(category);
         }
@@ -44,7 +145,9 @@ export function Filter({ onChangeFn, onChangeCategory }: IValue) {
     return (
         <div className="filter">
             <Text classes={["inter-600-font", "font-size_2xl", "color_black"]}>Filter</Text>
-            <Search onChangeFn={onChangeFn} />
+            <Search
+                onChangeSearch={({ param, type }: IQueryParams) => collectParams({ param, type })}
+            />
             <div className="filter__categories-list">
                 <div className="filter__categorie">
                     <Button
@@ -55,20 +158,26 @@ export function Filter({ onChangeFn, onChangeCategory }: IValue) {
                     />
                 </div>
                 <div className="filter__categorie">
-                    <Button
-                        text="Shoes"
-                        textClasses={["inter-400-font", "font-size_xl", "color_black"]}
-                        buttonClasses={buttonClasses("shoes")}
-                        onClick={() => handleButtonClick("shoes")}
-                    />
+                    <Link to="/shop/shoes">
+                        <Button
+                            text="Shoes"
+                            textClasses={["inter-400-font", "font-size_xl", "color_black"]}
+                            buttonClasses={buttonClasses("shoes")}
+                            onClick={() => {
+                                handleButtonClick("shoes");
+                            }}
+                        />
+                    </Link>
                     <ul className="filter__subcategories">
                         <li>
-                            <Button
-                                text="Sneakers"
-                                textClasses={["inter-400-font", "font-size_m", "color_black"]}
-                                buttonClasses={buttonClasses("shoes_sneakers")}
-                                onClick={() => handleButtonClick("shoes_sneakers")}
-                            />
+                            <Link to="/shop/sneakers">
+                                <Button
+                                    text="Sneakers"
+                                    textClasses={["inter-400-font", "font-size_m", "color_black"]}
+                                    buttonClasses={buttonClasses("shoes_sneakers")}
+                                    onClick={() => handleButtonClick("shoes_sneakers")}
+                                />
+                            </Link>
                         </li>
                         <li>
                             <Button
@@ -115,7 +224,7 @@ export function Filter({ onChangeFn, onChangeCategory }: IValue) {
                         id="color-yellow"
                         className="filter__colors-item"
                         onChange={() => {
-                            onChangeFn({ param: "%22yellow%22", type: "color" });
+                            collectParams({ param: "%22yellow%22", type: "color" });
                         }}
                     />
                     <input
@@ -123,7 +232,7 @@ export function Filter({ onChangeFn, onChangeCategory }: IValue) {
                         id="color-black"
                         className="filter__colors-item"
                         onChange={() => {
-                            onChangeFn({ param: "%22black%22", type: "color" });
+                            collectParams({ param: "%22black%22", type: "color" });
                         }}
                     />
                     <input
@@ -131,7 +240,7 @@ export function Filter({ onChangeFn, onChangeCategory }: IValue) {
                         id="color-blue"
                         className="filter__colors-item"
                         onChange={() => {
-                            onChangeFn({ param: "%22blue%22", type: "color" });
+                            collectParams({ param: "%22blue%22", type: "color" });
                         }}
                     />
                     <input
@@ -139,7 +248,7 @@ export function Filter({ onChangeFn, onChangeCategory }: IValue) {
                         id="color-green"
                         className="filter__colors-item"
                         onChange={() => {
-                            onChangeFn({ param: "%22green%22", type: "color" });
+                            collectParams({ param: "%22green%22", type: "color" });
                         }}
                     />
                     <input
@@ -147,7 +256,7 @@ export function Filter({ onChangeFn, onChangeCategory }: IValue) {
                         id="color-red"
                         className="filter__colors-item"
                         onChange={() => {
-                            onChangeFn({ param: "%22red%22", type: "color" });
+                            collectParams({ param: "%22red%22", type: "color" });
                         }}
                     />
                 </div>
@@ -161,10 +270,10 @@ export function Filter({ onChangeFn, onChangeCategory }: IValue) {
                             id="size-2"
                             className="filter__size-item"
                             onChange={() => {
-                                onChangeFn({ param: "%222%22", type: "size" });
+                                collectParams({ param: "%222%22", type: "size" });
                             }}
                         />
-                        <label htmlFor="size-xs">2</label>
+                        <label htmlFor="size-2">2</label>
                     </div>
                     <div className="filter__size-items">
                         <input
@@ -172,10 +281,10 @@ export function Filter({ onChangeFn, onChangeCategory }: IValue) {
                             id="size-4"
                             className="filter__size-item"
                             onChange={() => {
-                                onChangeFn({ param: "%224%22", type: "size" });
+                                collectParams({ param: "%224%22", type: "size" });
                             }}
                         />
-                        <label htmlFor="size-s">4</label>
+                        <label htmlFor="size-4">4</label>
                     </div>
                     <div className="filter__size-items">
                         <input
@@ -183,10 +292,10 @@ export function Filter({ onChangeFn, onChangeCategory }: IValue) {
                             id="size-6"
                             className="filter__size-item"
                             onChange={() => {
-                                onChangeFn({ param: "%226%22", type: "size" });
+                                collectParams({ param: "%226%22", type: "size" });
                             }}
                         />
-                        <label htmlFor="size-m">6</label>
+                        <label htmlFor="size-6">6</label>
                     </div>
                     <div className="filter__size-items">
                         <input
@@ -194,10 +303,21 @@ export function Filter({ onChangeFn, onChangeCategory }: IValue) {
                             id="size-10"
                             className="filter__size-item"
                             onChange={() => {
-                                onChangeFn({ param: "%2210%22", type: "size" });
+                                collectParams({ param: "%2210%22", type: "size" });
                             }}
                         />
-                        <label htmlFor="size-l">10</label>
+                        <label htmlFor="size-10">10</label>
+                    </div>
+                    <div className="filter__size-items">
+                        <input
+                            type="checkbox"
+                            id="size-13"
+                            className="filter__size-item"
+                            onChange={() => {
+                                collectParams({ param: "%2213%22", type: "size" });
+                            }}
+                        />
+                        <label htmlFor="size-13">13</label>
                     </div>
                     <div className="filter__size-items">
                         <input
@@ -205,10 +325,21 @@ export function Filter({ onChangeFn, onChangeCategory }: IValue) {
                             id="size-14"
                             className="filter__size-item"
                             onChange={() => {
-                                onChangeFn({ param: "%2214%22", type: "size" });
+                                collectParams({ param: "%2214%22", type: "size" });
                             }}
                         />
-                        <label htmlFor="size-xl">14</label>
+                        <label htmlFor="size-14">14</label>
+                    </div>
+                    <div className="filter__size-items">
+                        <input
+                            type="checkbox"
+                            id="size-15"
+                            className="filter__size-item"
+                            onChange={() => {
+                                collectParams({ param: "%2215%22", type: "size" });
+                            }}
+                        />
+                        <label htmlFor="size-15">15</label>
                     </div>
                     <div className="filter__size-items">
                         <input
@@ -216,19 +347,19 @@ export function Filter({ onChangeFn, onChangeCategory }: IValue) {
                             id="size-16"
                             className="filter__size-item"
                             onChange={() => {
-                                onChangeFn({ param: "%2216%22", type: "size" });
+                                collectParams({ param: "%2216%22", type: "size" });
                             }}
                         />
-                        <label htmlFor="size-2xl">16</label>
+                        <label htmlFor="size-16">16</label>
                     </div>
                 </div>
             </div>
-            <div className="filter__price">
+            {/* <div className="filter__price">
                 <Text classes={["inter-600-font", "font-size_xl", "color_blue-dark"]}>Price</Text>
                 <div className="filter__price-wrapper">
                     <input type="range" />
                 </div>
-            </div>
+            </div> */}
             <div className="filter__reset">
                 <Button
                     type="button"

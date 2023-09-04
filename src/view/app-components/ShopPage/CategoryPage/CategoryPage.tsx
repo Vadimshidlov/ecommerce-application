@@ -1,10 +1,14 @@
 import React, { useCallback, useState } from "react";
-import ProductCard from "shared/components/ProductCard/ProductCard";
+import { Link, useParams } from "react-router-dom";
 import PageHeading from "shared/components/PageHeading/PageHeading";
+import ProductCard from "shared/components/ProductCard/ProductCard";
 import { Filter } from "view/app-components/ShopPage/Filter/Filter";
 import { Sorting } from "view/app-components/ShopPage/Sorting/Sorting";
 import img from "assets/no-img.png";
-import { Link, useParams } from "react-router-dom";
+
+export interface IState {
+    [type: string]: string[];
+}
 
 export interface IProduct {
     categories: [];
@@ -37,10 +41,11 @@ export interface IProduct {
     };
 }
 
-export function ShopPage() {
+export function CategoryPage() {
     const { productId, categoryKey } = useParams();
-    console.log("id~~", productId);
-    console.log("key~~", categoryKey);
+    console.log(categoryKey);
+    console.log(productId);
+
     const [products, setProducts] = useState<IProduct[]>([]);
     const [sortParams, setSortParams] = useState<string>("");
 
@@ -51,8 +56,8 @@ export function ShopPage() {
     return (
         <section className="shop-page container">
             <PageHeading
-                navigation="home > shop"
-                title="Shop"
+                navigation={`home > shop > ${categoryKey}`}
+                title={`${categoryKey?.charAt(0).toUpperCase()}${categoryKey?.slice(1)}`}
                 description="At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis
                     voluptatum deleniti."
             />
@@ -67,7 +72,7 @@ export function ShopPage() {
                     />
                     <div className="shop-page__cards-container">
                         {products.map((product) => (
-                            <Link key={product.id} to={`/shop/${product.id}`}>
+                            <Link key={product.id} to={`/shop/${categoryKey}/${product.id}`}>
                                 <ProductCard
                                     sale={!!product?.masterVariant?.prices[0]?.discounted}
                                     key={product.id}
