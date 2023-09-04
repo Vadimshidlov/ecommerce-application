@@ -340,6 +340,33 @@ export function Filter({ onChangeFn, sortingParam, activeCategory }: IFilter) {
                     </div>
                 </div>
             </div>
+            <div className="filter__brand">
+                <Text classes={["inter-600-font", "font-size_xl", "color_blue-dark"]}>Brand</Text>
+                <div className="filter__brand-wrapper">
+                    <div className="filter__brand-item">
+                        <input
+                            type="checkbox"
+                            id="adidas"
+                            className="filter__size-item"
+                            onChange={() => {
+                                collectParams({ param: "%22adidas%22", type: "brand" });
+                            }}
+                        />
+                        <label htmlFor="adidas">Adidas</label>
+                    </div>
+                    <div className="filter__brand-item">
+                        <input
+                            type="checkbox"
+                            id="nike"
+                            className="filter__size-item"
+                            onChange={() => {
+                                collectParams({ param: "%22nike%22", type: "brand" });
+                            }}
+                        />
+                        <label htmlFor="nike">Nike</label>
+                    </div>
+                </div>
+            </div>
             <div className="filter__reset">
                 <Button
                     type="button"
