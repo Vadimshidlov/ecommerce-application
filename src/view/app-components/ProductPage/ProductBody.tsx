@@ -88,10 +88,6 @@ function ProductBody({ productResponse, checkedSize, setCheckedSize }: ProductBo
                 <li>
                     <Link to="/">Home</Link>
                 </li>
-                {/* <li className="product__category-list__separator" />
-                <li>
-                    <Link to="/shop">Shop</Link>
-                </li> */}
                 <li className="product__category-list__separator" />
                 {categoriesName?.map((categoryName, index, array) => {
                     if (index !== array.length - 1) {

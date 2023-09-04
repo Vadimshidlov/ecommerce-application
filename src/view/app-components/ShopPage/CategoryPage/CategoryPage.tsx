@@ -43,10 +43,11 @@ export interface IProduct {
 
 export function CategoryPage() {
     const { categoryKey } = useParams();
-    console.log(categoryKey);
 
     const [products, setProducts] = useState<IProduct[]>([]);
     const [sortParams, setSortParams] = useState<string>("");
+
+    console.log("123");
 
     const onChangeFilter = useCallback((newProducts: IProduct[]) => {
         setProducts(newProducts);
@@ -55,7 +56,7 @@ export function CategoryPage() {
     return (
         <section className="shop-page container">
             <PageHeading
-                navigation={`home > shop > ${categoryKey}`}
+                navigation={`${categoryKey}`}
                 title={`${categoryKey?.charAt(0).toUpperCase()}${categoryKey?.slice(1)}`}
                 description="At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis
                     voluptatum deleniti."

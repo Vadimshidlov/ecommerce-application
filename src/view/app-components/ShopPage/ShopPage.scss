@@ -4,6 +4,11 @@
     grid-template-rows: repeat(2, 1fr);
     grid-column-gap: 0px;
     grid-row-gap: 0px;
+
+    @media (max-width: 768px) {
+        display: flex;
+        flex-direction: column;
+    }
 }
 
 .shop-page__product-cards {

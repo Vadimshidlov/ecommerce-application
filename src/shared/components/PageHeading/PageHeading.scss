@@ -14,4 +14,29 @@
         max-width: 600px;
         line-height: 30px;
     }
+
+    .product__category-list {
+        display: flex;
+        align-items: center;
+        column-gap: 3px;
+        list-style-type: none;
+        padding-left: 0;
+        text-transform: capitalize;
+    }
+
+    .product__category-list a {
+        text-decoration: none;
+        color: #605f5f;
+        transition: all 0.5s;
+
+        &:hover {
+            opacity: 0.5;
+        }
+    }
+
+    .product__category-list__separator {
+        content: url("../../../assets/svg/category-separator.svg");
+        width: 15px;
+        height: 13px;
+    }
 }
