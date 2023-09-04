@@ -69,7 +69,6 @@ export function AuthForm() {
             setIsAuth(true);
 
             loginStore.setAuthStatus(true);
-            console.log(loginStore.isAuth(), `<--- after logint isAuth`);
 
             navigate("/");
         } catch (error) {

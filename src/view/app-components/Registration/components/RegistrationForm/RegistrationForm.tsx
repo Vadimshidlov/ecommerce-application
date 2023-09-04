@@ -35,7 +35,6 @@ export default function RegistrationForm({
 
     const inputTextHandler = async (
         e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>,
-        // key: keyof RegisterFormDataType,
     ) => {
         const { value, name } = e.target;
 

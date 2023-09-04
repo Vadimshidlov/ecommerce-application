@@ -91,7 +91,6 @@ export default function ProfilePassword() {
             await loginService.current.authenticateCustomer({ email, password: data.newPassword });
             setData(getInitialPasswords());
         } catch (err) {
-            console.log("catch err");
             if (err instanceof ValidationError) {
                 const errorsList = [...err.inner];
                 setValidationError((prevState) => ({

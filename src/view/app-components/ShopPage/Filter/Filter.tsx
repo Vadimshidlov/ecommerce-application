@@ -65,8 +65,6 @@ if (!token) {
 export function Filter({ onChangeFn, sortingParam, activeCategory }: IFilter) {
     const [activeButton, setActiveButton] = useState(activeCategory);
 
-    // const [products, setProducts] = useState<IProduct[]>([]);
-    // const [sortParams, setSortParams] = useState<string>("");
     const [categoryParams, setCategoryParams] = useState<string>("");
     const [objParams, setObjParams] = useState<IState>({});
 
@@ -99,19 +97,6 @@ export function Filter({ onChangeFn, sortingParam, activeCategory }: IFilter) {
         }
     }
 
-    // const handleButtonClick = (category: string) => {
-    //     // setActiveButton(category);
-    //     if (category === "") {
-    //         setCategoryParams(category);
-    //     } else {
-    //         filterCategories(category);
-    //     }
-    // };
-
-    // setActiveButton(activeCategory);
-
-    // console.log("~~~~~~~~~~~~", activeButton, activeCategory);
-
     const buttonClasses = (category: string) =>
         `filter__button ${category === activeButton ? "filter__button_active" : ""}`;
 
@@ -132,14 +117,11 @@ export function Filter({ onChangeFn, sortingParam, activeCategory }: IFilter) {
             });
 
             if (activeCategory) {
-                // buttonClasses(activeCategory);
                 filterCategories(activeCategory);
             }
 
             const queryParams = [categoryParams, params.join("&"), sortingParam].filter(Boolean);
             const url = queryParams.join("&");
-
-            console.log(url);
 
             if (url) {
                 results.push(...(await PRODUCT_SREVICE.getProductURL(url)).data.results);
@@ -374,19 +356,14 @@ export function Filter({ onChangeFn, sortingParam, activeCategory }: IFilter) {
                     </div>
                 </div>
             </div>
-            {/* <div className="filter__price">
-                <Text classes={["inter-600-font", "font-size_xl", "color_blue-dark"]}>Price</Text>
-                <div className="filter__price-wrapper">
-                    <input type="range" />
-                </div>
-            </div> */}
+
             <div className="filter__reset">
                 <Button
                     type="button"
                     text="Reset filters"
                     textClasses={["space-grotesk-500-font", "font-size_l", "color_white"]}
                     buttonClasses="button"
-                    onClick={() => console.log("btn-press")}
+                    onClick={() => {}}
                 />
             </div>
         </div>

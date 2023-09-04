@@ -43,7 +43,6 @@ export interface IProduct {
 
 export function CategoryPage() {
     const { categoryKey } = useParams();
-    console.log(categoryKey);
 
     const [products, setProducts] = useState<IProduct[]>([]);
     const [sortParams, setSortParams] = useState<string>("");
