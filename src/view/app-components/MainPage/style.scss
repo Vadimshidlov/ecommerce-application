@@ -1,9 +1,8 @@
 .main-part {
-    margin: 0 auto;
     background: url("../../../assets/home-image.png") center no-repeat;
     background-size: cover;
     height: 75vh;
-    padding-top: 10vh;
+    padding-top: 3vh;
 
     @media (max-width: 590px) {
         padding-top: 14vh;
