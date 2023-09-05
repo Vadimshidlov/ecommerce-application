@@ -1,5 +1,5 @@
 import React from "react";
-import Text from "view/app-components/Text/text";
+import Text from "shared/components/Text/text";
 
 interface IButton extends React.ComponentPropsWithRef<"button"> {
     text: string;

@@ -1,9 +1,16 @@
 .main-part {
-    margin: 0 auto;
     background: url("../../../assets/home-image.png") center no-repeat;
     background-size: cover;
     height: 75vh;
-    padding-top: 10vh;
+    padding-top: 3vh;
+
+    @media (max-width: 590px) {
+        padding-top: 14vh;
+    }
+
+    @media (max-width: 345px) {
+        padding-top: 18vh;
+    }
 }
 
 .some-content {
@@ -15,4 +22,30 @@
 .some-content .button {
     padding: 0.5rem;
     width: 80%;
+}
+
+.main-part__info {
+    display: flex;
+    flex-direction: column;
+    row-gap: 8px;
+    max-width: 538px;
+    margin-bottom: 28px;
+}
+
+.button-shop {
+    width: 172px;
+    height: 52px;
+    background-color: #121212;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.containter {
+    max-width: 1356px;
+    padding-left: 15px;
+    padding-right: 15px;
+    margin: 0 auto;
 }

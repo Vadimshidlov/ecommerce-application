@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
-import LoginService from "service/LoginService/LoginService";
 import { Button } from "shared/components/button/Button";
 import { ButtonIcon } from "shared/components/ButtonIcon/ButtonIcon";
 import { TextInput } from "shared/components/TextInput/TextInput";
@@ -13,6 +12,8 @@ import {
     errorAuthorizationMessage,
     successAuthorizationMessage,
 } from "shared/utils/notifyMessages";
+import { LoginStore } from "service/LoginStore/LoginStore";
+import LoginService from "service/LoginService/LoginService";
 
 export function AuthForm() {
     const LOGIN_SERVICE: LoginService = new LoginService();
@@ -52,6 +53,8 @@ export function AuthForm() {
             .required("Password is a required field"),
     });
 
+    const loginStore = LoginStore.getLoginStore();
+
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
 
@@ -59,10 +62,14 @@ export function AuthForm() {
             await schema.validate({ email, password }, { abortEarly: false });
 
             await LOGIN_SERVICE.getAuthToken({ email, password });
+
             await LOGIN_SERVICE.authenticateCustomer({ email, password });
 
             successAuthorizationMessage();
             setIsAuth(true);
+
+            loginStore.setAuthStatus(true);
+
             navigate("/");
         } catch (error) {
             if (error instanceof Yup.ValidationError) {
@@ -84,12 +91,16 @@ export function AuthForm() {
             <div className="input__container">
                 <TextInput
                     name="email"
-                    placeHolder="email"
+                    placeholder="email"
                     value={email}
                     id="email"
                     type="text"
-                    className={`registration__input ${!emailError ? "" : "input__outline-error"}`}
-                    onInput={() => setEmailError("")}
+                    className={`inter-400-font font-size_m registration__input  ${
+                        !emailError ? "" : "input__outline-error"
+                    }`}
+                    onInput={(event) => {
+                        setEmail((event.target as HTMLInputElement).value);
+                    }}
                     onFocus={() => setEmailError("")}
                     onChange={(event) => setEmail(event.target.value)}
                     validationError={emailError || ""}
@@ -99,11 +110,11 @@ export function AuthForm() {
                 <div className="password__wrapper">
                     <TextInput
                         name="password"
-                        placeHolder="password"
+                        placeholder="password"
                         value={password}
                         id="password"
                         type={inputType}
-                        className={`registration__input ${
+                        className={`inter-400-font font-size_m registration__input ${
                             !passError ? "" : "input__outline-error"
                         }`}
                         onInput={() => setPassError("")}

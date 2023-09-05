@@ -1,0 +1,250 @@
+@import "commonStyle/colors.scss";
+
+.profile-navbar {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    @media (max-width: 520px) {
+        margin-bottom: 15px;
+    }
+}
+
+.profile-navbar * {
+    cursor: pointer;
+    font-family: SpaceGrotesk;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 32px;
+    color: $color-black-600;
+    text-align: center;
+}
+
+.profile-navbar *:hover {
+    color: $color-black;
+}
+
+a {
+    text-decoration: none;
+    color: $color-black-600;
+}
+
+.profile-navbar .active {
+    color: $color-black;
+    border-bottom: 2px solid $color-black-600;
+}
+
+.profile-tittle {
+    display: flex;
+    justify-content: center;
+}
+
+.profile-container {
+    display: grid;
+    grid-template-columns: 20% auto;
+    margin-left: 5vw;
+    margin-top: 2rem;
+
+    @media (max-width: 520px) {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: 0px auto;
+    }
+}
+
+.adress,
+.details,
+.password {
+    display: flex;
+    width: 55vw;
+    padding: 4vw;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    border-radius: 6px;
+    border: 1px solid var(--black-300, #cbcbcb);
+    background: var(--white, #fff);
+
+    @media (max-width: 520px) {
+        width: 80vw;
+    }
+}
+
+.adress-edit,
+.details-edit,
+.password-edit {
+    display: flex;
+    width: 55vw;
+    padding: 4vw;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    border-radius: 6px;
+    border: 1px solid var(--black-300, blue);
+    background: var(--white, #fff);
+
+    @media (max-width: 520px) {
+        width: 80vw;
+    }
+}
+
+.edit-button {
+    border: none;
+    background-color: transparent;
+    display: flex;
+    cursor: pointer;
+    opacity: 0.8;
+}
+
+.edit-button:hover {
+    opacity: 1;
+}
+
+.adress-tittle {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.adresses,
+.details-form {
+    // margin-left: 3rem;
+
+    // @media (max-width: 610px) {
+    //     margin-left: 0;
+    // }
+
+    display: flex;
+    justify-content: center;
+}
+
+.password {
+    margin: 0px auto;
+}
+
+.button-logout {
+    border: none;
+    background-color: transparent;
+}
+
+.password-wrapper {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem;
+    align-items: flex-start;
+}
+
+.save-button {
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    opacity: 0.8;
+    color: blue;
+}
+
+.save-button:hover {
+    opacity: 1;
+}
+
+.block-address_select {
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.registration__error {
+    padding-top: 10px;
+    width: 100%;
+    color: #e61010;
+}
+
+.adress-line {
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+    row-gap: 5px;
+    width: 100%;
+    justify-content: space-between;
+
+    @media (max-width: 610px) {
+        flex-direction: column;
+    }
+}
+
+.address-form__select {
+    width: 100%;
+}
+
+.adress-line div{
+    width: 100%;
+}
+
+.adress-line div input{
+    width: 100%;
+}
+
+.details-line {
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+    row-gap: 5px;
+    width: 100%;
+    justify-content: space-between;
+
+    @media (max-width: 610px) {
+        flex-direction: column;
+    }
+}
+
+.details-line div{
+    width: 100%;
+}
+
+.details-line div input{
+    width: 100%;
+}
+
+.adress__input {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    border: 1px solid #cbcbcb;
+    border-radius: 6px;
+    outline-color: #007aff;
+
+    @media (max-width: 520px) {
+        font-size: 13px !important;
+    }
+}
+
+.default-address {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    flex-direction: row-reverse;
+    column-gap: 10px;
+}
+
+.adresses_forms {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.details-tittle {
+    display: flex;
+    width: 100%;
+    justify-content: flex-end;
+}
+
+.birthday-date {
+    display: flex;
+    flex-direction: row;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+}

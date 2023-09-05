@@ -3,13 +3,12 @@
     left: 50%;
     display: flex;
     justify-content: space-between;
+    align-items: center;
     margin: 0 auto;
-    padding-top: 0.5rem;
-    padding: 19px 52px;
-
-    @media (max-width: 490px) {
-        padding: 19px 20px;
-    }
+    padding-top: 19px;
+    padding-bottom: 19px;
+    flex-wrap: wrap;
+    gap: 20px;
 }
 
 .header-overlay {
@@ -18,12 +17,16 @@
     left: 50%;
     display: flex;
     justify-content: space-between;
+    align-items: center;
     margin: 0 auto;
     padding-top: 0.5rem;
     transform: translateX(-50%);
-    padding: 19px 52px;
+    padding-top: 19px;
+    padding-bottom: 19px;
+    flex-wrap: wrap;
+    gap: 20px;
 
-    @media (max-width: 490px) {
-        padding: 19px 20px;
+    @media (max-width: 345px) {
+        justify-content: center;
     }
 }

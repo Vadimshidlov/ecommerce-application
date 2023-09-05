@@ -2,7 +2,7 @@ import React from "react";
 import "view/app-components/PageNotFound/style.scss";
 import { useNavigate } from "react-router-dom";
 import NotFoundIcon from "view/app-components/PageNotFound/notFoundIcon";
-import Text from "view/app-components/Text/text";
+import Text from "shared/components/Text/text";
 
 export default function PageNotFound() {
     const paragraf = `The page you're looking for isn't available.Try to search again or use the go back button below.`;
