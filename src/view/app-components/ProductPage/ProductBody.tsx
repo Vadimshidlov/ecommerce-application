@@ -107,21 +107,23 @@ function ProductBody({ productResponse, checkedSize, setCheckedSize }: ProductBo
                     );
                 })}
             </ul>
-            <h2 className="space-grotesk-500-font font-size_heading-5 color_black">
-                {productResponse.name["en-US"]}
-            </h2>
-            <div className="inter-400-font font-size_s color_grey-dark">
-                {productResponse.description["en-US"]}
-            </div>
-            <div className="product__price">
-                {productDiscountPrice ? (
-                    <div className="product__price-container">
-                        <span className="product__price">${productDiscountPrice}</span>
-                        <span className="product__price-old">{productPrice}</span>
-                    </div>
-                ) : (
-                    <div className="product__price">${productPrice}</div>
-                )}
+            <div className="product__card-info">
+                <h2 className="space-grotesk-500-font font-size_heading-5 color_black">
+                    {productResponse.name["en-US"]}
+                </h2>
+                <div className="inter-400-font font-size_s color_grey-dark">
+                    {productResponse.description["en-US"]}
+                </div>
+                <div className="product__price">
+                    {productDiscountPrice ? (
+                        <div className="product__price-container">
+                            <span className="product__price">${productDiscountPrice}</span>
+                            <span className="product__price-old">{productPrice}</span>
+                        </div>
+                    ) : (
+                        <div className="product__price">${productPrice}</div>
+                    )}
+                </div>
             </div>
             <span className="product__color__title">Color:</span>
             <div className="product__colors">

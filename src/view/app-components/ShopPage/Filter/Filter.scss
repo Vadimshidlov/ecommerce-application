@@ -6,6 +6,10 @@
     gap: 32px;
     grid-area: 1 / 1 / 4 / 2;
 
+    @media (max-width: 768px) {
+        grid-area: initial;
+    }
+
     &__categories-list {
         display: flex;
         flex-direction: column;

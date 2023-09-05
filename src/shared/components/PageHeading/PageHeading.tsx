@@ -28,9 +28,11 @@ export default function PageHeading({ navigation, title, description }: IPageHea
                     <>
                         <li className="product__category-list__separator" />
                         <li>
-                            <span className="inter-400-font font-size_l color_blue-dark">
-                                {navigation}
-                            </span>
+                            <Link to={`/shop/${navigation}`}>
+                                <span className="inter-400-font font-size_l color_blue-dark">
+                                    {navigation}
+                                </span>
+                            </Link>
                         </li>
                     </>
                 )}

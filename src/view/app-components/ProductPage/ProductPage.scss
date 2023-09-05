@@ -82,6 +82,13 @@
         height: 13px;
     }
 
+    .product__card-info {
+        margin-top: 10px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
     .product__category-item {
         display: flex;
         column-gap: 5px;
@@ -254,7 +261,7 @@
     .product_sizes {
         display: flex;
         column-gap: 16px;
-        margin-bottom: 48px;
+        margin-bottom: 36px;
     }
 
     .product__size {
