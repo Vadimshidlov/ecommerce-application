@@ -138,6 +138,30 @@
         }
     }
 
+    &__price {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+
+        &-wrapper {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+
+            img {
+                max-width: 15px;
+            }
+        }
+
+        &-input {
+            padding: 13px 10px;
+            width: 100%;
+            border: 1px solid #121212;
+            border-radius: 6px;
+            max-width: 120px;
+        }
+    }
+
     label {
         display: flex;
         align-items: center;

@@ -5,10 +5,12 @@ import { Button } from "shared/components/button/Button";
 import ProductService from "service/ProductService/ProductService";
 import { Search } from "shared/components/Search/Search";
 import { Link } from "react-router-dom";
+import minus from "assets/svg/Minus.svg";
 
 export interface IQueryParams {
     param: string;
     type: string;
+    inputFiled?: string;
 }
 interface IFilter {
     onChangeFn: (newProducts: IProduct[]) => void;
@@ -57,12 +59,20 @@ export function Filter({ onChangeFn, sortingParam, activeCategory }: IFilter) {
     const [categoryParams, setCategoryParams] = useState<string>("");
     const [objParams, setObjParams] = useState<IState>({});
 
-    function collectParams({ param, type }: IQueryParams) {
+    function collectParams({ param, type, inputFiled }: IQueryParams) {
         setObjParams((prevData) => {
             if (type === "search") {
                 return {
                     ...prevData,
                     [type]: param ? [param] : [],
+                };
+            }
+            if (type === "price") {
+                const minPrice = inputFiled === "min" ? param || "*" : prevData.price?.[0] || "*";
+                const maxPrice = inputFiled === "max" ? param || "*" : prevData.price?.[1] || "*";
+                return {
+                    ...prevData,
+                    [type]: [minPrice, maxPrice],
                 };
             }
             const values = prevData[type] || [];
@@ -75,6 +85,8 @@ export function Filter({ onChangeFn, sortingParam, activeCategory }: IFilter) {
             };
         });
     }
+
+    console.log(objParams);
 
     async function filterCategories(key: string) {
         try {
@@ -98,6 +110,12 @@ export function Filter({ onChangeFn, sortingParam, activeCategory }: IFilter) {
             keys.forEach((key) => {
                 if (key === "search" && objParams[key].length > 0) {
                     params.push(`fuzzy=true&text.en-US=${objParams[key].join("")}`);
+                } else if (key === "price") {
+                    if (objParams.price[0] !== "*" || objParams.price[1] !== "*") {
+                        params.push(
+                            `filter=variants.${key}.centAmount:range (${objParams.price[0]} to ${objParams.price[1]})`,
+                        );
+                    }
                 } else if (objParams[key].length > 0) {
                     params.push(
                         `filter=variants.attributes.${key}.key:${objParams[key].join(",")}`,
@@ -361,6 +379,36 @@ export function Filter({ onChangeFn, sortingParam, activeCategory }: IFilter) {
                         />
                         <label htmlFor="nike">Nike</label>
                     </div>
+                </div>
+            </div>
+            <div className="filter__price">
+                <Text classes={["inter-600-font", "font-size_xl", "color_blue-dark"]}>Price</Text>
+                <div className="filter__price-wrapper">
+                    <input
+                        type="number"
+                        placeholder="min $"
+                        className="inter-400-font font-size_m filter__price-input"
+                        onChange={(event) => {
+                            collectParams({
+                                param: `${event.target.value ? +event.target.value * 100 : ""}`,
+                                type: "price",
+                                inputFiled: "min",
+                            });
+                        }}
+                    />
+                    <img src={minus} alt="minus-svg" />
+                    <input
+                        type="number"
+                        placeholder="max $"
+                        className="inter-400-font font-size_m filter__price-input"
+                        onChange={(event) => {
+                            collectParams({
+                                param: `${event.target.value ? +event.target.value * 100 : ""}`,
+                                type: "price",
+                                inputFiled: "max",
+                            });
+                        }}
+                    />
                 </div>
             </div>
             <div className="filter__reset">
