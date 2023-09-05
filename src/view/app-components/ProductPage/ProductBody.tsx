@@ -1,14 +1,11 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect, useRef, useState } from "react";
 import { Button } from "shared/components/button/Button";
 import plusButton from "assets/svg/Plus.svg";
 import minusButton from "assets/svg/Minus.svg";
 import { ButtonIcon } from "shared/components/ButtonIcon/ButtonIcon";
 import { ProductResponseType } from "view/app-components/ProductPage/types";
-import Text from "shared/components/Text/text";
 import { CategoryNameType } from "view/app-components/ProductPage/useGetProductDate";
 import AxiosSignUpService from "service/AxiosApiService/AxiosApiService";
-import { AxiosResponse } from "axios";
 import { Link } from "react-router-dom";
 
 export type ProductBodyType = {
