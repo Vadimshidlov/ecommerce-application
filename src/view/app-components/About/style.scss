@@ -4,7 +4,6 @@
     fill: $color-blue--dark;
     transition: all .8s;
     cursor: pointer;
-    padding-bottom: 5vh;
 }
 .rs-logo:hover,
 .github-logo:hover {
@@ -25,4 +24,25 @@
     align-items: center;
     padding-top: 10vh;
     background: $color-grey--light;
+
+    @media screen and (max-width: 650px) {
+        padding-top: 15vh;
+    }
+}
+
+.team-container {
+    display: flex;
+    gap: 3rem;
+    flex-wrap: wrap;
+
+    @media screen and (max-width: 450px) {
+        flex-direction: column;;
+    }
+}
+
+.person {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    margin-bottom: 2rem;
 }
