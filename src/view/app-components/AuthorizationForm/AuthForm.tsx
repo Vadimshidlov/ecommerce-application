@@ -95,7 +95,9 @@ export function AuthForm() {
                     value={email}
                     id="email"
                     type="text"
-                    className={`registration__input ${!emailError ? "" : "input__outline-error"}`}
+                    className={`inter-400-font font-size_m registration__input  ${
+                        !emailError ? "" : "input__outline-error"
+                    }`}
                     onInput={(event) => {
                         setEmail((event.target as HTMLInputElement).value);
                     }}
@@ -112,7 +114,7 @@ export function AuthForm() {
                         value={password}
                         id="password"
                         type={inputType}
-                        className={`registration__input ${
+                        className={`inter-400-font font-size_m registration__input ${
                             !passError ? "" : "input__outline-error"
                         }`}
                         onInput={() => setPassError("")}
