@@ -5,6 +5,9 @@
     flex-direction: column;
     gap: 10px;
 
+    @media (max-width: 520px) {
+        margin-bottom: 15px;
+    }
 }
 
 .profile-navbar * {
@@ -42,6 +45,13 @@ a {
     grid-template-columns: 20% auto;
     margin-left: 5vw;
     margin-top: 2rem;
+
+    @media (max-width: 520px) {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: 0px auto;
+    }
 }
 
 .adress,
@@ -54,8 +64,12 @@ a {
     align-items: center;
     gap: 10px;
     border-radius: 6px;
-    border: 1px solid var(--black-300, #CBCBCB);
-    background: var(--white, #FFF);
+    border: 1px solid var(--black-300, #cbcbcb);
+    background: var(--white, #fff);
+
+    @media (max-width: 520px) {
+        width: 80vw;
+    }
 }
 
 .adress-edit,
@@ -69,7 +83,11 @@ a {
     gap: 10px;
     border-radius: 6px;
     border: 1px solid var(--black-300, blue);
-    background: var(--white, #FFF);
+    background: var(--white, #fff);
+
+    @media (max-width: 520px) {
+        width: 80vw;
+    }
 }
 
 .edit-button {
@@ -91,9 +109,19 @@ a {
 }
 
 .adresses,
-.details-form,
+.details-form {
+    // margin-left: 3rem;
+
+    // @media (max-width: 610px) {
+    //     margin-left: 0;
+    // }
+
+    display: flex;
+    justify-content: center;
+}
+
 .password {
-    margin-left: 3rem;
+    margin: 0px auto;
 }
 
 .button-logout {
@@ -133,12 +161,50 @@ a {
     color: #e61010;
 }
 
-.adress-line,
-.details-line {
+.adress-line {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
+    flex-direction: column;
+    row-gap: 5px;
     width: 100%;
     justify-content: space-between;
+
+    @media (max-width: 610px) {
+        flex-direction: column;
+    }
+}
+
+.address-form__select {
+    width: 100%;
+}
+
+.adress-line div{
+    width: 100%;
+}
+
+.adress-line div input{
+    width: 100%;
+}
+
+.details-line {
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+    row-gap: 5px;
+    width: 100%;
+    justify-content: space-between;
+
+    @media (max-width: 610px) {
+        flex-direction: column;
+    }
+}
+
+.details-line div{
+    width: 100%;
+}
+
+.details-line div input{
+    width: 100%;
 }
 
 .adress__input {
@@ -147,6 +213,11 @@ a {
     padding: 10px;
     border: 1px solid #cbcbcb;
     border-radius: 6px;
+    outline-color: #007aff;
+
+    @media (max-width: 520px) {
+        font-size: 13px !important;
+    }
 }
 
 .default-address {
@@ -157,9 +228,10 @@ a {
     column-gap: 10px;
 }
 
-.adresses_forms{
+.adresses_forms {
     display: flex;
     flex-direction: column;
+    align-items: center;
     gap: 1rem;
 }
 

@@ -230,7 +230,7 @@ export default function ProfileAdressesPage() {
                                     Country:{" "}
                                     <select
                                         value={dataBilling.country}
-                                        className="inter-400-font font-size_m adress__input"
+                                        className="inter-400-font font-size_m adress__input address-form__select"
                                         name="country"
                                         onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
                                             const { value } = e.target;
@@ -371,7 +371,7 @@ export default function ProfileAdressesPage() {
                                     Country:{" "}
                                     <select
                                         value={dataShipping.country}
-                                        className="inter-400-font font-size_m adress__input"
+                                        className="inter-400-font font-size_m adress__input address-form__select"
                                         name="country"
                                         onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
                                             const { value } = e.target;
