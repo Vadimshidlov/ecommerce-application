@@ -123,6 +123,26 @@ export function Filter({ onChangeFn, sortingParam, activeCategory }: IFilter) {
         setParams();
     }, [activeCategory, categoryParams, objParams, onChangeFn, sortingParam]);
 
+    const resetFiltersHandler = (): void => {
+        const filtersContainer = document.querySelectorAll("input");
+        const filtersButton = document.querySelectorAll(".filter__button_active");
+        filtersContainer?.forEach((childNode) => {
+            const currentNode = childNode;
+            if (currentNode instanceof HTMLInputElement && currentNode.type === "checkbox") {
+                currentNode.checked = false;
+            }
+        });
+
+        filtersButton.forEach((filterButton) => {
+            if (filterButton.classList.contains("filter__button_active")) {
+                filterButton.classList.remove("filter__button_active");
+            }
+        });
+
+        setObjParams({});
+        setCategoryParams("");
+    };
+
     return (
         <div className="filter">
             <Text classes={["inter-600-font", "font-size_2xl", "color_black"]}>Filter</Text>
@@ -369,6 +389,7 @@ export function Filter({ onChangeFn, sortingParam, activeCategory }: IFilter) {
                     text="Reset filters"
                     textClasses={["space-grotesk-500-font", "font-size_l", "color_white"]}
                     buttonClasses="button"
+                    onClick={resetFiltersHandler}
                 />
             </div>
         </div>
