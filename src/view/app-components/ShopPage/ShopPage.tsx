@@ -147,7 +147,7 @@ export function ShopPage() {
     return (
         <section className="shop-page container">
             <PageHeading
-                navigation=""
+                navigation={categoryKey || ""}
                 title={title}
                 description="At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis
                     voluptatum deleniti."
