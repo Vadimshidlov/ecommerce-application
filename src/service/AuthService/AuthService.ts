@@ -28,6 +28,22 @@ export class AuthService {
             `oauth/${this.CTP_PROJECT_KEY}/anonymous/token`,
         );
 
+        const scopeString = tokenRequest.data.scope;
+        const anonIdArr = scopeString.split(" ");
+        console.log(anonIdArr, `anonIdArr`);
+        let idResult: string = "";
+        anonIdArr.forEach((element) => {
+            if (element.startsWith("anonymous_id")) {
+                console.log(element);
+                element.indexOf(":");
+                idResult = element.slice(element.indexOf(":") + 1);
+            }
+        });
+        console.log(idResult, `idResult`);
+        if (idResult.length > 0) {
+            localStorage.setItem("anonId", idResult);
+        }
+
         const tokenResponse: TokenResponseType = await tokenRequest.data;
         const anonymousAccessToken = tokenResponse.access_token;
         const anonymousRefreshToken = tokenResponse.refresh_token;

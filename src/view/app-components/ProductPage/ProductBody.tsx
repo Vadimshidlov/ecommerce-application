@@ -7,6 +7,7 @@ import { ProductResponseType } from "view/app-components/ProductPage/types";
 import { CategoryNameType } from "view/app-components/ProductPage/useGetProductDate";
 import AxiosSignUpService from "service/AxiosApiService/AxiosApiService";
 import { Link } from "react-router-dom";
+import BasketService from "service/BasketService/BasketService";
 
 export type ProductBodyType = {
     productResponse: ProductResponseType;
@@ -17,8 +18,10 @@ export type ProductBodyType = {
 function ProductBody({ productResponse, checkedSize, setCheckedSize }: ProductBodyType) {
     const axiosApi = useRef(AxiosSignUpService);
     const [categoriesName, setCategoriesName] = useState<string[]>();
+    const BASKET_SERVICE_API = useRef(new BasketService());
 
     useEffect(() => {
+        console.log(productResponse, `productResponse`);
         const getProductCategories = async () => {
             const categoriesIdList = productResponse.categories.map((el) => el.id);
             const categoryNamesResponse = await Promise.all(
@@ -75,6 +78,15 @@ function ProductBody({ productResponse, checkedSize, setCheckedSize }: ProductBo
     const productDiscountPrice = productDiscountPriceCent / 100;
     const productPrice = productResponse.masterVariant.prices[0].value.centAmount / 100;
     const [productCount, setProductCount] = useState<number>(1);
+
+    const addProductToCart = async (productId: string, quantity: number) => {
+        const createProductResponse = await BASKET_SERVICE_API.current.addProductToBasket(
+            productId,
+            quantity,
+        );
+
+        console.log(createProductResponse, `createProductResponse`);
+    };
 
     return (
         <div className="product__body">
@@ -167,10 +179,13 @@ function ProductBody({ productResponse, checkedSize, setCheckedSize }: ProductBo
                 />
             </div>
             <Button
-                type="submit"
+                type="button"
                 text="Add to Cart"
                 textClasses={["space-grotesk-500-font", "font-size_2xl", "color_white"]}
                 buttonClasses="button btn-full-width"
+                onClick={() => {
+                    addProductToCart(productResponse.id, productCount);
+                }}
             />
         </div>
     );
