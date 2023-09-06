@@ -86,8 +86,6 @@ export function Filter({ onChangeFn, sortingParam, activeCategory }: IFilter) {
         });
     }
 
-    console.log(objParams);
-
     async function filterCategories(key: string) {
         try {
             const { id } = (await PRODUCT_SREVICE.getCategoryByKey(key)).data;
@@ -100,6 +98,26 @@ export function Filter({ onChangeFn, sortingParam, activeCategory }: IFilter) {
 
     const buttonClasses = (category: string) =>
         `filter__button ${category === activeCategory ? "filter__button_active" : ""}`;
+
+    const resetFiltersHandler = async (): Promise<void> => {
+        const filtersContainer: NodeListOf<HTMLInputElement> = document.querySelectorAll("input");
+        const priceInput: NodeListOf<HTMLInputElement> =
+            document.querySelectorAll(".filter__price-input");
+
+        priceInput.forEach((item) => {
+            const newItem = item;
+            newItem.value = "";
+        });
+
+        filtersContainer?.forEach((childNode) => {
+            const currentNode = childNode;
+            if (currentNode instanceof HTMLInputElement && currentNode.type === "checkbox") {
+                currentNode.checked = false;
+            }
+        });
+
+        setObjParams({});
+    };
 
     useEffect(() => {
         async function setParams() {
@@ -416,7 +434,8 @@ export function Filter({ onChangeFn, sortingParam, activeCategory }: IFilter) {
                     type="button"
                     text="Reset filters"
                     textClasses={["space-grotesk-500-font", "font-size_l", "color_white"]}
-                    buttonClasses="button"
+                    buttonClasses="button btn-full-width filter__reset-button"
+                    onClick={resetFiltersHandler}
                 />
             </div>
         </div>
