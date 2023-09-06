@@ -3,10 +3,14 @@
 import React from "react";
 import { ReactComponent as GithubLogo } from "assets/svg/github-mark.svg";
 import { Link } from "react-router-dom";
+import { Person } from "view/app-components/About/about-utils";
 
 type Props = {
     name: string;
     image: string;
+    role: string;
+    nickname: string;
+    description: string;
 };
 
 function PersonItem(props: Props) {
@@ -14,11 +18,13 @@ function PersonItem(props: Props) {
 
     return (
         <div className="person">
-            <div>Image{props.image}</div>
-            <div>Name{props.name}</div>
-            <div>Role</div>
-            <div>Bio</div>
-            <GithubLogo className="github-logo" />
+            <img className="avatar" src={`${props.image}`} alt="" />
+            <strong>{props.name}</strong>
+            <div>Role: {props.role}</div>
+            <div>{props.description}</div>
+            <Link to={`https://github.com/${props.nickname}`}>
+                <GithubLogo className="github-logo" />
+            </Link>
         </div>
     );
 }
