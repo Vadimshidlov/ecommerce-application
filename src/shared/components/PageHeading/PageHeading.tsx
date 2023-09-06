@@ -11,7 +11,6 @@ interface IPageHeading {
 export default function PageHeading({ navigation, title, description }: IPageHeading) {
     return (
         <div className="page__header">
-            {/* <Text classes={["inter-400-font", "font-size_l", "color_blue-dark"]}>{navigation}</Text> */}
             <ul className="product__category-list">
                 <li>
                     <Link to="/">
