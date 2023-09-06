@@ -1,3 +1,5 @@
+@import "commonStyle/colors.scss";
+
 .product__container {
     display: flex;
     padding: 52px 0;
@@ -223,7 +225,7 @@
     }
 
     .product__color__black {
-        background-color: black;
+        background-color: $color-black;
         outline: 2px solid #ccc;
         border: 1px solid #999;
     }
@@ -234,26 +236,26 @@
         border: 1px solid #999;
     }
 
-    .product__color__brown {
-        background-color: brown;
+    .product__color__red {
+        background-color: $color-red;
         outline: 2px solid #ccc;
         border: 1px solid #999;
     }
 
     .product__color__blue {
-        background-color: blue;
+        background-color: $color-blue;
         outline: 2px solid #ccc;
         border: 1px solid #999;
     }
 
     .product__color__yellow {
-        background-color: yellow;
+        background-color: $color-yellow;
         outline: 2px solid #ccc;
         border: 1px solid #999;
     }
 
     .product__color__green {
-        background-color: green;
+        background-color: $color-green;
         outline: 2px solid #ccc;
         border: 1px solid #999;
     }
