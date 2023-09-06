@@ -10,17 +10,28 @@
     justify-content: start;
     width: 248px;
     gap: 12px;
+    transition: box-shadow 0.3s;
     cursor: pointer;
 
-    &:hover {
-        .product-card__img-wrapper img {
-            transform: scale(1.1);
-        }
+    @media (max-width: 1200px) {
+        width: 160px;
+        padding: 0;
     }
 
-    transition: box-shadow 0.3s;
-    &:hover {
-        box-shadow: 0 1px 6px #ccccccd2;
+    @media (max-width: 375px) {
+        width: 140px;
+        padding: 0;
+    }
+
+    @media (hover: hover) {
+        &:hover {
+            .product-card__img-wrapper img {
+                transform: scale(1.1);
+            }
+        }
+        &:hover {
+            box-shadow: 0 1px 6px #ccccccd2;
+        }
     }
 
     .sale__icon {
@@ -38,6 +49,16 @@
         height: 304px;
         border-radius: 6px;
         overflow: hidden;
+
+        @media (max-width: 1200px) {
+            width: 160px;
+            height: 220px;
+        }
+
+        @media (max-width: 375px) {
+            width: 140px;
+            height: 220px;
+        }
 
         img {
             width: 100%;

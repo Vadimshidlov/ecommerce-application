@@ -12,7 +12,7 @@ function ProductPage() {
     const [checkedSize, setCheckedSize] = useState(0);
 
     return productData ? (
-        <div className="product__container">
+        <div className="product__container container">
             <div className="swiper__container-two">
                 <ProductSwiper productResponse={productData} />
             </div>
