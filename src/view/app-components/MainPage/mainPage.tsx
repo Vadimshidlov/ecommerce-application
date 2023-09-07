@@ -8,7 +8,7 @@ import { NavLink } from "react-router-dom";
 export default function MainPage() {
     return (
         <div className="main-part">
-            <div className="containter">
+            <div className="container">
                 <div className="main-part__info">
                     <div>
                         <Text classes={["inter-600-font", "font-size_m"]}>New Arrivals</Text>

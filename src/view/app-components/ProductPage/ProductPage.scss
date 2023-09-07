@@ -14,6 +14,10 @@
         flex-direction: column;
     }
 
+    .swiper {
+        border-radius: 6px;
+    }
+
     .swiper__container-two {
         max-width: 50%;
         min-height: 500px;
@@ -155,11 +159,7 @@
         object-fit: cover;
 
         @media (max-width: 768px) {
-            height: 25rem;
-        }
-
-        @media (max-width: 768px) {
-            height: 20rem;
+            height: 32rem;
         }
     }
 
@@ -185,7 +185,9 @@
         left: 0;
         width: 100vw;
         height: 100vh;
-        background-color: rgba(0, 0, 0, 0.7);
+        background-color: #5555556e;
+        backdrop-filter: blur(5px);
+        -webkit-backdrop-filter: blur(5px);
     }
 
     .swiper__close-btn {

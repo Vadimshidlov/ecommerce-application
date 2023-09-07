@@ -29,34 +29,13 @@ export default function NavPages({ activeButton, setActiveButton }: NavPagesType
                 )}
                 <ul className="navigation-links__wrapper">
                     <li>
-                        <NavLink
-                            to="/"
-                            onClick={() => {
-                                setActiveButton(!activeButton);
-                            }}
-                        >
-                            Home
-                        </NavLink>
+                        <NavLink to="/">Home</NavLink>
                     </li>
                     <li>
-                        <NavLink
-                            to="/shop"
-                            onClick={() => {
-                                setActiveButton(!activeButton);
-                            }}
-                        >
-                            Shop
-                        </NavLink>
+                        <NavLink to="/shop">Shop</NavLink>
                     </li>
                     <li>
-                        <NavLink
-                            to="/"
-                            onClick={() => {
-                                setActiveButton(!activeButton);
-                            }}
-                        >
-                            About
-                        </NavLink>
+                        <NavLink to="/">About</NavLink>
                     </li>
                 </ul>
             </nav>
