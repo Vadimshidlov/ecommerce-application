@@ -1,5 +1,4 @@
 .button-box {
-    // margin-right: 1rem;
     @media screen and (width < 760px) {
         margin-right: 0;
     }
@@ -8,14 +7,10 @@
 .button-box,
 .basket-button-box {
     cursor: pointer;
-    // opacity: 0.8;
-    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
-
-// .button-box:hover,
-// .basket-button-box:hover {
-//     opacity: 1;
-// }
 
 .circle {
     width: 1.25rem;

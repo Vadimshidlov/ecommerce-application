@@ -6,8 +6,8 @@ export function BasketButton() {
         <svg
             className="basket-button-box"
             xmlns="http://www.w3.org/2000/svg"
-            width="28"
-            height="28"
+            width="31"
+            height="31"
             viewBox="0 0 28 28"
             fill="none"
         >

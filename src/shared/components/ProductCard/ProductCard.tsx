@@ -29,7 +29,14 @@ export default function ProductCard({
                 <Text classes={["space-grotesk-500-font", "font-size_m", "color_black"]}>
                     {title}
                 </Text>
-                <Text classes={["space-grotesk-500-font", "font-size_s", "color_grey-dark"]}>
+                <Text
+                    classes={[
+                        "space-grotesk-500-font",
+                        "font-size_s",
+                        "color_grey-dark",
+                        "product-card__description",
+                    ]}
+                >
                     {description}
                 </Text>
                 <div className="product-card__price">

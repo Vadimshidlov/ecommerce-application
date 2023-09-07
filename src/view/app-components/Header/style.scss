@@ -9,6 +9,40 @@
     padding-bottom: 19px;
     flex-wrap: wrap;
     gap: 20px;
+
+    @media (max-width: 480px) {
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+
+    &__burger-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    &__burger-button {
+        background: none;
+        border: none;
+        cursor: pointer;
+        display: none;
+        align-items: center;
+        justify-content: center;
+
+        @media (max-width: 768px) {
+            display: flex;
+        }
+    }
+
+    &__logo {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        @media (max-width: 480px) {
+            max-width: 114px;
+        }
+    }
 }
 
 .header-overlay {

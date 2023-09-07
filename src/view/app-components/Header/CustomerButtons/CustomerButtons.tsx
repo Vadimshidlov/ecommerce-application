@@ -1,8 +1,8 @@
 import React from "react";
 import "view/app-components/Header/CustomerButtons/style.scss";
-import { LogoutButton } from "view/app-components/Header/buttons/logoutButton";
+import { LoginButton } from "view/app-components/Header/buttons/loginButton";
 import { BasketButton } from "view/app-components/Header/buttons/basketButton";
-import QuantityItemsInBasket from "view/app-components/Header/buttons/quantityItemsInBasket";
+// import QuantityItemsInBasket from "view/app-components/Header/buttons/quantityItemsInBasket";
 import { NavLink } from "react-router-dom";
 import { useAuth } from "auth-context";
 import { UserButton } from "view/app-components/Header/buttons/userButton";
@@ -12,14 +12,24 @@ export function CustomerButtons() {
 
     return (
         <div className="customer-buttons">
-            <NavLink to="/login" hidden={!!authContetxtApi?.isAuth}>
-                <LogoutButton />
+            <NavLink
+                to="/login"
+                className={`${!authContetxtApi?.isAuth ? "button-box" : ""}`}
+                hidden={!!authContetxtApi?.isAuth}
+            >
+                <LoginButton />
             </NavLink>
-            <NavLink to="/profile/adresses" hidden={!authContetxtApi?.isAuth}>
+            <NavLink
+                to="/profile/adresses"
+                className={`${authContetxtApi?.isAuth ? "button-box" : ""}`}
+                hidden={!authContetxtApi?.isAuth}
+            >
                 <UserButton />
             </NavLink>
-            <BasketButton />
-            <QuantityItemsInBasket />
+            <div className="customer-buttons__basket-wrapper">
+                <BasketButton />
+                {/* <QuantityItemsInBasket /> */}
+            </div>
         </div>
     );
 }
