@@ -20,8 +20,12 @@ function PersonItem(props: Props) {
         <div className="person">
             <img className="avatar" src={`${props.image}`} alt="" />
             <strong>{props.name}</strong>
-            <div>Role: {props.role}</div>
-            <div>{props.description}</div>
+            <div>
+                <strong>Role:</strong> {props.role}
+            </div>
+            <div className="develop_line">
+                <strong>Develop:</strong> {props.description}
+            </div>
             <Link to={`https://github.com/${props.nickname}`}>
                 <GithubLogo className="github-logo" />
             </Link>

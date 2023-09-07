@@ -18,7 +18,7 @@ function AboutPage() {
             image: "https://avatars.githubusercontent.com/u/82110760?v=4",
             role: "lead-developer",
             nickname: Person.Vadim,
-            description: "",
+            description: "Authorization page, products, bucket, components",
         },
         {
             id: 2,
@@ -26,7 +26,7 @@ function AboutPage() {
             image: "https://avatars.githubusercontent.com/u/94137961?v=4",
             role: "developer",
             nickname: Person.Maxim,
-            description: "",
+            description: "Login page, products catalog, bucket, components",
         },
         {
             id: 3,
@@ -34,7 +34,7 @@ function AboutPage() {
             image: "https://avatars.githubusercontent.com/u/61989351?v=4",
             role: "developer",
             nickname: Person.Vitali,
-            description: "",
+            description: "Pages main, profile, about",
         },
     ];
 
