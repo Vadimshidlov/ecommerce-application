@@ -4,7 +4,7 @@ import "view/app-components/Header/LogoLink/style.scss";
 export function LogoLink() {
     return (
         <svg
-            className="logo-box"
+            className="logo-box header__logo"
             width="155"
             height="30"
             viewBox="0 0 155 30"

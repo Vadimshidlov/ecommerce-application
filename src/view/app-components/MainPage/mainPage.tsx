@@ -37,7 +37,7 @@ export default function MainPage() {
                         type="button"
                         text="See Collection"
                         textClasses={["space-grotesk-500-font", "font-size_l", "color_white"]}
-                        buttonClasses="button-shop"
+                        buttonClasses="button"
                     />
                 </NavLink>
             </div>

@@ -16,9 +16,7 @@ export default function NavPages({ activeButton, setActiveButton }: NavPagesType
             <nav className={`navigation-links ${activeButton ? "navigation-links_active" : ""}`}>
                 {activeButton && (
                     <div className="burger-menu__header">
-                        <NavLink className="header__logo" to="/">
-                            <LogoLink />
-                        </NavLink>
+                        <LogoLink />
                         <ButtonIcon
                             url={close}
                             altText="close-icon"
