@@ -41,21 +41,6 @@
         padding: 0;
     }
 
-    .sale__icon {
-        position: absolute;
-        top: 20px;
-        left: 20px;
-        padding: 4px 15px;
-        border-radius: 4px;
-        background-color: $color-green;
-        z-index: 2;
-
-        @media (max-width: 768px) {
-            top: 10px;
-            left: 10px;
-        }
-    }
-
     &__img-wrapper {
         width: 228px;
         height: 304px;
@@ -103,5 +88,20 @@
 
     .discount-price {
         text-decoration: line-through;
+    }
+}
+
+.sale__icon {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    padding: 4px 15px;
+    border-radius: 4px;
+    background-color: $color-green;
+    z-index: 2;
+
+    @media (max-width: 768px) {
+        top: 10px;
+        left: 10px;
     }
 }

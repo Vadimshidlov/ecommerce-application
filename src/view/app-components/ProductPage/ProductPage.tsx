@@ -8,13 +8,14 @@ import { useParams } from "react-router-dom";
 function ProductPage() {
     const { productId } = useParams();
     const { productData } = useGetProductDate(productId);
+    const isSale = !!productData?.masterVariant?.prices[0]?.discounted;
 
     const [checkedSize, setCheckedSize] = useState(0);
 
     return productData ? (
         <div className="product__container container">
             <div className="swiper__container-two">
-                <ProductSwiper productResponse={productData} />
+                <ProductSwiper isSale={isSale} productResponse={productData} />
             </div>
             <ProductBody
                 productResponse={productData}

@@ -11,9 +11,10 @@ import { ProductResponseType } from "view/app-components/ProductPage/types";
 
 export type ProductSwiperType = {
     productResponse: ProductResponseType;
+    isSale: boolean;
 };
 
-function ProductSwiper({ productResponse }: ProductSwiperType) {
+function ProductSwiper({ productResponse, isSale }: ProductSwiperType) {
     const imagesList: string[] = [];
     productResponse?.masterVariant.images.forEach((imageUrl) => imagesList.push(imageUrl.url));
     const [modalVersion, setModalVersion] = useState(false);
@@ -68,6 +69,7 @@ function ProductSwiper({ productResponse }: ProductSwiperType) {
                         </div>
                     </SwiperSlide>
                 ))}
+                {isSale && <div className="sale__icon color_white inter-400-font">sale</div>}
             </Swiper>
         </div>
     );
