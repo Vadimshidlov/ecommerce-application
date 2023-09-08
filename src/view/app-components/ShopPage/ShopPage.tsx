@@ -7,6 +7,7 @@ import img from "assets/no-img.png";
 import { Link, useParams } from "react-router-dom";
 import ProductService from "service/ProductService/ProductService";
 import filterIcon from "assets/svg/filter.svg";
+import { FilterLabel } from "shared/components/FilterLabel/FilterLabel";
 
 export interface IState {
     [type: string]: string[];
@@ -82,7 +83,7 @@ export function ShopPage() {
         });
     }
 
-    const resetFiltersHandler = (): void => {
+    const resetAllFiltersHandler = (): void => {
         const filtersContainer: NodeListOf<HTMLInputElement> = document.querySelectorAll("input");
         const priceInput: NodeListOf<HTMLInputElement> =
             document.querySelectorAll(".filter__price-input");
@@ -101,6 +102,18 @@ export function ShopPage() {
 
         setObjParams({});
     };
+
+    function resetFilter(type: string): void {
+        const typeInputs = document.querySelectorAll(`.filter__${type}-input`);
+
+        typeInputs?.forEach((childNode) => {
+            const currentNode = childNode;
+            if (currentNode instanceof HTMLInputElement) {
+                currentNode.checked = false;
+                currentNode.value = "";
+            }
+        });
+    }
 
     useEffect(() => {
         async function setParams() {
@@ -153,15 +166,6 @@ export function ShopPage() {
                     voluptatum deleniti."
             />
             <div className="shop-page__wrapper">
-                <button
-                    type="button"
-                    className="shop-page__filter-button"
-                    onClick={() => setActiveButton(!activeButton)}
-                >
-                    <img src={filterIcon} alt="filter-icon" />
-                    <span className="inter-600-font font-size_m color_black">Filter</span>
-                </button>
-
                 <Filter
                     activeButton={activeButton}
                     setActiveButton={setActiveButton}
@@ -169,13 +173,33 @@ export function ShopPage() {
                         collectParams({ param, type, inputFiled })
                     }
                     activeCategory={categoryKey || ""}
-                    resetFilters={resetFiltersHandler}
+                    resetAllFilters={resetAllFiltersHandler}
                 />
                 <div className="shop-page__product-cards">
                     <Sorting
                         productsCount={products.length}
                         onChangeSort={(param) => {
                             setSortParams(param);
+                        }}
+                    />
+                    <button
+                        type="button"
+                        className="shop-page__filter-button"
+                        onClick={() => setActiveButton(!activeButton)}
+                    >
+                        <img src={filterIcon} alt="filter-icon" />
+                        <span className="inter-600-font font-size_m color_black">Filter</span>
+                    </button>
+                    <FilterLabel
+                        params={objParams}
+                        resetAllFilters={resetAllFiltersHandler}
+                        onRemoveFilter={(type) => {
+                            resetFilter(type);
+                            setObjParams((prevState) => {
+                                const newState = { ...prevState };
+                                delete newState[type];
+                                return newState;
+                            });
                         }}
                     />
                     <div className="shop-page__cards-container">

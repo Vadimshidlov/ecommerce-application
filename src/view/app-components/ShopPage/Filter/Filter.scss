@@ -84,18 +84,19 @@
         }
     }
 
-    &__colors {
+    &__color {
         display: flex;
         flex-direction: column;
         gap: 20px;
-        .filter__colors-wrapper {
+
+        &-wrapper {
             display: flex;
             flex-wrap: wrap;
             align-items: center;
             gap: 12px;
         }
 
-        &-item {
+        &-input {
             width: 40px;
             height: 40px;
             border-radius: 100%;
@@ -150,7 +151,7 @@
             }
         }
 
-        &-item {
+        &-input {
             width: 20px;
             height: 20px;
             cursor: pointer;
@@ -170,10 +171,19 @@
             gap: 12px;
         }
 
-        &-item {
+        &-items {
             display: flex;
             align-items: center;
             gap: 10px;
+        }
+
+        &-input {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
         }
     }
 

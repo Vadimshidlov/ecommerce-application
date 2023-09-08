@@ -16,7 +16,7 @@ export interface IQueryParams {
 
 type FilterType = {
     onChangeFilter: ({ param, type }: IQueryParams) => void;
-    resetFilters: () => void;
+    resetAllFilters: () => void;
     activeCategory: string;
     activeButton: boolean;
     setActiveButton: (value: React.SetStateAction<boolean>) => void;
@@ -25,7 +25,7 @@ type FilterType = {
 export function Filter({
     onChangeFilter,
     activeCategory,
-    resetFilters,
+    resetAllFilters,
     activeButton,
     setActiveButton,
 }: FilterType) {
@@ -137,15 +137,15 @@ export function Filter({
                         </ul>
                     </div>
                 </div>
-                <div className="filter__colors">
+                <div className="filter__color">
                     <Text classes={["inter-600-font", "font-size_xl", "color_blue-dark"]}>
                         Color
                     </Text>
-                    <div className="filter__colors-wrapper">
+                    <div className="filter__color-wrapper">
                         <input
                             type="checkbox"
                             id="color-yellow"
-                            className="filter__colors-item"
+                            className="filter__color-input"
                             onChange={() => {
                                 onChangeFilter({ param: "%22yellow%22", type: "color" });
                             }}
@@ -153,7 +153,7 @@ export function Filter({
                         <input
                             type="checkbox"
                             id="color-black"
-                            className="filter__colors-item"
+                            className="filter__color-input"
                             onChange={() => {
                                 onChangeFilter({ param: "%22black%22", type: "color" });
                             }}
@@ -161,7 +161,7 @@ export function Filter({
                         <input
                             type="checkbox"
                             id="color-blue"
-                            className="filter__colors-item"
+                            className="filter__color-input"
                             onChange={() => {
                                 onChangeFilter({ param: "%22blue%22", type: "color" });
                             }}
@@ -169,7 +169,7 @@ export function Filter({
                         <input
                             type="checkbox"
                             id="color-green"
-                            className="filter__colors-item"
+                            className="filter__color-input"
                             onChange={() => {
                                 onChangeFilter({ param: "%22green%22", type: "color" });
                             }}
@@ -177,7 +177,7 @@ export function Filter({
                         <input
                             type="checkbox"
                             id="color-red"
-                            className="filter__colors-item"
+                            className="filter__color-input"
                             onChange={() => {
                                 onChangeFilter({ param: "%22red%22", type: "color" });
                             }}
@@ -193,18 +193,19 @@ export function Filter({
                             <input
                                 type="checkbox"
                                 id="size-2"
-                                className="filter__size-item"
+                                className="filter__size-input"
                                 onChange={() => {
                                     onChangeFilter({ param: "%222%22", type: "size" });
                                 }}
                             />
                             <label htmlFor="size-2">2</label>
                         </div>
+                        {/* <button className="product__size"></button> */}
                         <div className="filter__size-items">
                             <input
                                 type="checkbox"
                                 id="size-4"
-                                className="filter__size-item"
+                                className="filter__size-input"
                                 onChange={() => {
                                     onChangeFilter({ param: "%224%22", type: "size" });
                                 }}
@@ -215,7 +216,7 @@ export function Filter({
                             <input
                                 type="checkbox"
                                 id="size-6"
-                                className="filter__size-item"
+                                className="filter__size-input"
                                 onChange={() => {
                                     onChangeFilter({ param: "%226%22", type: "size" });
                                 }}
@@ -226,7 +227,7 @@ export function Filter({
                             <input
                                 type="checkbox"
                                 id="size-10"
-                                className="filter__size-item"
+                                className="filter__size-input"
                                 onChange={() => {
                                     onChangeFilter({ param: "%2210%22", type: "size" });
                                 }}
@@ -237,7 +238,7 @@ export function Filter({
                             <input
                                 type="checkbox"
                                 id="size-13"
-                                className="filter__size-item"
+                                className="filter__size-input"
                                 onChange={() => {
                                     onChangeFilter({ param: "%2213%22", type: "size" });
                                 }}
@@ -248,7 +249,7 @@ export function Filter({
                             <input
                                 type="checkbox"
                                 id="size-14"
-                                className="filter__size-item"
+                                className="filter__size-input"
                                 onChange={() => {
                                     onChangeFilter({ param: "%2214%22", type: "size" });
                                 }}
@@ -259,7 +260,7 @@ export function Filter({
                             <input
                                 type="checkbox"
                                 id="size-15"
-                                className="filter__size-item"
+                                className="filter__size-input"
                                 onChange={() => {
                                     onChangeFilter({ param: "%2215%22", type: "size" });
                                 }}
@@ -270,7 +271,7 @@ export function Filter({
                             <input
                                 type="checkbox"
                                 id="size-16"
-                                className="filter__size-item"
+                                className="filter__size-input"
                                 onChange={() => {
                                     onChangeFilter({ param: "%2216%22", type: "size" });
                                 }}
@@ -284,22 +285,22 @@ export function Filter({
                         Brand
                     </Text>
                     <div className="filter__brand-wrapper">
-                        <div className="filter__brand-item">
+                        <div className="filter__brand-items">
                             <input
                                 type="checkbox"
                                 id="adidas"
-                                className="filter__size-item"
+                                className="filter__brand-input"
                                 onChange={() => {
                                     onChangeFilter({ param: "%22adidas%22", type: "brand" });
                                 }}
                             />
                             <label htmlFor="adidas">Adidas</label>
                         </div>
-                        <div className="filter__brand-item">
+                        <div className="filter__brand-items">
                             <input
                                 type="checkbox"
                                 id="nike"
-                                className="filter__size-item"
+                                className="filter__brand-input"
                                 onChange={() => {
                                     onChangeFilter({ param: "%22nike%22", type: "brand" });
                                 }}
@@ -346,7 +347,7 @@ export function Filter({
                         text="Reset filters"
                         textClasses={["space-grotesk-500-font", "font-size_l", "color_white"]}
                         buttonClasses="button btn-full-width filter__reset-button"
-                        onClick={resetFilters}
+                        onClick={resetAllFilters}
                     />
                 </div>
             </div>
