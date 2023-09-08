@@ -12,7 +12,15 @@ type NavPagesType = {
 export default function NavPages({ activeButton, setActiveButton }: NavPagesType) {
     return (
         <>
-            {activeButton && <div className="filter__blur-bg" />}
+            {activeButton && (
+                <div
+                    className="filter__blur-bg"
+                    onClick={() => {
+                        setActiveButton(!activeButton);
+                    }}
+                    onKeyDown={() => {}}
+                />
+            )}
             <nav className={`navigation-links ${activeButton ? "navigation-links_active" : ""}`}>
                 {activeButton && (
                     <div className="burger-menu__header">

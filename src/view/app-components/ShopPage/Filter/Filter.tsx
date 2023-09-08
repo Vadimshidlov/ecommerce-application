@@ -34,7 +34,15 @@ export function Filter({
 
     return (
         <>
-            {activeButton && <div className="filter__blur-bg" />}
+            {activeButton && (
+                <div
+                    className="filter__blur-bg"
+                    onClick={() => {
+                        setActiveButton(!activeButton);
+                    }}
+                    onKeyDown={() => {}}
+                />
+            )}
             <div className={`filter ${activeButton ? "filter_active" : ""}`}>
                 <Text classes={["inter-600-font", "font-size_2xl", "color_black"]}>Filter</Text>
                 {activeButton && (
