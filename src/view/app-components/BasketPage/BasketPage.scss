@@ -1,0 +1,90 @@
+.basket__container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+    max-width: 1128px;
+    padding-right: 10px;
+    padding-left: 10px;
+
+    .basket__products-header {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 50% 50%;
+
+        @media (max-width: 500px) {
+            grid-template-columns: 35% 65%;
+        }
+
+        .products-header__left{
+            display: flex;
+            column-gap: 16px;
+
+
+        }
+
+
+
+        .products-header__right{
+            display: flex;
+            justify-content: space-between;
+        }
+    }
+
+    .basket__item {
+        padding-bottom: 10px;
+        padding-top: 10px;
+        width: 100%;
+        display: grid;
+        grid-template-columns: 50% 50%;
+        border-bottom: 2px solid darkgrey;
+        align-items: center;
+        @media (max-width: 500px) {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .basket__item__left {
+            display: flex;
+            column-gap: 16px;
+
+            .basket__item-image img{
+                width: 77px;
+                height: 102px;
+            }
+        }
+
+        .basket__item__right {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            .basket__item__quantity {
+                padding: 12px 8px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                width: 90px;
+                height: 40px;
+                border: 1px solid #CBCBCB;
+
+                .quantity__button{
+                    background: transparent;
+                    font-size: 16px;
+
+                    outline: none;
+                    border: none;
+                    cursor: pointer;
+                }
+
+                .quantity__button img {
+                    width: 20px;
+                    height: 20px;
+                }
+            }
+        }
+    }
+}
+
+
