@@ -14,6 +14,9 @@ function TableHead() {
                     Quantity
                 </Text>
                 <Text classes={["space-grotesk-500-font", "font-size_m", "page-title"]}>Price</Text>
+                <Text classes={["space-grotesk-500-font", "font-size_m", "page-title"]}>
+                    Subtotal
+                </Text>
             </div>
         </div>
     );

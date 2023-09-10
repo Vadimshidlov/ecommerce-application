@@ -298,6 +298,10 @@
         margin-bottom: 16px;
     }
 
+    .product__cart-count__disabled {
+        opacity: 0.8;
+    }
+
     .product__cart-count__button-minus {
         background: transparent;
         border: none;

@@ -12,16 +12,28 @@ import BasketService from "service/BasketService/BasketService";
 export type ProductBodyType = {
     productResponse: ProductResponseType;
     checkedSize: number;
+    basketQuantity: number;
+    isInBasket: boolean;
+    lineItemId: string;
+    setIsInBasketHandler: (value: boolean) => Promise<void>;
     setCheckedSize: (value: number) => void;
 };
 
-function ProductBody({ productResponse, checkedSize, setCheckedSize }: ProductBodyType) {
+function ProductBody({
+    productResponse,
+    checkedSize,
+    basketQuantity,
+    isInBasket,
+    setIsInBasketHandler,
+    lineItemId,
+    setCheckedSize,
+}: ProductBodyType) {
     const axiosApi = useRef(AxiosSignUpService);
     const [categoriesName, setCategoriesName] = useState<string[]>();
     const BASKET_SERVICE_API = useRef(new BasketService());
+    const [productCount, setProductCount] = useState<number>(basketQuantity);
 
     useEffect(() => {
-        console.log(productResponse, `productResponse`);
         const getProductCategories = async () => {
             const categoriesIdList = productResponse.categories.map((el) => el.id);
             const categoryNamesResponse = await Promise.all(
@@ -77,15 +89,34 @@ function ProductBody({ productResponse, checkedSize, setCheckedSize }: ProductBo
         productResponse.masterVariant.prices[0].discounted?.value?.centAmount;
     const productDiscountPrice = productDiscountPriceCent / 100;
     const productPrice = productResponse.masterVariant.prices[0].value.centAmount / 100;
-    const [productCount, setProductCount] = useState<number>(1);
 
-    const addProductToCart = async (productId: string, quantity: number) => {
-        const createProductResponse = await BASKET_SERVICE_API.current.addProductToBasket(
-            productId,
-            quantity,
-        );
+    const productButtonHandler = async () => {
+        try {
+            if (isInBasket) {
+                console.log(lineItemId, `lineItemId`);
+                const removeProductResponse =
+                    await BASKET_SERVICE_API.current.removeProductFromBasket(
+                        lineItemId,
+                        productCount,
+                    );
+                console.log(removeProductResponse, `removeProductResponse`);
+                setIsInBasketHandler(false);
+                setProductCount(1);
+            }
 
-        console.log(createProductResponse, `createProductResponse`);
+            if (!isInBasket) {
+                const addProductToCartResponse =
+                    await BASKET_SERVICE_API.current.addProductToBasket(
+                        productResponse.id,
+                        productCount,
+                    );
+
+                console.log(addProductToCartResponse, `addProductToCartResponse`);
+                setIsInBasketHandler(true);
+            }
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     return (
@@ -159,33 +190,33 @@ function ProductBody({ productResponse, checkedSize, setCheckedSize }: ProductBo
                     </button>
                 ))}
             </ul>
-            <div className="product__cart-count">
-                <ButtonIcon
-                    url={minusButton}
-                    altText="icon-eye"
-                    classes="product__cart-count__button-minus"
-                    onClick={() => {
-                        if (productCount > 1) {
-                            setProductCount((prevState) => prevState - 1);
-                        }
-                    }}
-                />
-                <span>{productCount}</span>
-                <ButtonIcon
-                    url={plusButton}
-                    altText="icon-eye"
-                    classes="product__cart-count__button-plus"
-                    onClick={() => setProductCount((prevState) => prevState + 1)}
-                />
+            <div hidden={isInBasket}>
+                <div className="product__cart-count">
+                    <ButtonIcon
+                        url={minusButton}
+                        altText="icon-eye"
+                        classes="product__cart-count__button-minus"
+                        onClick={() => {
+                            if (productCount > 1) {
+                                setProductCount((prevState) => prevState - 1);
+                            }
+                        }}
+                    />
+                    <span>{productCount}</span>
+                    <ButtonIcon
+                        url={plusButton}
+                        altText="icon-eye"
+                        classes="product__cart-count__button-plus"
+                        onClick={() => setProductCount((prevState) => prevState + 1)}
+                    />
+                </div>
             </div>
             <Button
                 type="button"
-                text="Add to Cart"
+                text={isInBasket ? "Remove from bakset" : "Add to Bakset"}
                 textClasses={["space-grotesk-500-font", "font-size_2xl", "color_white"]}
                 buttonClasses="button btn-full-width"
-                onClick={() => {
-                    addProductToCart(productResponse.id, productCount);
-                }}
+                onClick={productButtonHandler}
             />
         </div>
     );

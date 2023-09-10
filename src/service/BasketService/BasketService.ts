@@ -66,6 +66,37 @@ export default class BasketService {
         return addProductToBasketResponse.data;
     }
 
+    public async removeProductFromBasket(
+        lineItemId: string,
+        quantity: number,
+    ): Promise<BasketResponseType> {
+        const addProductToBasketResponse = await this.AXIOS_API_SERVICE.post<BasketResponseType>(
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            },
+
+            {
+                // version: JSON.stringify(cartData.version),
+                version: +this.AUTH_DATA_STORE.getBasketVersion(),
+                actions: [
+                    {
+                        action: "removeLineItem",
+                        lineItemId,
+                        quantity,
+                    },
+                ],
+            },
+            `/carts/${localStorage.getItem("cartId")}`,
+        );
+
+        this.AUTH_DATA_STORE.setBasketVersion(
+            JSON.stringify(addProductToBasketResponse.data.version),
+        );
+        return addProductToBasketResponse.data;
+    }
+
     public async changeLineItemQuantity(
         lineItemId: string,
         quantity: number,

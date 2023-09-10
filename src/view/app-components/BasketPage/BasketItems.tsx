@@ -4,12 +4,16 @@ import BasketItem from "view/app-components/BasketPage/BasketItem";
 
 export type BasketItemsPropsType = {
     basketResponse: BasketResponseType;
-    removeItem: () => void;
+    getBasketHandler: () => void;
 };
 
-function BasketItems({ basketResponse, removeItem }: BasketItemsPropsType) {
+function BasketItems({ basketResponse, getBasketHandler }: BasketItemsPropsType) {
     return basketResponse.lineItems.map((basketItem) => (
-        <BasketItem lineItemData={basketItem} key={basketItem.id} removeItem={removeItem} />
+        <BasketItem
+            lineItemData={basketItem}
+            key={basketItem.id}
+            getBasketHandler={getBasketHandler}
+        />
     ));
 }
 

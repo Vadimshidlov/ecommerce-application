@@ -1,9 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import BasketService from "service/BasketService/BasketService";
 import Text from "shared/components/Text/text";
 import TableHead from "view/app-components/BasketPage/TableHead/TableHead";
 import BasketItems from "view/app-components/BasketPage/BasketItems";
+import { Button } from "shared/components/button/Button";
+import { NavLink } from "react-router-dom";
 
 export type BasketResponseType = {
     type: string;
@@ -103,32 +105,74 @@ export type LineItemsType = {
 function BasketPage() {
     const BASKET_SERVICE = useRef(new BasketService());
     const [basketData, setBasketData] = useState<BasketResponseType>();
-    const [isRemoveItem, setIsRemoveItem] = useState<boolean>(false);
+    const [totalPrice, setTotalPrice] = useState<number>(0);
+
+    const getBasket = useCallback(async () => {
+        const basketResponse = await BASKET_SERVICE.current.getCartById();
+        setBasketData(basketResponse);
+        const totalPriceResult = basketData?.totalPrice?.centAmount;
+
+        if (totalPriceResult) {
+            setTotalPrice(totalPriceResult / 100);
+        }
+
+        console.log(basketResponse);
+    }, [basketData?.totalPrice?.centAmount]);
 
     useEffect(() => {
-        const getBasket = async () => {
-            const basketResponse = await BASKET_SERVICE.current.getCartById();
-            setBasketData(basketResponse);
-
-            console.log(basketResponse);
-        };
-
         getBasket();
-    }, [isRemoveItem]);
-
-    const removeItemStateHandler = () => {
-        setIsRemoveItem((prevState) => !prevState);
-    };
+    }, [getBasket]);
 
     return (
         <div className="basket__container">
             <Text classes={["space-grotesk-500-font", "font-size_heading-3", "page-title"]}>
                 Cart
             </Text>
-            <TableHead />
-            {basketData ? (
-                <BasketItems basketResponse={basketData} removeItem={removeItemStateHandler} />
-            ) : null}
+
+            {basketData && basketData.lineItems.length !== 0 ? (
+                <>
+                    <Text
+                        classes={[
+                            "space-grotesk-500-font",
+                            "font-size_heading-4",
+                            "page-title",
+                            "basket__total-price",
+                        ]}
+                    >
+                        {`Total price: $ ${totalPrice}`}
+                    </Text>
+                    <TableHead />
+                    <BasketItems basketResponse={basketData} getBasketHandler={getBasket} />
+                </>
+            ) : (
+                <>
+                    <div className="basket__empty-message">
+                        <Text
+                            classes={[
+                                "space-grotesk-500-font",
+                                "font-size_heading-4",
+                                "page-title",
+                            ]}
+                        >
+                            Ooops...Your basket is empty
+                        </Text>
+                    </div>
+                    <div>
+                        <NavLink to="/shop">
+                            <Button
+                                type="button"
+                                text="See Collection"
+                                textClasses={[
+                                    "space-grotesk-500-font",
+                                    "font-size_l",
+                                    "color_white",
+                                ]}
+                                buttonClasses="button-shop"
+                            />
+                        </NavLink>
+                    </div>
+                </>
+            )}
         </div>
     );
 }

@@ -8,32 +8,26 @@ import BasketService from "service/BasketService/BasketService";
 
 export type BasketItemPropsType = {
     lineItemData: LineItemsType;
-    removeItem: () => void;
+    getBasketHandler: () => void;
 };
 
-function BasketItem({ lineItemData, removeItem }: BasketItemPropsType) {
+function BasketItem({ lineItemData, getBasketHandler }: BasketItemPropsType) {
     const LINE_ITEM_ID = lineItemData.id;
     const BASKET_SERVICE = useRef(new BasketService());
     const [countItem, setCountItem] = useState(Number(lineItemData.quantity));
-
-    // useEffect(() => {
-    //     const changeLineItemQuantity = async () => {
-    //         await BASKET_SERVICE.current.changeLineItemQuantity(LINE_ITEM_ID, countItem);
-    //
-    //         const basketResponse = await BASKET_SERVICE.current.getCartById();
-    //
-    //         console.log(basketResponse, `basketResponse`);
-    //     };
-    //
-    //     changeLineItemQuantity();
-    // }, [LINE_ITEM_ID, countItem]);
+    const discountPriceCent = lineItemData?.price?.discounted?.value?.centAmount;
+    const discountPrice = discountPriceCent / 100;
+    const realPriceCent = lineItemData.price.value.centAmount;
+    const realPrice = realPriceCent / 100;
 
     const changeLineItemQuantityHandler = async (count: number) => {
-        await BASKET_SERVICE.current.changeLineItemQuantity(LINE_ITEM_ID, count);
-
-        const basketResponse = await BASKET_SERVICE.current.getCartById();
-
-        console.log(basketResponse, `basketResponse`);
+        try {
+            await BASKET_SERVICE.current.changeLineItemQuantity(LINE_ITEM_ID, count);
+            // const basketResponse = await BASKET_SERVICE.current.getCartById();
+            // console.log(basketResponse, `basketResponse`);
+        } catch (e) {
+            console.log(e);
+        }
     };
 
     return (
@@ -46,13 +40,37 @@ function BasketItem({ lineItemData, removeItem }: BasketItemPropsType) {
                     <Text classes={["space-grotesk-500-font", "font-size_m", "page-title"]}>
                         {lineItemData.name["en-US"]}
                     </Text>
-                    {lineItemData.variant.attributes.map((attribute) => (
-                        <div key={attribute.name}>
-                            <Text classes={["space-grotesk-500-font", "font-size_m", "page-title"]}>
-                                {`${attribute.name}: ${attribute.value.key}`}
-                            </Text>
-                        </div>
-                    ))}
+                    <div className="bakset__item-attributes">
+                        {lineItemData.variant.attributes.map((attribute, index, lineItemsList) => (
+                            <div key={attribute.name}>
+                                <Text
+                                    classes={[
+                                        "space-grotesk-500-font",
+                                        "font-size_s",
+                                        "page-title",
+                                    ]}
+                                >
+                                    {index !== lineItemsList.length - 1
+                                        ? `${attribute.name}: ${attribute.value.key},`
+                                        : `${attribute.name}: ${attribute.value.key}`}
+                                </Text>
+                            </div>
+                        ))}
+                    </div>
+                    <button
+                        type="button"
+                        className="basket__item-remove font-size_s space-grotesk-500-font"
+                        onClick={async () => {
+                            try {
+                                await changeLineItemQuantityHandler(0);
+                                getBasketHandler();
+                            } catch (e) {
+                                console.log(e);
+                            }
+                        }}
+                    >
+                        Remove
+                    </button>
                 </div>
             </div>
             <div className="basket__item__right">
@@ -65,6 +83,7 @@ function BasketItem({ lineItemData, removeItem }: BasketItemPropsType) {
                             if (countItem > 1) {
                                 setCountItem(countItem - 1);
                                 await changeLineItemQuantityHandler(countItem - 1);
+                                getBasketHandler();
                             }
                         }}
                     />
@@ -76,21 +95,16 @@ function BasketItem({ lineItemData, removeItem }: BasketItemPropsType) {
                         onClick={async () => {
                             setCountItem(countItem + 1);
                             await changeLineItemQuantityHandler(countItem + 1);
+                            getBasketHandler();
                         }}
                     />
                 </div>
                 <Text classes={["inter-600-font", "font-size_l", "page-title"]}>
-                    {`$ ${lineItemData.price.value.centAmount / 100}`}
+                    {`$ ${discountPrice || realPrice}`}
                 </Text>
-                <button
-                    type="button"
-                    onClick={async () => {
-                        await changeLineItemQuantityHandler(0);
-                        removeItem();
-                    }}
-                >
-                    RemoveItem
-                </button>
+                <Text classes={["inter-600-font", "font-size_l", "page-title"]}>
+                    {`$ ${countItem * (discountPrice || realPrice)}`}
+                </Text>
             </div>
         </div>
     );

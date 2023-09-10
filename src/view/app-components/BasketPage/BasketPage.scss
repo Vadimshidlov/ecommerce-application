@@ -8,6 +8,10 @@
     padding-right: 10px;
     padding-left: 10px;
 
+    .basket__total-price {
+        margin-bottom: 20px;
+    }
+
     .basket__products-header {
         width: 100%;
         display: grid;
@@ -17,16 +21,12 @@
             grid-template-columns: 35% 65%;
         }
 
-        .products-header__left{
+        .products-header__left {
             display: flex;
             column-gap: 16px;
-
-
         }
 
-
-
-        .products-header__right{
+        .products-header__right {
             display: flex;
             justify-content: space-between;
         }
@@ -49,9 +49,20 @@
             display: flex;
             column-gap: 16px;
 
-            .basket__item-image img{
+            .basket__item-image img {
                 width: 77px;
                 height: 102px;
+            }
+
+            .bakset__item-info {
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+
+                .bakset__item-attributes {
+                    display: flex;
+                    column-gap: 5px;
+                }
             }
         }
 
@@ -67,9 +78,9 @@
                 align-items: center;
                 width: 90px;
                 height: 40px;
-                border: 1px solid #CBCBCB;
+                border: 1px solid #cbcbcb;
 
-                .quantity__button{
+                .quantity__button {
                     background: transparent;
                     font-size: 16px;
 
@@ -85,6 +96,32 @@
             }
         }
     }
+
+    .basket__empty-message {
+        display: flex;
+        align-items: center;
+        height: 300px;
+        //height: 62vh;
+    }
 }
 
+.basket__item-remove {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    padding-top: 3px;
+    width: 100px;
+    height: 30px;
+    cursor: pointer;
+    padding-left: 10px;
+    background: transparent;
+    border: none;
 
+    &::before {
+        position: absolute;
+        content: url("../../../assets/svg/trash.svg");
+        top: 3px;
+        left: 0;
+        padding-left: 5px;
+    }
+}
