@@ -32,6 +32,9 @@ export function Filter({
     const buttonClasses = (category: string) =>
         `filter__category ${category === activeCategory ? "filter__category_active" : ""}`;
 
+    const { body } = document;
+    body.style.overflowY = activeButton ? "hidden" : "auto";
+
     return (
         <>
             {activeButton && (

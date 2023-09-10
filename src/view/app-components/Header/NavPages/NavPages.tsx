@@ -10,6 +10,9 @@ type NavPagesType = {
 };
 
 export default function NavPages({ activeButton, setActiveButton }: NavPagesType) {
+    const { body } = document;
+    body.style.overflowY = activeButton ? "hidden" : "auto";
+
     return (
         <>
             {activeButton && (

@@ -52,12 +52,12 @@
         padding: 20px;
         left: -320px;
         top: 0;
-        height: 100dvh;
         width: 320px;
         flex-direction: column;
         background: #fff;
         transition: left 0.3s;
         z-index: 999;
+        height: 100dvh;
     }
 
     &_active {
