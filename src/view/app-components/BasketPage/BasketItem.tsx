@@ -5,6 +5,7 @@ import { ButtonIcon } from "shared/components/ButtonIcon/ButtonIcon";
 import minusButton from "assets/svg/Minus.svg";
 import plusButton from "assets/svg/Plus.svg";
 import BasketService from "service/BasketService/BasketService";
+import { removeProductMessage, somethingWrongMessage } from "shared/utils/notifyMessages";
 
 export type BasketItemPropsType = {
     lineItemData: LineItemsType;
@@ -63,8 +64,10 @@ function BasketItem({ lineItemData, getBasketHandler }: BasketItemPropsType) {
                         onClick={async () => {
                             try {
                                 await changeLineItemQuantityHandler(0);
+                                removeProductMessage("Product is");
                                 getBasketHandler();
                             } catch (e) {
+                                somethingWrongMessage();
                                 console.log(e);
                             }
                         }}

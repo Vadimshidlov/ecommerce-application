@@ -6,6 +6,7 @@ import TableHead from "view/app-components/BasketPage/TableHead/TableHead";
 import BasketItems from "view/app-components/BasketPage/BasketItems";
 import { Button } from "shared/components/button/Button";
 import { NavLink } from "react-router-dom";
+import { removeProductMessage, somethingWrongMessage } from "shared/utils/notifyMessages";
 
 export type BasketResponseType = {
     type: string;
@@ -123,6 +124,24 @@ function BasketPage() {
         getBasket();
     }, [getBasket]);
 
+    const clearBasketHandler = async () => {
+        if (basketData) {
+            try {
+                const clearBasketResponse = await Promise.all(
+                    basketData?.lineItems.map((lineItem) =>
+                        BASKET_SERVICE.current.removeProductFromBasket(
+                            lineItem.id,
+                            lineItem.quantity,
+                        ),
+                    ),
+                );
+                removeProductMessage("All products are");
+            } catch (e) {
+                somethingWrongMessage();
+            }
+        }
+    };
+
     return (
         <div className="basket__container">
             <Text classes={["space-grotesk-500-font", "font-size_heading-3", "page-title"]}>
@@ -141,6 +160,13 @@ function BasketPage() {
                     >
                         {`Total price: $ ${totalPrice}`}
                     </Text>
+                    <Button
+                        type="button"
+                        text="Clear Basket"
+                        textClasses={["space-grotesk-500-font", "font-size_l", "color_white"]}
+                        buttonClasses="button-shop basket__clear-btn"
+                        onClick={clearBasketHandler}
+                    />
                     <TableHead />
                     <BasketItems basketResponse={basketData} getBasketHandler={getBasket} />
                 </>

@@ -8,6 +8,11 @@ import { CategoryNameType } from "view/app-components/ProductPage/useGetProductD
 import AxiosSignUpService from "service/AxiosApiService/AxiosApiService";
 import { Link } from "react-router-dom";
 import BasketService from "service/BasketService/BasketService";
+import {
+    addProductMessage,
+    removeProductMessage,
+    somethingWrongMessage,
+} from "shared/utils/notifyMessages";
 
 export type ProductBodyType = {
     productResponse: ProductResponseType;
@@ -94,25 +99,38 @@ function ProductBody({
         try {
             if (isInBasket) {
                 console.log(lineItemId, `lineItemId`);
-                const removeProductResponse =
-                    await BASKET_SERVICE_API.current.removeProductFromBasket(
-                        lineItemId,
-                        productCount,
-                    );
-                console.log(removeProductResponse, `removeProductResponse`);
-                setIsInBasketHandler(false);
-                setProductCount(1);
+
+                try {
+                    const removeProductResponse =
+                        await BASKET_SERVICE_API.current.removeProductFromBasket(
+                            lineItemId,
+                            productCount,
+                        );
+                    console.log(removeProductResponse, `removeProductResponse`);
+                    setIsInBasketHandler(false);
+                    setProductCount(1);
+                    removeProductMessage("Product is");
+                } catch (e) {
+                    console.log(e);
+                    somethingWrongMessage();
+                }
             }
 
             if (!isInBasket) {
-                const addProductToCartResponse =
-                    await BASKET_SERVICE_API.current.addProductToBasket(
-                        productResponse.id,
-                        productCount,
-                    );
+                try {
+                    const addProductToCartResponse =
+                        await BASKET_SERVICE_API.current.addProductToBasket(
+                            productResponse.id,
+                            productCount,
+                        );
 
-                console.log(addProductToCartResponse, `addProductToCartResponse`);
-                setIsInBasketHandler(true);
+                    console.log(addProductToCartResponse, `addProductToCartResponse`);
+                    setIsInBasketHandler(true);
+                    addProductMessage();
+                } catch (e) {
+                    somethingWrongMessage();
+                    console.log(e);
+                }
             }
         } catch (error) {
             console.log(error);
