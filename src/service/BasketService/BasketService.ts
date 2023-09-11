@@ -69,6 +69,7 @@ export default class BasketService {
     public async removeProductFromBasket(
         lineItemId: string,
         quantity: number,
+        version: number,
     ): Promise<BasketResponseType> {
         const addProductToBasketResponse = await this.AXIOS_API_SERVICE.post<BasketResponseType>(
             {
@@ -79,7 +80,8 @@ export default class BasketService {
 
             {
                 // version: JSON.stringify(cartData.version),
-                version: +this.AUTH_DATA_STORE.getBasketVersion(),
+                version,
+                // version: +this.AUTH_DATA_STORE.getBasketVersion(),
                 actions: [
                     {
                         action: "removeLineItem",

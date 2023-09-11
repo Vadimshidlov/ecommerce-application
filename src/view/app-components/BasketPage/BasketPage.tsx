@@ -7,6 +7,8 @@ import BasketItems from "view/app-components/BasketPage/BasketItems";
 import { Button } from "shared/components/button/Button";
 import { NavLink } from "react-router-dom";
 import { removeProductMessage, somethingWrongMessage } from "shared/utils/notifyMessages";
+import { observer } from "mobx-react-lite";
+import BasketStore from "store/basket-store";
 
 export type BasketResponseType = {
     type: string;
@@ -107,6 +109,7 @@ function BasketPage() {
     const BASKET_SERVICE = useRef(new BasketService());
     const [basketData, setBasketData] = useState<BasketResponseType>();
     const [totalPrice, setTotalPrice] = useState<number>(0);
+    const { getBasketVersion, setBasketVersion } = BasketStore;
 
     const getBasket = useCallback(async () => {
         const basketResponse = await BASKET_SERVICE.current.getCartById();
@@ -128,13 +131,20 @@ function BasketPage() {
         if (basketData) {
             try {
                 const clearBasketResponse = await Promise.all(
-                    basketData?.lineItems.map((lineItem) =>
-                        BASKET_SERVICE.current.removeProductFromBasket(
-                            lineItem.id,
-                            lineItem.quantity,
-                        ),
-                    ),
+                    basketData?.lineItems.map(async (lineItem) => {
+                        const removeProductResponse =
+                            await BASKET_SERVICE.current.removeProductFromBasket(
+                                lineItem.id,
+                                lineItem.quantity,
+                                getBasketVersion(),
+                            );
+
+                        setBasketVersion(removeProductResponse.version);
+
+                        return removeProductResponse;
+                    }),
                 );
+
                 removeProductMessage("All products are");
             } catch (e) {
                 somethingWrongMessage();
@@ -203,4 +213,4 @@ function BasketPage() {
     );
 }
 
-export default BasketPage;
+export default observer(BasketPage);
