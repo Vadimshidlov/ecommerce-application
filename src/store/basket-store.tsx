@@ -1,7 +1,7 @@
 import { makeAutoObservable } from "mobx";
 
 class BasketStore {
-    private basketVersion = 0;
+    private basketVersion = localStorage.getItem("basketVersion");
 
     constructor() {
         makeAutoObservable(this);
@@ -9,7 +9,7 @@ class BasketStore {
 
     public getBasketVersion = () => this.basketVersion;
 
-    public setBasketVersion = (version: number): void => {
+    public setBasketVersion = (version: string): void => {
         this.basketVersion = version;
     };
 }

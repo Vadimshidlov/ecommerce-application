@@ -41,7 +41,7 @@ function AuthStateProvider({ children }: AuthProviderProps) {
                     await AuthServiceApi.current.createAnonymousToken();
                     if (!localStorage.getItem("cartId")) {
                         const basketResponse = await basketService.current.createBasket();
-                        setBasketVersion(basketResponse.version);
+                        setBasketVersion(`${basketResponse.version}`);
                     }
                 }
             } else {

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import BasketService from "service/BasketService/BasketService";
+import BasketService, { ClearBasketActionsType } from "service/BasketService/BasketService";
 import Text from "shared/components/Text/text";
 import TableHead from "view/app-components/BasketPage/TableHead/TableHead";
 import BasketItems from "view/app-components/BasketPage/BasketItems";
@@ -130,20 +130,22 @@ function BasketPage() {
     const clearBasketHandler = async () => {
         if (basketData) {
             try {
-                const clearBasketResponse = await Promise.all(
-                    basketData?.lineItems.map(async (lineItem) => {
-                        const removeProductResponse =
-                            await BASKET_SERVICE.current.removeProductFromBasket(
-                                lineItem.id,
-                                lineItem.quantity,
-                                getBasketVersion(),
-                            );
+                const clearBasketActionsList: ClearBasketActionsType[] = [];
 
-                        setBasketVersion(removeProductResponse.version);
+                basketData?.lineItems.forEach((lineItem) => {
+                    clearBasketActionsList.push({
+                        action: "removeLineItem",
+                        lineItemId: `${lineItem.id}`,
+                        quantity: lineItem.quantity,
+                    });
+                });
 
-                        return removeProductResponse;
-                    }),
+                const clearBasketResponse = await BASKET_SERVICE.current.removeLineItemsFromBasket(
+                    clearBasketActionsList,
                 );
+
+                setBasketVersion(`${clearBasketResponse.version}`);
+                setBasketData(clearBasketResponse);
 
                 removeProductMessage("All products are");
             } catch (e) {

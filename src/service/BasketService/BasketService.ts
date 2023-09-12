@@ -2,6 +2,12 @@ import { BasketResponseType } from "view/app-components/BasketPage/BasketPage";
 import AxiosApiService from "service/AxiosApiService/AxiosApiService";
 import { AuthDataStore } from "service/AuthDataStore/AuthDataStore";
 
+export type ClearBasketActionsType = {
+    action: string;
+    lineItemId: string;
+    quantity: number;
+};
+
 export default class BasketService {
     private readonly AXIOS_API_SERVICE = AxiosApiService;
 
@@ -63,13 +69,13 @@ export default class BasketService {
         this.AUTH_DATA_STORE.setBasketVersion(
             JSON.stringify(addProductToBasketResponse.data.version),
         );
+
         return addProductToBasketResponse.data;
     }
 
     public async removeProductFromBasket(
         lineItemId: string,
         quantity: number,
-        version: number,
     ): Promise<BasketResponseType> {
         const addProductToBasketResponse = await this.AXIOS_API_SERVICE.post<BasketResponseType>(
             {
@@ -80,8 +86,8 @@ export default class BasketService {
 
             {
                 // version: JSON.stringify(cartData.version),
-                version,
-                // version: +this.AUTH_DATA_STORE.getBasketVersion(),
+                // version,
+                version: +this.AUTH_DATA_STORE.getBasketVersion(),
                 actions: [
                     {
                         action: "removeLineItem",
@@ -96,6 +102,7 @@ export default class BasketService {
         this.AUTH_DATA_STORE.setBasketVersion(
             JSON.stringify(addProductToBasketResponse.data.version),
         );
+
         return addProductToBasketResponse.data;
     }
 
@@ -130,5 +137,33 @@ export default class BasketService {
             JSON.stringify(addProductToBasketResponse.data.version),
         );
         return addProductToBasketResponse.data;
+    }
+
+    public async removeLineItemsFromBasket(
+        actions: ClearBasketActionsType[],
+    ): Promise<BasketResponseType> {
+        const removeLineItemsFromBasketResponse =
+            await this.AXIOS_API_SERVICE.post<BasketResponseType>(
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                },
+
+                {
+                    // version: JSON.stringify(cartData.version),
+                    version: +this.AUTH_DATA_STORE.getBasketVersion(),
+                    actions,
+                },
+                `/carts/${localStorage.getItem("cartId")}`,
+            );
+
+        console.log(removeLineItemsFromBasketResponse, `removeLineItemsFromBasketResponse`);
+
+        this.AUTH_DATA_STORE.setBasketVersion(
+            JSON.stringify(removeLineItemsFromBasketResponse.data.version),
+        );
+
+        return removeLineItemsFromBasketResponse.data;
     }
 }

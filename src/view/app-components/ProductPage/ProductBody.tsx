@@ -38,7 +38,7 @@ function ProductBody({
     const [categoriesName, setCategoriesName] = useState<string[]>();
     const BASKET_SERVICE_API = useRef(new BasketService());
     const [productCount, setProductCount] = useState<number>(basketQuantity);
-    const { getBasketVersion, setBasketVersion } = BasketStore;
+    const { setBasketVersion } = BasketStore;
 
     useEffect(() => {
         const getProductCategories = async () => {
@@ -107,7 +107,6 @@ function ProductBody({
                         await BASKET_SERVICE_API.current.removeProductFromBasket(
                             lineItemId,
                             productCount,
-                            getBasketVersion(),
                         );
                     console.log(removeProductResponse, `removeProductResponse`);
                     setIsInBasketHandler(false);
@@ -128,7 +127,8 @@ function ProductBody({
                         );
 
                     console.log(addProductToCartResponse, `addProductToCartResponse`);
-                    setBasketVersion(addProductToCartResponse.version);
+                    setBasketVersion(`${addProductToCartResponse.version}`);
+                    // setBasketVersion(addProductToCartResponse.version);
                     setIsInBasketHandler(true);
                     addProductMessage();
                 } catch (e) {
