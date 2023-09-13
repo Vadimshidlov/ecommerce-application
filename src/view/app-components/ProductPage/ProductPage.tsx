@@ -7,6 +7,8 @@ import { useParams } from "react-router-dom";
 
 function ProductPage() {
     const { productId } = useParams();
+    const [checkedSize, setCheckedSize] = useState(0);
+
     const {
         productData,
         isInBasket,
@@ -15,9 +17,7 @@ function ProductPage() {
         lineItemId,
         setLineItemId,
         basketQuantity,
-    } = useGetProductDate(productId);
-
-    const [checkedSize, setCheckedSize] = useState(0);
+    } = useGetProductDate(checkedSize + 1, productId);
 
     return productData ? (
         <div className="product__container">

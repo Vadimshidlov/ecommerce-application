@@ -13,7 +13,9 @@ export type CategoryNameType = {
     };
 };
 
-function useGetProductDate(id: string = "c97e1aa9-08e0-4b77-aca5-b306c3eabb81") {
+function useGetProductDate(variantId: number, id: string = "c97e1aa9-08e0-4b77-aca5-b306c3eabb81") {
+    console.log("useGetProductDate call! variantId -->", variantId);
+
     const axiosApi = useRef(AxiosSignUpService);
     const BASKET_SERVICE = useRef(new BasketService());
 
@@ -33,15 +35,38 @@ function useGetProductDate(id: string = "c97e1aa9-08e0-4b77-aca5-b306c3eabb81") 
                     `/product-projections/${id}`,
                 );
 
+                console.log(productResponse, "productResponse");
+
                 const basketResponse = await BASKET_SERVICE.current.getCartById();
                 setBasketProductData(basketResponse);
-                basketResponse.lineItems.forEach((lineItem) => {
+
+                // const variantsIdList: number[] = [];
+
+                // productResponse.data.masterVariant.attributes.forEach((masterVariantAttr) => {
+                //     if (masterVariantAttr.name === "size") {
+                //         variantsIdList.push(+masterVariantAttr.value.key);
+                //     }
+                // });
+
+                // productResponse.data.variants.forEach((productVariant) => {
+                //     productVariant.attributes.forEach((productAttribute) => {
+                //         if (productAttribute.name === "size") {
+                //             variantsIdList.push(+productAttribute.value.key);
+                //         }
+                //     });
+                // });
+
+                basketResponse.lineItems.forEach((lineItem, index) => {
                     const productId = productResponse.data.id;
-                    if (productId === lineItem.productId) {
+                    if (productId === lineItem.productId && variantId === lineItem.variant.id) {
                         console.log("Yes, in the BAKSET!");
+                        console.log(`forEach iteration №--> ${index}`);
+
                         setLineItemId(lineItem.id);
                         setIsInBasket(true);
                         setBasketQuantity(lineItem.quantity);
+                    } else {
+                        setIsInBasket(false);
                     }
                 });
 
@@ -55,7 +80,7 @@ function useGetProductDate(id: string = "c97e1aa9-08e0-4b77-aca5-b306c3eabb81") 
         };
 
         getProducts();
-    }, [id, navigate, isInBasket, lineItemId]);
+    }, [id, navigate, isInBasket, lineItemId, variantId]);
 
     const setIsInBasketHandler = async (value: boolean) => {
         setIsInBasket(value);

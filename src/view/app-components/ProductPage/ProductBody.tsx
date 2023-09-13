@@ -124,6 +124,7 @@ function ProductBody({
                         await BASKET_SERVICE_API.current.addProductToBasket(
                             productResponse.id,
                             productCount,
+                            checkedSize + 1,
                         );
 
                     console.log(addProductToCartResponse, `addProductToCartResponse`);

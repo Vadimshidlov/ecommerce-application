@@ -42,6 +42,7 @@ export default class BasketService {
     public async addProductToBasket(
         productId: string,
         quantity: number,
+        variantId: number,
     ): Promise<BasketResponseType> {
         // const cartData = await this.getCartById();
 
@@ -59,6 +60,7 @@ export default class BasketService {
                     {
                         action: "addLineItem",
                         productId: `${productId}`,
+                        variantId,
                         quantity,
                     },
                 ],
