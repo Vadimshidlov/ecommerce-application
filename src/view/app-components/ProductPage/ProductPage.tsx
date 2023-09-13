@@ -17,6 +17,8 @@ function ProductPage() {
         lineItemId,
         setLineItemId,
         basketQuantity,
+        productVariantState,
+        setProductVariantState,
     } = useGetProductDate(checkedSize + 1, productId);
 
     return productData ? (
@@ -28,10 +30,12 @@ function ProductPage() {
                 productResponse={productData}
                 checkedSize={checkedSize}
                 basketQuantity={basketQuantity}
-                isInBasket={isInBasket}
+                // isInBasket={isInBasket}
                 lineItemId={lineItemId}
                 setIsInBasketHandler={setIsInBasketHandler}
                 setCheckedSize={setCheckedSize}
+                productVariantState={productVariantState}
+                setProductVariantState={setProductVariantState}
             />
         </div>
     ) : (

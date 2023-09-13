@@ -24,8 +24,6 @@ function BasketItem({ lineItemData, getBasketHandler }: BasketItemPropsType) {
     const changeLineItemQuantityHandler = async (count: number) => {
         try {
             await BASKET_SERVICE.current.changeLineItemQuantity(LINE_ITEM_ID, count);
-            // const basketResponse = await BASKET_SERVICE.current.getCartById();
-            // console.log(basketResponse, `basketResponse`);
         } catch (e) {
             console.log(e);
         }

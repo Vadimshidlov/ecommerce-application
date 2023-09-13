@@ -21,6 +21,7 @@ export default class ProductService {
         const response = await this.AXIOS_API.get<CategoryResponse>({}, `/categories/key=${key}`);
 
         this.CATEGORIE_ID = response.data.id;
+
         return response;
     }
 

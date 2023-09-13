@@ -119,8 +119,6 @@ function BasketPage() {
         if (totalPriceResult) {
             setTotalPrice(totalPriceResult / 100);
         }
-
-        console.log(basketResponse);
     }, [basketData?.totalPrice?.centAmount]);
 
     useEffect(() => {

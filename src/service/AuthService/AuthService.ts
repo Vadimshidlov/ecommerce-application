@@ -30,16 +30,14 @@ export class AuthService {
 
         const scopeString = tokenRequest.data.scope;
         const anonIdArr = scopeString.split(" ");
-        console.log(anonIdArr, `anonIdArr`);
         let idResult: string = "";
         anonIdArr.forEach((element) => {
             if (element.startsWith("anonymous_id")) {
-                console.log(element);
                 element.indexOf(":");
                 idResult = element.slice(element.indexOf(":") + 1);
             }
         });
-        console.log(idResult, `idResult`);
+
         if (idResult.length > 0) {
             localStorage.setItem("anonId", idResult);
         }

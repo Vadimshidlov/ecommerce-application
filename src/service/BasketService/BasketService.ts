@@ -21,7 +21,8 @@ export default class BasketService {
                 },
             },
             { currency: "USD", anonymousId: localStorage.getItem("anonId") },
-            `/carts `,
+            `me/carts `,
+            // `/carts `,
         );
 
         localStorage.setItem("cartId", createCartResponse.data.id);
@@ -33,7 +34,8 @@ export default class BasketService {
     public async getCartById(): Promise<BasketResponseType> {
         const getCartResponse = await this.AXIOS_API_SERVICE.get<BasketResponseType>(
             {},
-            `/carts/${localStorage.getItem("cartId")}`,
+            `me/carts/${localStorage.getItem("cartId")}`,
+            // `/carts/${localStorage.getItem("cartId")}`,
         );
 
         return getCartResponse.data;
@@ -65,7 +67,8 @@ export default class BasketService {
                     },
                 ],
             },
-            `/carts/${localStorage.getItem("cartId")}`,
+            `me/carts/${localStorage.getItem("cartId")}`,
+            // `/carts/${localStorage.getItem("cartId")}`,
         );
 
         this.AUTH_DATA_STORE.setBasketVersion(
@@ -78,6 +81,7 @@ export default class BasketService {
     public async removeProductFromBasket(
         lineItemId: string,
         quantity: number,
+        variantId: number,
     ): Promise<BasketResponseType> {
         const addProductToBasketResponse = await this.AXIOS_API_SERVICE.post<BasketResponseType>(
             {
@@ -94,11 +98,13 @@ export default class BasketService {
                     {
                         action: "removeLineItem",
                         lineItemId,
+                        variantId,
                         quantity,
                     },
                 ],
             },
-            `/carts/${localStorage.getItem("cartId")}`,
+            `me/carts/${localStorage.getItem("cartId")}`,
+            // `/carts/${localStorage.getItem("cartId")}`,
         );
 
         this.AUTH_DATA_STORE.setBasketVersion(
@@ -112,8 +118,6 @@ export default class BasketService {
         lineItemId: string,
         quantity: number,
     ): Promise<BasketResponseType> {
-        // const cartData = await this.getCartById();
-
         const addProductToBasketResponse = await this.AXIOS_API_SERVICE.post<BasketResponseType>(
             {
                 headers: {
@@ -132,7 +136,8 @@ export default class BasketService {
                     },
                 ],
             },
-            `/carts/${localStorage.getItem("cartId")}`,
+            `me/carts/${localStorage.getItem("cartId")}`,
+            // `/carts/${localStorage.getItem("cartId")}`,
         );
 
         this.AUTH_DATA_STORE.setBasketVersion(
@@ -157,10 +162,9 @@ export default class BasketService {
                     version: +this.AUTH_DATA_STORE.getBasketVersion(),
                     actions,
                 },
-                `/carts/${localStorage.getItem("cartId")}`,
+                `me/carts/${localStorage.getItem("cartId")}`,
+                // `/carts/${localStorage.getItem("cartId")}`,
             );
-
-        console.log(removeLineItemsFromBasketResponse, `removeLineItemsFromBasketResponse`);
 
         this.AUTH_DATA_STORE.setBasketVersion(
             JSON.stringify(removeLineItemsFromBasketResponse.data.version),

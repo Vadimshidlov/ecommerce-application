@@ -13,9 +13,9 @@ export type CategoryNameType = {
     };
 };
 
-function useGetProductDate(variantId: number, id: string = "c97e1aa9-08e0-4b77-aca5-b306c3eabb81") {
-    console.log("useGetProductDate call! variantId -->", variantId);
+export type ProductVariantsBasketState = { [key: number]: boolean };
 
+function useGetProductDate(variantId: number, id: string = "c97e1aa9-08e0-4b77-aca5-b306c3eabb81") {
     const axiosApi = useRef(AxiosSignUpService);
     const BASKET_SERVICE = useRef(new BasketService());
 
@@ -24,9 +24,9 @@ function useGetProductDate(variantId: number, id: string = "c97e1aa9-08e0-4b77-a
     const [isInBasket, setIsInBasket] = useState<boolean>(false);
     const [lineItemId, setLineItemId] = useState<string>("");
     const [basketQuantity, setBasketQuantity] = useState<number>(1);
+    const [productVariantState, setProductVariantState] = useState<ProductVariantsBasketState>({});
     const navigate = useNavigate();
 
-    // TODO: Callback for remove product for
     useEffect(() => {
         const getProducts = async () => {
             try {
@@ -35,38 +35,21 @@ function useGetProductDate(variantId: number, id: string = "c97e1aa9-08e0-4b77-a
                     `/product-projections/${id}`,
                 );
 
-                console.log(productResponse, "productResponse");
-
                 const basketResponse = await BASKET_SERVICE.current.getCartById();
                 setBasketProductData(basketResponse);
 
-                // const variantsIdList: number[] = [];
-
-                // productResponse.data.masterVariant.attributes.forEach((masterVariantAttr) => {
-                //     if (masterVariantAttr.name === "size") {
-                //         variantsIdList.push(+masterVariantAttr.value.key);
-                //     }
-                // });
-
-                // productResponse.data.variants.forEach((productVariant) => {
-                //     productVariant.attributes.forEach((productAttribute) => {
-                //         if (productAttribute.name === "size") {
-                //             variantsIdList.push(+productAttribute.value.key);
-                //         }
-                //     });
-                // });
-
-                basketResponse.lineItems.forEach((lineItem, index) => {
+                basketResponse.lineItems.forEach((lineItem) => {
                     const productId = productResponse.data.id;
-                    if (productId === lineItem.productId && variantId === lineItem.variant.id) {
-                        console.log("Yes, in the BAKSET!");
-                        console.log(`forEach iteration №--> ${index}`);
 
-                        setLineItemId(lineItem.id);
-                        setIsInBasket(true);
-                        setBasketQuantity(lineItem.quantity);
-                    } else {
-                        setIsInBasket(false);
+                    if (productId === lineItem.productId) {
+                        if (variantId === lineItem.variant.id) {
+                            setLineItemId(lineItem.id);
+                        }
+
+                        setProductVariantState((prevState) => ({
+                            ...prevState,
+                            [lineItem.variant.id]: true,
+                        }));
                     }
                 });
 
@@ -96,6 +79,8 @@ function useGetProductDate(variantId: number, id: string = "c97e1aa9-08e0-4b77-a
         basketProductData,
         setLineItemId,
         basketQuantity,
+        productVariantState,
+        setProductVariantState,
     };
 }
 

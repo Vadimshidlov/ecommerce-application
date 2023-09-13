@@ -69,6 +69,7 @@ export function Filter({ onChangeFn, sortingParam, activeCategory }: IFilter) {
             const newValues = values.includes(param)
                 ? (values as string[]).filter((value) => value !== param)
                 : [...values, param];
+
             return {
                 ...prevData,
                 [type]: newValues,
