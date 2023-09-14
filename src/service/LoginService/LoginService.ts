@@ -46,9 +46,18 @@ export default class LoginService {
                     "Content-Type": "application/json",
                 },
             },
-            { email, password },
+            {
+                email,
+                password,
+                anonymousCart: {
+                    id: `${localStorage.getItem("cartId")}`,
+                    typeId: "cart",
+                },
+            },
             "/login",
         );
+
+        console.log(response, `login response`);
 
         if (response.status !== 200) {
             throw Error("User with such credentials was not found");

@@ -12,7 +12,7 @@ function ProductPage() {
     const {
         productData,
         isInBasket,
-        setIsInBasketHandler,
+        // setIsInBasketHandler,
         basketProductData,
         lineItemId,
         setLineItemId,
@@ -32,7 +32,7 @@ function ProductPage() {
                 basketQuantity={basketQuantity}
                 // isInBasket={isInBasket}
                 lineItemId={lineItemId}
-                setIsInBasketHandler={setIsInBasketHandler}
+                // setIsInBasketHandler={setIsInBasketHandler}
                 setCheckedSize={setCheckedSize}
                 productVariantState={productVariantState}
                 setProductVariantState={setProductVariantState}

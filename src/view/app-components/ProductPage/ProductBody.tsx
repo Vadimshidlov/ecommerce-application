@@ -23,7 +23,7 @@ export type ProductBodyType = {
     checkedSize: number;
     basketQuantity: number;
     lineItemId: string;
-    setIsInBasketHandler: (value: boolean) => Promise<void>;
+    // setIsInBasketHandler: (value: boolean) => Promise<void>;
     setCheckedSize: (value: number) => void;
     productVariantState: ProductVariantsBasketState;
     setProductVariantState: React.Dispatch<React.SetStateAction<ProductVariantsBasketState>>;
@@ -33,7 +33,7 @@ function ProductBody({
     productResponse,
     checkedSize,
     basketQuantity,
-    setIsInBasketHandler,
+    // setIsInBasketHandler,
     lineItemId,
     setCheckedSize,
     productVariantState,
@@ -42,6 +42,7 @@ function ProductBody({
     const axiosApi = useRef(AxiosSignUpService);
     const [categoriesName, setCategoriesName] = useState<string[]>();
     const BASKET_SERVICE_API = useRef(new BasketService());
+    console.log(basketQuantity, `basketQuantity`);
     const [productCount, setProductCount] = useState<number>(basketQuantity);
     const { setBasketVersion } = BasketStore;
 
@@ -106,13 +107,15 @@ function ProductBody({
         try {
             if (productVariantState[checkedSize + 1]) {
                 try {
+                    console.log(productCount, `productCount`);
                     await BASKET_SERVICE_API.current.removeProductFromBasket(
                         lineItemId,
-                        productCount,
+                        basketQuantity,
+                        // productCount,
                         checkedSize + 1,
                     );
 
-                    setIsInBasketHandler(false);
+                    // setIsInBasketHandler(false);
                     setProductVariantState((prevState) => ({
                         ...prevState,
                         [checkedSize + 1]: false,
@@ -142,7 +145,7 @@ function ProductBody({
                         [checkedSize + 1]: true,
                     }));
                     setProductCount(1);
-                    setIsInBasketHandler(true);
+                    // setIsInBasketHandler(true);
                     addProductMessage();
                 } catch (e) {
                     somethingWrongMessage();

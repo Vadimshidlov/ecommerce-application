@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useEffect, useRef, useState } from "react";
 import AxiosSignUpService from "service/AxiosApiService/AxiosApiService";
 import { ProductResponseType } from "view/app-components/ProductPage/types";
@@ -38,12 +39,16 @@ function useGetProductDate(variantId: number, id: string = "c97e1aa9-08e0-4b77-a
                 const basketResponse = await BASKET_SERVICE.current.getCartById();
                 setBasketProductData(basketResponse);
 
+                console.log(basketResponse.lineItems.length, `lineItems.length`);
+
                 basketResponse.lineItems.forEach((lineItem) => {
                     const productId = productResponse.data.id;
 
                     if (productId === lineItem.productId) {
                         if (variantId === lineItem.variant.id) {
+                            console.log(lineItem, `lineItem`);
                             setLineItemId(lineItem.id);
+                            setBasketQuantity(lineItem.quantity);
                         }
 
                         setProductVariantState((prevState) => ({
@@ -65,16 +70,16 @@ function useGetProductDate(variantId: number, id: string = "c97e1aa9-08e0-4b77-a
         getProducts();
     }, [id, navigate, isInBasket, lineItemId, variantId]);
 
-    const setIsInBasketHandler = async (value: boolean) => {
-        setIsInBasket(value);
-
-        setBasketQuantity(1);
-    };
+    // const setIsInBasketHandler = async (value: boolean) => {
+    //     setIsInBasket(value);
+    //
+    //     // setBasketQuantity(1);
+    // };
 
     return {
         productData,
         isInBasket,
-        setIsInBasketHandler,
+        // setIsInBasketHandler,
         lineItemId,
         basketProductData,
         setLineItemId,
