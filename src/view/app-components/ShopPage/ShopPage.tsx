@@ -8,6 +8,7 @@ import { Link, useParams } from "react-router-dom";
 import ProductService from "service/ProductService/ProductService";
 import filterIcon from "assets/svg/filter.svg";
 import { FilterLabel } from "shared/components/FilterLabel/FilterLabel";
+import Loader from "shared/components/Loader/Loader";
 
 export interface IState {
     [type: string]: string[];
@@ -55,6 +56,7 @@ export function ShopPage() {
     const [objParams, setObjParams] = useState<IState>({});
     const [activeButton, setActiveButton] = useState(false);
     const { categoryKey } = useParams();
+    const [isLoad, setIsLoad] = useState(true);
     const title = categoryKey
         ? `${categoryKey.charAt(0).toUpperCase()}${categoryKey.slice(1)}`
         : "Shop";
@@ -138,6 +140,7 @@ export function ShopPage() {
 
     useEffect(() => {
         async function setParams() {
+            setIsLoad(true);
             const keys: string[] = Object.keys(objParams);
             const params: string[] = [];
             const results: IProduct[] = [];
@@ -177,8 +180,11 @@ export function ShopPage() {
                 const response = (await PRODUCT_SREVICE.getProductURL(url)).data;
                 setTotalProducts(response.total);
                 results.push(...response.results);
+                setIsLoad(false);
             } else {
-                results.push(...(await PRODUCT_SREVICE.getAllProducts()).data.results);
+                const response = (await PRODUCT_SREVICE.getAllProducts()).data;
+                setTotalProducts(response.total);
+                setIsLoad(false);
             }
             setProducts((prevState) => prevState.concat(results));
         }
@@ -272,6 +278,7 @@ export function ShopPage() {
                             </Link>
                         ))}
                     </div>
+                    {isLoad && <Loader />}
                 </div>
             </div>
         </section>
