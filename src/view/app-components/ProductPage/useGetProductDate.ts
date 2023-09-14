@@ -70,16 +70,9 @@ function useGetProductDate(variantId: number, id: string = "c97e1aa9-08e0-4b77-a
         getProducts();
     }, [id, navigate, isInBasket, lineItemId, variantId]);
 
-    // const setIsInBasketHandler = async (value: boolean) => {
-    //     setIsInBasket(value);
-    //
-    //     // setBasketQuantity(1);
-    // };
-
     return {
         productData,
         isInBasket,
-        // setIsInBasketHandler,
         lineItemId,
         basketProductData,
         setLineItemId,

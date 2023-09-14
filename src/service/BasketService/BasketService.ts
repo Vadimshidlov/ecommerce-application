@@ -22,7 +22,6 @@ export default class BasketService {
             },
             { currency: "USD", anonymousId: localStorage.getItem("anonId") },
             `me/carts `,
-            // `/carts `,
         );
 
         localStorage.setItem("cartId", createCartResponse.data.id);
@@ -35,7 +34,6 @@ export default class BasketService {
         const getCartResponse = await this.AXIOS_API_SERVICE.get<BasketResponseType>(
             {},
             `me/carts/${localStorage.getItem("cartId")}`,
-            // `/carts/${localStorage.getItem("cartId")}`,
         );
 
         return getCartResponse.data;
@@ -46,8 +44,6 @@ export default class BasketService {
         quantity: number,
         variantId: number,
     ): Promise<BasketResponseType> {
-        // const cartData = await this.getCartById();
-
         const addProductToBasketResponse = await this.AXIOS_API_SERVICE.post<BasketResponseType>(
             {
                 headers: {
@@ -56,7 +52,6 @@ export default class BasketService {
             },
 
             {
-                // version: JSON.stringify(cartData.version),
                 version: +this.AUTH_DATA_STORE.getBasketVersion(),
                 actions: [
                     {
@@ -68,7 +63,6 @@ export default class BasketService {
                 ],
             },
             `me/carts/${localStorage.getItem("cartId")}`,
-            // `/carts/${localStorage.getItem("cartId")}`,
         );
 
         this.AUTH_DATA_STORE.setBasketVersion(
@@ -91,8 +85,6 @@ export default class BasketService {
             },
 
             {
-                // version: JSON.stringify(cartData.version),
-                // version,
                 version: +this.AUTH_DATA_STORE.getBasketVersion(),
                 actions: [
                     {
@@ -104,7 +96,6 @@ export default class BasketService {
                 ],
             },
             `me/carts/${localStorage.getItem("cartId")}`,
-            // `/carts/${localStorage.getItem("cartId")}`,
         );
 
         this.AUTH_DATA_STORE.setBasketVersion(
@@ -126,7 +117,6 @@ export default class BasketService {
             },
 
             {
-                // version: JSON.stringify(cartData.version),
                 version: +this.AUTH_DATA_STORE.getBasketVersion(),
                 actions: [
                     {
@@ -137,7 +127,6 @@ export default class BasketService {
                 ],
             },
             `me/carts/${localStorage.getItem("cartId")}`,
-            // `/carts/${localStorage.getItem("cartId")}`,
         );
 
         this.AUTH_DATA_STORE.setBasketVersion(
@@ -158,12 +147,10 @@ export default class BasketService {
                 },
 
                 {
-                    // version: JSON.stringify(cartData.version),
                     version: +this.AUTH_DATA_STORE.getBasketVersion(),
                     actions,
                 },
                 `me/carts/${localStorage.getItem("cartId")}`,
-                // `/carts/${localStorage.getItem("cartId")}`,
             );
 
         this.AUTH_DATA_STORE.setBasketVersion(

@@ -29,10 +29,6 @@ function AuthStateProvider({ children }: AuthProviderProps) {
             const isAnonToken = AuthDataStoreApi.current.getAnonymousAccessToken();
             const loginStore = LoginStore.getLoginStore();
 
-            // if (!localStorage.getItem("cartId")) {
-            //     basketService.current.createBasket();
-            // }
-
             if (!isAccessToken) {
                 setIsAuth(false);
                 loginStore.setAuthStatus(false);
