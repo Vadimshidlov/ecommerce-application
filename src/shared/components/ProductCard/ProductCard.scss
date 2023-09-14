@@ -89,6 +89,16 @@
     .discount-price {
         text-decoration: line-through;
     }
+
+    &__button {
+        padding: 5px 15px;
+    }
+
+    &__button-inactive {
+        padding: 5px 15px;
+        opacity: 0.5;
+        cursor: auto;
+    }
 }
 
 .sale__icon {

@@ -1,5 +1,7 @@
 import React from "react";
 import Text from "shared/components/Text/text";
+import { Button } from "shared/components/button/Button";
+// import { Link } from "react-router-dom";
 
 interface IProductCardType extends React.ComponentPropsWithRef<"div"> {
     img: string;
@@ -49,6 +51,15 @@ export default function ProductCard({
                         {discountPrice}
                     </Text>
                 </div>
+                {/* <Link to="/"> */}
+                <Button
+                    type="button"
+                    text="Add to cart"
+                    textClasses={["space-grotesk-500-font", "font-size_m", "color_white"]}
+                    buttonClasses="button product-card__button"
+                    onClick={() => {}}
+                />
+                {/* </Link> */}
             </div>
         </div>
     );

@@ -47,6 +47,9 @@ export interface IProduct {
 const PRODUCT_SREVICE = new ProductService();
 
 export function ShopPage() {
+    const limitProducts = 8;
+    const [offset, setOffset] = useState(0);
+    const [totalProducts, setTotalProducts] = useState(0);
     const [products, setProducts] = useState<IProduct[]>([]);
     const [sortParams, setSortParams] = useState<string>("");
     const [objParams, setObjParams] = useState<IState>({});
@@ -116,6 +119,24 @@ export function ShopPage() {
     }
 
     useEffect(() => {
+        const scrollEvent = () => {
+            if (
+                window.innerHeight + window.scrollY >= document.body.offsetHeight &&
+                products.length < totalProducts
+            ) {
+                setOffset((prevState) => prevState + limitProducts);
+            }
+        };
+
+        window.onscroll = () => scrollEvent();
+    }, [products.length, totalProducts]);
+
+    useEffect(() => {
+        setOffset(0);
+        setProducts([]);
+    }, [objParams, categoryKey, sortParams]);
+
+    useEffect(() => {
         async function setParams() {
             const keys: string[] = Object.keys(objParams);
             const params: string[] = [];
@@ -143,19 +164,27 @@ export function ShopPage() {
                 }
             });
 
-            const queryParams = [category.join(""), params.join("&"), sortParams].filter(Boolean);
+            const queryLimit = `limit=${limitProducts}&offset=${offset}`;
+            const queryParams = [
+                queryLimit,
+                category.join(""),
+                params.join("&"),
+                sortParams,
+            ].filter(Boolean);
             const url = queryParams.join("&");
 
             if (url) {
-                results.push(...(await PRODUCT_SREVICE.getProductURL(url)).data.results);
+                const response = (await PRODUCT_SREVICE.getProductURL(url)).data;
+                setTotalProducts(response.total);
+                results.push(...response.results);
             } else {
                 results.push(...(await PRODUCT_SREVICE.getAllProducts()).data.results);
             }
-            setProducts(results);
+            setProducts((prevState) => prevState.concat(results));
         }
 
         setParams();
-    }, [categoryKey, objParams, sortParams]);
+    }, [categoryKey, objParams, offset, sortParams]);
 
     return (
         <section className="shop-page container">
