@@ -42,7 +42,6 @@ function ProductBody({
     const axiosApi = useRef(AxiosSignUpService);
     const [categoriesName, setCategoriesName] = useState<string[]>();
     const BASKET_SERVICE_API = useRef(new BasketService());
-    console.log(basketQuantity, `basketQuantity`);
     const [productCount, setProductCount] = useState<number>(basketQuantity);
     const { setBasketVersion } = BasketStore;
 
@@ -107,7 +106,6 @@ function ProductBody({
         try {
             if (productVariantState[checkedSize + 1]) {
                 try {
-                    console.log(productCount, `productCount`);
                     await BASKET_SERVICE_API.current.removeProductFromBasket(
                         lineItemId,
                         basketQuantity,

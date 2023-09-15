@@ -30,6 +30,19 @@ export default class BasketService {
         return createCartResponse.data;
     }
 
+    public async getActiveCart(): Promise<BasketResponseType> {
+        const getActiveCartResponse = await this.AXIOS_API_SERVICE.get<BasketResponseType>(
+            {},
+            `me/active-cart`,
+        );
+
+        console.log(getActiveCartResponse, `getActiveCartResponse`);
+        localStorage.setItem("cartId", getActiveCartResponse.data.id);
+        this.AUTH_DATA_STORE.setBasketVersion(JSON.stringify(getActiveCartResponse.data.version));
+
+        return getActiveCartResponse.data;
+    }
+
     public async getCartById(): Promise<BasketResponseType> {
         const getCartResponse = await this.AXIOS_API_SERVICE.get<BasketResponseType>(
             {},

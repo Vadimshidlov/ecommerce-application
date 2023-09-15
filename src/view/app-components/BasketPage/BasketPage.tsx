@@ -9,6 +9,7 @@ import { NavLink } from "react-router-dom";
 import { removeProductMessage, somethingWrongMessage } from "shared/utils/notifyMessages";
 import { observer } from "mobx-react-lite";
 import BasketStore from "store/basket-store";
+import { AuthDataStore } from "service/AuthDataStore/AuthDataStore";
 
 export type BasketResponseType = {
     type: string;
@@ -107,14 +108,21 @@ export type LineItemsType = {
 
 function BasketPage() {
     const BASKET_SERVICE = useRef(new BasketService());
+    const AUTH_DATA_STORE = useRef(new AuthDataStore());
     const [basketData, setBasketData] = useState<BasketResponseType>();
     const [totalPrice, setTotalPrice] = useState<number>(0);
     const { getBasketVersion, setBasketVersion } = BasketStore;
 
     const getBasket = useCallback(async () => {
+        console.log(`getBasket`);
+
+        // await BASKET_SERVICE.current.getActiveCart();
+
         const basketResponse = await BASKET_SERVICE.current.getCartById();
         setBasketData(basketResponse);
         const totalPriceResult = basketData?.totalPrice?.centAmount;
+
+        AUTH_DATA_STORE.current.setBasketVersion(JSON.stringify(basketResponse.version));
 
         if (totalPriceResult) {
             setTotalPrice(totalPriceResult / 100);
