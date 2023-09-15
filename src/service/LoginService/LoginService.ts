@@ -46,9 +46,21 @@ export default class LoginService {
                     "Content-Type": "application/json",
                 },
             },
-            { email, password },
+            {
+                email,
+                password,
+                // этой строкой даем команду, что соединить анон корзину с неанон
+                activeCartSignInMode: "MergeWithExistingCustomerCart",
+                anonymousCart: {
+                    id: `${localStorage.getItem("cartId")}`,
+                    typeId: "cart",
+                }, // а тут передаем объект с данными про анонимную корзину
+            },
             "/login",
         );
+
+        console.log(response, `login response`);
+        this.AUTH_DATA_STORE.setBasketVersion(JSON.stringify(response.data.cart.version));
 
         if (response.status !== 200) {
             throw Error("User with such credentials was not found");

@@ -1,4 +1,7 @@
+import { BasketResponseType } from "view/app-components/BasketPage/BasketPage";
+
 export type CustomerType = {
+    cart: BasketResponseType;
     customer: {
         addresses: [];
         authenticationMode: string;

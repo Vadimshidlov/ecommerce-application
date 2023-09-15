@@ -5,10 +5,12 @@ import { Button } from "shared/components/button/Button";
 import ProductService from "service/ProductService/ProductService";
 import { Search } from "shared/components/Search/Search";
 import { Link } from "react-router-dom";
+import minus from "assets/svg/Minus.svg";
 
 export interface IQueryParams {
     param: string;
     type: string;
+    inputFiled?: string;
 }
 interface IFilter {
     onChangeFn: (newProducts: IProduct[]) => void;
@@ -57,7 +59,7 @@ export function Filter({ onChangeFn, sortingParam, activeCategory }: IFilter) {
     const [categoryParams, setCategoryParams] = useState<string>("");
     const [objParams, setObjParams] = useState<IState>({});
 
-    function collectParams({ param, type }: IQueryParams) {
+    function collectParams({ param, type, inputFiled }: IQueryParams) {
         setObjParams((prevData) => {
             if (type === "search") {
                 return {
@@ -65,10 +67,19 @@ export function Filter({ onChangeFn, sortingParam, activeCategory }: IFilter) {
                     [type]: param ? [param] : [],
                 };
             }
+            if (type === "price") {
+                const minPrice = inputFiled === "min" ? param || "*" : prevData.price?.[0] || "*";
+                const maxPrice = inputFiled === "max" ? param || "*" : prevData.price?.[1] || "*";
+                return {
+                    ...prevData,
+                    [type]: [minPrice, maxPrice],
+                };
+            }
             const values = prevData[type] || [];
             const newValues = values.includes(param)
                 ? (values as string[]).filter((value) => value !== param)
                 : [...values, param];
+
             return {
                 ...prevData,
                 [type]: newValues,
@@ -89,6 +100,26 @@ export function Filter({ onChangeFn, sortingParam, activeCategory }: IFilter) {
     const buttonClasses = (category: string) =>
         `filter__button ${category === activeCategory ? "filter__button_active" : ""}`;
 
+    const resetFiltersHandler = async (): Promise<void> => {
+        const filtersContainer: NodeListOf<HTMLInputElement> = document.querySelectorAll("input");
+        const priceInput: NodeListOf<HTMLInputElement> =
+            document.querySelectorAll(".filter__price-input");
+
+        priceInput.forEach((item) => {
+            const newItem = item;
+            newItem.value = "";
+        });
+
+        filtersContainer?.forEach((childNode) => {
+            const currentNode = childNode;
+            if (currentNode instanceof HTMLInputElement && currentNode.type === "checkbox") {
+                currentNode.checked = false;
+            }
+        });
+
+        setObjParams({});
+    };
+
     useEffect(() => {
         async function setParams() {
             const keys: string[] = Object.keys(objParams);
@@ -98,6 +129,12 @@ export function Filter({ onChangeFn, sortingParam, activeCategory }: IFilter) {
             keys.forEach((key) => {
                 if (key === "search" && objParams[key].length > 0) {
                     params.push(`fuzzy=true&text.en-US=${objParams[key].join("")}`);
+                } else if (key === "price") {
+                    if (objParams.price[0] !== "*" || objParams.price[1] !== "*") {
+                        params.push(
+                            `filter=variants.${key}.centAmount:range (${objParams.price[0]} to ${objParams.price[1]})`,
+                        );
+                    }
                 } else if (objParams[key].length > 0) {
                     params.push(
                         `filter=variants.attributes.${key}.key:${objParams[key].join(",")}`,
@@ -363,12 +400,43 @@ export function Filter({ onChangeFn, sortingParam, activeCategory }: IFilter) {
                     </div>
                 </div>
             </div>
+            <div className="filter__price">
+                <Text classes={["inter-600-font", "font-size_xl", "color_blue-dark"]}>Price</Text>
+                <div className="filter__price-wrapper">
+                    <input
+                        type="number"
+                        placeholder="min $"
+                        className="inter-400-font font-size_m filter__price-input"
+                        onChange={(event) => {
+                            collectParams({
+                                param: `${event.target.value ? +event.target.value * 100 : ""}`,
+                                type: "price",
+                                inputFiled: "min",
+                            });
+                        }}
+                    />
+                    <img src={minus} alt="minus-svg" />
+                    <input
+                        type="number"
+                        placeholder="max $"
+                        className="inter-400-font font-size_m filter__price-input"
+                        onChange={(event) => {
+                            collectParams({
+                                param: `${event.target.value ? +event.target.value * 100 : ""}`,
+                                type: "price",
+                                inputFiled: "max",
+                            });
+                        }}
+                    />
+                </div>
+            </div>
             <div className="filter__reset">
                 <Button
                     type="button"
                     text="Reset filters"
                     textClasses={["space-grotesk-500-font", "font-size_l", "color_white"]}
-                    buttonClasses="button"
+                    buttonClasses="button btn-full-width filter__reset-button"
+                    onClick={resetFiltersHandler}
                 />
             </div>
         </div>

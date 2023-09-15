@@ -7,9 +7,19 @@ import { useParams } from "react-router-dom";
 
 function ProductPage() {
     const { productId } = useParams();
-    const { productData } = useGetProductDate(productId);
-
     const [checkedSize, setCheckedSize] = useState(0);
+
+    const {
+        productData,
+        isInBasket,
+        // setIsInBasketHandler,
+        basketProductData,
+        lineItemId,
+        setLineItemId,
+        basketQuantity,
+        productVariantState,
+        setProductVariantState,
+    } = useGetProductDate(checkedSize + 1, productId);
 
     return productData ? (
         <div className="product__container">
@@ -19,7 +29,13 @@ function ProductPage() {
             <ProductBody
                 productResponse={productData}
                 checkedSize={checkedSize}
+                basketQuantity={basketQuantity}
+                // isInBasket={isInBasket}
+                lineItemId={lineItemId}
+                // setIsInBasketHandler={setIsInBasketHandler}
                 setCheckedSize={setCheckedSize}
+                productVariantState={productVariantState}
+                setProductVariantState={setProductVariantState}
             />
         </div>
     ) : (

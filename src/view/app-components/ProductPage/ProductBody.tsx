@@ -1,25 +1,49 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect, useRef, useState } from "react";
 import { Button } from "shared/components/button/Button";
 import plusButton from "assets/svg/Plus.svg";
 import minusButton from "assets/svg/Minus.svg";
 import { ButtonIcon } from "shared/components/ButtonIcon/ButtonIcon";
 import { ProductResponseType } from "view/app-components/ProductPage/types";
-import Text from "shared/components/Text/text";
-import { CategoryNameType } from "view/app-components/ProductPage/useGetProductDate";
+import {
+    CategoryNameType,
+    ProductVariantsBasketState,
+} from "view/app-components/ProductPage/useGetProductDate";
 import AxiosSignUpService from "service/AxiosApiService/AxiosApiService";
-import { AxiosResponse } from "axios";
 import { Link } from "react-router-dom";
+import BasketService from "service/BasketService/BasketService";
+import {
+    addProductMessage,
+    removeProductMessage,
+    somethingWrongMessage,
+} from "shared/utils/notifyMessages";
+import BasketStore from "store/basket-store";
 
 export type ProductBodyType = {
     productResponse: ProductResponseType;
     checkedSize: number;
+    basketQuantity: number;
+    lineItemId: string;
+    // setIsInBasketHandler: (value: boolean) => Promise<void>;
     setCheckedSize: (value: number) => void;
+    productVariantState: ProductVariantsBasketState;
+    setProductVariantState: React.Dispatch<React.SetStateAction<ProductVariantsBasketState>>;
 };
 
-function ProductBody({ productResponse, checkedSize, setCheckedSize }: ProductBodyType) {
+function ProductBody({
+    productResponse,
+    checkedSize,
+    basketQuantity,
+    // setIsInBasketHandler,
+    lineItemId,
+    setCheckedSize,
+    productVariantState,
+    setProductVariantState,
+}: ProductBodyType) {
     const axiosApi = useRef(AxiosSignUpService);
     const [categoriesName, setCategoriesName] = useState<string[]>();
+    const BASKET_SERVICE_API = useRef(new BasketService());
+    const [productCount, setProductCount] = useState<number>(basketQuantity);
+    const { setBasketVersion } = BasketStore;
 
     useEffect(() => {
         const getProductCategories = async () => {
@@ -77,7 +101,59 @@ function ProductBody({ productResponse, checkedSize, setCheckedSize }: ProductBo
         productResponse.masterVariant.prices[0].discounted?.value?.centAmount;
     const productDiscountPrice = productDiscountPriceCent / 100;
     const productPrice = productResponse.masterVariant.prices[0].value.centAmount / 100;
-    const [productCount, setProductCount] = useState<number>(1);
+
+    const productButtonHandler = async () => {
+        try {
+            if (productVariantState[checkedSize + 1]) {
+                try {
+                    await BASKET_SERVICE_API.current.removeProductFromBasket(
+                        lineItemId,
+                        basketQuantity,
+                        // productCount,
+                        checkedSize + 1,
+                    );
+
+                    // setIsInBasketHandler(false);
+                    setProductVariantState((prevState) => ({
+                        ...prevState,
+                        [checkedSize + 1]: false,
+                    }));
+                    setProductCount(1);
+
+                    removeProductMessage("Product is");
+                } catch (e) {
+                    console.log(e);
+                    somethingWrongMessage();
+                }
+            }
+
+            if (!productVariantState[checkedSize + 1]) {
+                try {
+                    const addProductToCartResponse =
+                        await BASKET_SERVICE_API.current.addProductToBasket(
+                            productResponse.id,
+                            productCount,
+                            checkedSize + 1,
+                        );
+
+                    setBasketVersion(`${addProductToCartResponse.version}`);
+
+                    setProductVariantState((prevState) => ({
+                        ...prevState,
+                        [checkedSize + 1]: true,
+                    }));
+                    setProductCount(1);
+                    // setIsInBasketHandler(true);
+                    addProductMessage();
+                } catch (e) {
+                    somethingWrongMessage();
+                    console.log(e);
+                }
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     return (
         <div className="product__body">
@@ -150,30 +226,33 @@ function ProductBody({ productResponse, checkedSize, setCheckedSize }: ProductBo
                     </button>
                 ))}
             </ul>
-            <div className="product__cart-count">
-                <ButtonIcon
-                    url={minusButton}
-                    altText="icon-eye"
-                    classes="product__cart-count__button-minus"
-                    onClick={() => {
-                        if (productCount > 1) {
-                            setProductCount((prevState) => prevState - 1);
-                        }
-                    }}
-                />
-                <span>{productCount}</span>
-                <ButtonIcon
-                    url={plusButton}
-                    altText="icon-eye"
-                    classes="product__cart-count__button-plus"
-                    onClick={() => setProductCount((prevState) => prevState + 1)}
-                />
+            <div hidden={productVariantState[checkedSize + 1]}>
+                <div className="product__cart-count">
+                    <ButtonIcon
+                        url={minusButton}
+                        altText="icon-eye"
+                        classes="product__cart-count__button-minus"
+                        onClick={() => {
+                            if (productCount > 1) {
+                                setProductCount((prevState) => prevState - 1);
+                            }
+                        }}
+                    />
+                    <span>{productCount}</span>
+                    <ButtonIcon
+                        url={plusButton}
+                        altText="icon-eye"
+                        classes="product__cart-count__button-plus"
+                        onClick={() => setProductCount((prevState) => prevState + 1)}
+                    />
+                </div>
             </div>
             <Button
-                type="submit"
-                text="Add to Cart"
+                type="button"
+                text={productVariantState[checkedSize + 1] ? "Remove from bakset" : "Add to Bakset"}
                 textClasses={["space-grotesk-500-font", "font-size_2xl", "color_white"]}
                 buttonClasses="button btn-full-width"
+                onClick={productButtonHandler}
             />
         </div>
     );

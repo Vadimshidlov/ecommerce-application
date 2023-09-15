@@ -27,6 +27,7 @@ function CountrySelect({ setFormData, ...rest }: ICountrySelectPropsType) {
         >
             {countriesList.map((el, index) => {
                 const itemKey = `key-${index + 1}`;
+
                 return (
                     <option value={el.value} key={itemKey}>
                         {el.text}

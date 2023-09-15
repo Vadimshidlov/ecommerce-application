@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 import { Button } from "shared/components/button/Button";
@@ -14,10 +14,11 @@ import {
 } from "shared/utils/notifyMessages";
 import { LoginStore } from "service/LoginStore/LoginStore";
 import LoginService from "service/LoginService/LoginService";
+import BasketService from "service/BasketService/BasketService";
 
 export function AuthForm() {
     const LOGIN_SERVICE: LoginService = new LoginService();
-
+    const BASKET_SERVICE = useRef(new BasketService());
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
     const [emailError, setEmailError] = useState<string>("");
@@ -64,6 +65,8 @@ export function AuthForm() {
             await LOGIN_SERVICE.getAuthToken({ email, password });
 
             await LOGIN_SERVICE.authenticateCustomer({ email, password });
+
+            BASKET_SERVICE.current.getActiveCart();
 
             successAuthorizationMessage();
             setIsAuth(true);
