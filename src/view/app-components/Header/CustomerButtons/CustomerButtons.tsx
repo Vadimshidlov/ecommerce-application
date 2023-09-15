@@ -18,7 +18,9 @@ export function CustomerButtons() {
             <NavLink to="/profile/adresses" hidden={!authContetxtApi?.isAuth}>
                 <UserButton />
             </NavLink>
-            <BasketButton />
+            <NavLink to="/basket">
+                <BasketButton />
+            </NavLink>
             <QuantityItemsInBasket />
         </div>
     );

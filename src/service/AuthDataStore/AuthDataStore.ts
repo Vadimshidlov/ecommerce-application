@@ -116,4 +116,18 @@ export class AuthDataStore {
 
         return profileShippingId;
     }
+
+    public setBasketVersion(version: string): void {
+        localStorage.setItem("basketVersion", version);
+    }
+
+    public getBasketVersion(): string {
+        const basketVersion = localStorage.getItem("basketVersion");
+
+        if (!basketVersion) {
+            return "";
+        }
+
+        return basketVersion;
+    }
 }

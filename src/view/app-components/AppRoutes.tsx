@@ -11,6 +11,7 @@ import ProfileAdressesPage from "view/app-components/Profile/ProfileAdressesPage
 import ProfileDetails from "view/app-components/Profile/ProfileDetails";
 import ProfilePage from "view/app-components/Profile/ProfilePage";
 import ProfilePassword from "view/app-components/Profile/ProfilePassword";
+import BasketPage from "view/app-components/BasketPage/BasketPage";
 
 function AppRoutes() {
     return (
@@ -27,6 +28,7 @@ function AppRoutes() {
                 <Route path="details" element={<ProfileDetails />} />
                 <Route path="password" element={<ProfilePassword />} />
             </Route>
+            <Route path="basket" element={<BasketPage />} />
             <Route path="*" element={<PageNotFound />} />
         </Routes>
     );

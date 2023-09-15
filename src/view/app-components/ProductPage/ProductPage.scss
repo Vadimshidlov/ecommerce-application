@@ -230,6 +230,12 @@
         border: 1px solid #999;
     }
 
+    .product__color__red {
+        background-color: rgba(255, 0, 0, 0.365);
+        outline: 2px solid #ccc;
+        border: 1px solid #999;
+    }
+
     .product__color__white {
         background-color: whitesmoke;
         outline: 2px solid #ccc;
@@ -298,6 +304,10 @@
         background-color: #f5f5f5;
         padding: 12px 16px;
         margin-bottom: 16px;
+    }
+
+    .product__cart-count__disabled {
+        opacity: 0.8;
     }
 
     .product__cart-count__button-minus {
