@@ -134,12 +134,12 @@ export function ShopPage() {
     }, [products.length, totalProducts]);
 
     useEffect(() => {
-        setOffset(0);
         setProducts([]);
+        setOffset(0);
     }, [objParams, categoryKey, sortParams]);
 
     useEffect(() => {
-        async function setParams() {
+        (async function setParams() {
             setIsLoad(true);
             const keys: string[] = Object.keys(objParams);
             const params: string[] = [];
@@ -180,16 +180,13 @@ export function ShopPage() {
                 const response = (await PRODUCT_SREVICE.getProductURL(url)).data;
                 setTotalProducts(response.total);
                 results.push(...response.results);
-                setIsLoad(false);
             } else {
                 const response = (await PRODUCT_SREVICE.getAllProducts()).data;
                 setTotalProducts(response.total);
-                setIsLoad(false);
             }
             setProducts((prevState) => prevState.concat(results));
-        }
-
-        setParams();
+            setIsLoad(false);
+        })();
     }, [categoryKey, objParams, offset, sortParams]);
 
     return (
