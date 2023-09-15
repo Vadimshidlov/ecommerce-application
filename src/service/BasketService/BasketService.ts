@@ -172,4 +172,47 @@ export default class BasketService {
 
         return removeLineItemsFromBasketResponse.data;
     }
+
+    public async addPromoCode(codeValue: string): Promise<BasketResponseType | null> {
+        try {
+            const addPromoCodeResponse = await this.AXIOS_API_SERVICE.post<BasketResponseType>(
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                },
+
+                {
+                    version: +this.AUTH_DATA_STORE.getBasketVersion(),
+                    actions: [
+                        {
+                            action: "addDiscountCode",
+                            code: codeValue,
+                        },
+                    ],
+                },
+                `me/carts/${localStorage.getItem("cartId")}`,
+            );
+
+            console.log(addPromoCodeResponse, `addPromoCodeResponse`);
+
+            this.AUTH_DATA_STORE.setBasketVersion(
+                JSON.stringify(addPromoCodeResponse.data.version),
+            );
+
+            console.log(addPromoCodeResponse, `addPromoCodeResponse`);
+
+            return addPromoCodeResponse.data;
+        } catch (e) {
+            console.log(e);
+            // throw e;
+
+            return null;
+        }
+
+        // if (addPromoCodeResponse.status !== 200) {
+        //     console.log("123");
+        //     throw Error("Invalid promo code");
+        // }
+    }
 }

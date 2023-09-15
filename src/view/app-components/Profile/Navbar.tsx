@@ -1,14 +1,13 @@
 import { useAuth } from "auth-context";
-import React, { useRef } from "react";
+import React from "react";
 import { NavLink } from "react-router-dom";
 import { AuthService } from "service/AuthService/AuthService";
-import BasketService from "service/BasketService/BasketService";
 import { LoginStore } from "service/LoginStore/LoginStore";
 import "view/app-components/Profile/style.scss";
 
 export default function Navbar() {
     const { setIsAuth } = useAuth();
-    const basketService = useRef(new BasketService());
+    // const basketService = useRef(new BasketService());
     const AuthServiceApi = new AuthService();
 
     const logoutHandler = async () => {
@@ -16,9 +15,9 @@ export default function Navbar() {
         localStorage.clear();
         await AuthServiceApi.createAnonymousToken();
 
-        setTimeout(async () => {
-            await basketService.current.createBasket();
-        }, 100);
+        // setTimeout(async () => {
+        //     await basketService.current.createBasket();
+        // }, 500);
 
         setIsAuth(false);
         loginStore.setAuthStatus(false);

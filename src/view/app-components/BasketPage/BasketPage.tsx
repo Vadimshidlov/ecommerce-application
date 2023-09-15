@@ -10,6 +10,7 @@ import { removeProductMessage, somethingWrongMessage } from "shared/utils/notify
 import { observer } from "mobx-react-lite";
 import BasketStore from "store/basket-store";
 import { AuthDataStore } from "service/AuthDataStore/AuthDataStore";
+import BasketPromo from "view/app-components/BasketPage/BasketPromo/BasketPromo";
 
 export type BasketResponseType = {
     type: string;
@@ -111,12 +112,20 @@ function BasketPage() {
     const AUTH_DATA_STORE = useRef(new AuthDataStore());
     const [basketData, setBasketData] = useState<BasketResponseType>();
     const [totalPrice, setTotalPrice] = useState<number>(0);
+    const [promoCode, setPromoCode] = useState<string>("");
     const { getBasketVersion, setBasketVersion } = BasketStore;
+    const basketService = useRef(new BasketService());
 
     const getBasket = useCallback(async () => {
         console.log(`getBasket`);
 
         // await BASKET_SERVICE.current.getActiveCart();
+
+        if (!localStorage.getItem("cartId")) {
+            console.log("Anon Basket Page");
+            const basketResponse = await basketService.current.createBasket();
+            setBasketVersion(`${basketResponse.version}`);
+        }
 
         const basketResponse = await BASKET_SERVICE.current.getCartById();
         setBasketData(basketResponse);
@@ -127,11 +136,15 @@ function BasketPage() {
         if (totalPriceResult) {
             setTotalPrice(totalPriceResult / 100);
         }
-    }, [basketData?.totalPrice?.centAmount]);
+    }, [basketData?.totalPrice?.centAmount, setBasketVersion]);
 
     useEffect(() => {
         getBasket();
     }, [getBasket]);
+
+    useEffect(() => {
+        console.log(promoCode, `promoCode value`);
+    }, [promoCode]);
 
     const clearBasketHandler = async () => {
         if (basketData) {
@@ -185,6 +198,7 @@ function BasketPage() {
                         buttonClasses="button-shop basket__clear-btn"
                         onClick={clearBasketHandler}
                     />
+                    <BasketPromo promoCode={promoCode} setPromoCode={setPromoCode} />
                     <TableHead />
                     <BasketItems basketResponse={basketData} getBasketHandler={getBasket} />
                 </>
