@@ -34,7 +34,7 @@ export default function MainPage() {
         setProductLimit();
         (async () => {
             const PRODUCT_SREVICE = new ProductService();
-            const url = `limit=${limit}`;
+            const url = `filter=variants.prices.discounted:exists&limit=${limit}`;
             const response = (await PRODUCT_SREVICE.getProductURL(url)).data;
             setProducts([...response.results]);
         })();
