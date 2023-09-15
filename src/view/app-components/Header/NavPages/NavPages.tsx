@@ -61,7 +61,7 @@ export default function NavPages({ activeButton, setActiveButton }: NavPagesType
                     </li>
                     <li>
                         <NavLink
-                            to="/"
+                            to="/about"
                             onClick={() => {
                                 setActiveButton(false);
                             }}

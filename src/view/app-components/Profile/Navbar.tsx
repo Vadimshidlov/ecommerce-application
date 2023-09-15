@@ -7,12 +7,18 @@ import "view/app-components/Profile/style.scss";
 
 export default function Navbar() {
     const { setIsAuth } = useAuth();
+    // const basketService = useRef(new BasketService());
     const AuthServiceApi = new AuthService();
 
     const logoutHandler = async () => {
         const loginStore = LoginStore.getLoginStore();
         localStorage.clear();
         await AuthServiceApi.createAnonymousToken();
+
+        // setTimeout(async () => {
+        //     await basketService.current.createBasket();
+        // }, 500);
+
         setIsAuth(false);
         loginStore.setAuthStatus(false);
     };
