@@ -15,6 +15,7 @@ import {
 import { LoginStore } from "service/LoginStore/LoginStore";
 import LoginService from "service/LoginService/LoginService";
 import BasketService from "service/BasketService/BasketService";
+import BasketStore from "store/basket-store";
 
 export function AuthForm() {
     const LOGIN_SERVICE: LoginService = new LoginService();
@@ -24,6 +25,7 @@ export function AuthForm() {
     const [emailError, setEmailError] = useState<string>("");
     const [passError, setPassError] = useState<string>("");
     const [inputType, setInputType] = useState<string>("password");
+    const { updateBasketStore } = BasketStore;
 
     const toggleHideButton = (): void => {
         setInputType(inputType === "password" ? "text" : "password");
@@ -66,7 +68,8 @@ export function AuthForm() {
 
             await LOGIN_SERVICE.authenticateCustomer({ email, password });
 
-            BASKET_SERVICE.current.getActiveCart();
+            const activeCartResponse = await BASKET_SERVICE.current.getActiveCart();
+            updateBasketStore(activeCartResponse);
 
             successAuthorizationMessage();
             setIsAuth(true);

@@ -14,7 +14,6 @@ export class AuthService {
     private AxiosAuthServiceApi = AxiosAuthService;
 
     public async createAnonymousToken(): Promise<void> {
-        console.log("createAnonymousToken");
         const tokenRequest = await this.AxiosAuthServiceApi.post<TokenResponseType>(
             {
                 params: {

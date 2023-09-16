@@ -5,10 +5,12 @@ import { AuthService } from "service/AuthService/AuthService";
 import BasketService from "service/BasketService/BasketService";
 import { LoginStore } from "service/LoginStore/LoginStore";
 import "view/app-components/Profile/style.scss";
+import BasketStore from "store/basket-store";
 
 export default function Navbar() {
     const { setIsAuth } = useAuth();
     const basketService = useRef(new BasketService());
+    const { updateBasketStore } = BasketStore;
     const AuthServiceApi = new AuthService();
 
     const logoutHandler = async () => {
@@ -17,7 +19,8 @@ export default function Navbar() {
         await AuthServiceApi.createAnonymousToken();
 
         setTimeout(async () => {
-            await basketService.current.createBasket();
+            const createBasketResponse = await basketService.current.createBasket();
+            updateBasketStore(createBasketResponse);
         }, 100);
 
         setIsAuth(false);

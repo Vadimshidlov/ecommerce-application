@@ -36,7 +36,6 @@ export default class BasketService {
             `me/active-cart`,
         );
 
-        console.log(getActiveCartResponse, `getActiveCartResponse`);
         localStorage.setItem("cartId", getActiveCartResponse.data.id);
         this.AUTH_DATA_STORE.setBasketVersion(JSON.stringify(getActiveCartResponse.data.version));
 

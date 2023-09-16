@@ -12,13 +12,8 @@ function ProductPage() {
 
     const { productData } = useGetProductDate(productId);
 
-    const {
-        basketQuantity,
-        productVariantState,
-        setProductVariantState,
-        setIsInBasket,
-        lineItemId,
-    } = useGetProductBasketData(checkedSize + 1, productId);
+    const { basketQuantity, productVariantState, setProductVariantState, lineItemId } =
+        useGetProductBasketData(checkedSize + 1, productId);
 
     return productData ? (
         <div className="product__container">
@@ -29,9 +24,7 @@ function ProductPage() {
                 productResponse={productData}
                 checkedSize={checkedSize}
                 basketQuantity={basketQuantity}
-                // isInBasket={isInBasket}
                 lineItemId={lineItemId}
-                setIsInBasket={setIsInBasket}
                 setCheckedSize={setCheckedSize}
                 productVariantState={productVariantState}
                 setProductVariantState={setProductVariantState}

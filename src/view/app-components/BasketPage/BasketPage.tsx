@@ -111,15 +111,12 @@ function BasketPage() {
     const AUTH_DATA_STORE = useRef(new AuthDataStore());
     const [basketData, setBasketData] = useState<BasketResponseType>();
     const [totalPrice, setTotalPrice] = useState<number>(0);
-    const { getBasketVersion, setBasketVersion } = BasketStore;
+    const { updateBasketStore } = BasketStore;
 
     const getBasket = useCallback(async () => {
-        console.log(`getBasket`);
-
-        // await BASKET_SERVICE.current.getActiveCart();
-
         const basketResponse = await BASKET_SERVICE.current.getCartById();
         setBasketData(basketResponse);
+        updateBasketStore(basketResponse);
         const totalPriceResult = basketData?.totalPrice?.centAmount;
 
         AUTH_DATA_STORE.current.setBasketVersion(JSON.stringify(basketResponse.version));
@@ -127,7 +124,7 @@ function BasketPage() {
         if (totalPriceResult) {
             setTotalPrice(totalPriceResult / 100);
         }
-    }, [basketData?.totalPrice?.centAmount]);
+    }, [basketData?.totalPrice?.centAmount, updateBasketStore]);
 
     useEffect(() => {
         getBasket();
@@ -150,7 +147,6 @@ function BasketPage() {
                     clearBasketActionsList,
                 );
 
-                setBasketVersion(`${clearBasketResponse.version}`);
                 setBasketData(clearBasketResponse);
 
                 removeProductMessage("All products are");

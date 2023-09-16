@@ -21,7 +21,7 @@ function AuthStateProvider({ children }: AuthProviderProps) {
     const AuthServiceApi = useRef(new AuthService());
     const AuthDataStoreApi = useRef(AuthDataStore.getAuthDataStore());
     const basketService = useRef(new BasketService());
-    const { setBasketVersion } = BasketStore;
+    const { updateBasketStore } = BasketStore;
 
     useEffect(() => {
         (async () => {
@@ -37,7 +37,7 @@ function AuthStateProvider({ children }: AuthProviderProps) {
                     await AuthServiceApi.current.createAnonymousToken();
                     if (!localStorage.getItem("cartId")) {
                         const basketResponse = await basketService.current.createBasket();
-                        setBasketVersion(`${basketResponse.version}`);
+                        updateBasketStore(basketResponse);
                     }
                 }
             } else {
@@ -45,7 +45,7 @@ function AuthStateProvider({ children }: AuthProviderProps) {
                 loginStore.setAuthStatus(true);
             }
         })();
-    }, [setBasketVersion, setIsAuth]);
+    }, [setIsAuth, updateBasketStore]);
 
     const value = useMemo(() => ({ isAuth, setIsAuth }), [isAuth]);
 

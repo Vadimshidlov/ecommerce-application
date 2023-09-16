@@ -6,6 +6,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import BasketService from "service/BasketService/BasketService";
 import { BasketResponseType } from "view/app-components/BasketPage/BasketPage";
+import BasketStore from "store/basket-store";
 
 export type CategoryNameType = {
     id: string;
@@ -24,34 +25,18 @@ function useGetProductBasketData(
     const BASKET_SERVICE = useRef(new BasketService());
 
     const [basketProductData, setBasketProductData] = useState<BasketResponseType>();
-    const [isInBasket, setIsInBasket] = useState<boolean>(false);
     const [lineItemId, setLineItemId] = useState<string>("");
     const [basketQuantity, setBasketQuantity] = useState<number>(1);
     const [productVariantState, setProductVariantState] = useState<ProductVariantsBasketState>({});
     const navigate = useNavigate();
+    const { updateBasketStore, basketStoreData } = BasketStore;
 
     useEffect(() => {
-        console.log(variantId, `variantId from useGetProductDate`);
         const getProducts = async () => {
             try {
                 const basketResponse = await BASKET_SERVICE.current.getCartById();
                 setBasketProductData(basketResponse);
-                basketResponse.lineItems.forEach((lineItem) => {
-                    if (productId === lineItem.productId) {
-                        if (variantId === lineItem.variant.id) {
-                            console.log("find variantId!");
-                            console.log(lineItem, `lineItem`);
-                            setLineItemId(lineItem.id);
-                            setBasketQuantity(lineItem.quantity);
-                            setIsInBasket(true);
-
-                            setProductVariantState((prevState) => ({
-                                ...prevState,
-                                [lineItem.variant.id]: true,
-                            }));
-                        }
-                    }
-                });
+                updateBasketStore(basketResponse);
             } catch (error) {
                 if (axios.isAxiosError(error) && error?.response?.status === 404) {
                     navigate("*");
@@ -61,10 +46,27 @@ function useGetProductBasketData(
         };
 
         getProducts();
-    }, [navigate, variantId, productId, isInBasket]);
+    }, [navigate, updateBasketStore, variantId]);
+
+    useEffect(() => {
+        if (basketStoreData) {
+            basketStoreData.lineItems.forEach((lineItem) => {
+                if (productId === lineItem.productId) {
+                    if (variantId === lineItem.variant.id) {
+                        setLineItemId(lineItem.id);
+                        setBasketQuantity(lineItem.quantity);
+
+                        setProductVariantState((prevState) => ({
+                            ...prevState,
+                            [lineItem.variant.id]: true,
+                        }));
+                    }
+                }
+            });
+        }
+    }, [basketStoreData, productId, variantId]);
 
     return {
-        isInBasket,
         lineItemId,
         basketProductData,
         setLineItemId,
@@ -72,7 +74,6 @@ function useGetProductBasketData(
         productVariantState,
         setProductVariantState,
         setBasketProductData,
-        setIsInBasket,
     };
 }
 
