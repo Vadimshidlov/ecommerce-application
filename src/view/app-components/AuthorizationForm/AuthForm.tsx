@@ -15,7 +15,8 @@ import {
 import { LoginStore } from "service/LoginStore/LoginStore";
 import LoginService from "service/LoginService/LoginService";
 import BasketService from "service/BasketService/BasketService";
-import BasketStore from "store/basket-store";
+// import BasketService from "service/BasketService/BasketService";
+// import BasketStore from "store/basket-store";
 
 export function AuthForm() {
     const LOGIN_SERVICE: LoginService = new LoginService();
@@ -25,7 +26,7 @@ export function AuthForm() {
     const [emailError, setEmailError] = useState<string>("");
     const [passError, setPassError] = useState<string>("");
     const [inputType, setInputType] = useState<string>("password");
-    const { updateBasketStore } = BasketStore;
+    // const { updateBasketStore } = BasketStore;
 
     const toggleHideButton = (): void => {
         setInputType(inputType === "password" ? "text" : "password");
@@ -68,8 +69,10 @@ export function AuthForm() {
 
             await LOGIN_SERVICE.authenticateCustomer({ email, password });
 
-            const activeCartResponse = await BASKET_SERVICE.current.getActiveCart();
-            updateBasketStore(activeCartResponse);
+            BASKET_SERVICE.current.getActiveCart();
+
+            // const activeCartResponse = await BASKET_SERVICE.current.getActiveCart();
+            // updateBasketStore(activeCartResponse);
 
             successAuthorizationMessage();
             setIsAuth(true);
@@ -78,6 +81,14 @@ export function AuthForm() {
 
             navigate("/");
         } catch (error) {
+            if (error instanceof AxiosError && error.response?.status === 400) {
+                errorAuthorizationMessage();
+            }
+
+            if (error instanceof AxiosError && error.response?.status === 404) {
+                BASKET_SERVICE.current.createBasket();
+            }
+
             if (error instanceof Yup.ValidationError) {
                 error.inner.forEach((err) => {
                     if (err.path === "email") {
@@ -86,8 +97,6 @@ export function AuthForm() {
                         setPassError(err.message);
                     }
                 });
-            } else if (error instanceof AxiosError && error.response?.status === 400) {
-                errorAuthorizationMessage();
             }
         }
     };
