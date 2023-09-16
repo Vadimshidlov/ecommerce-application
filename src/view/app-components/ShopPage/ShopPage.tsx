@@ -4,11 +4,12 @@ import PageHeading from "shared/components/PageHeading/PageHeading";
 import { Filter, IQueryParams } from "view/app-components/ShopPage/Filter/Filter";
 import { Sorting } from "view/app-components/ShopPage/Sorting/Sorting";
 import img from "assets/no-img.png";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import ProductService from "service/ProductService/ProductService";
 import filterIcon from "assets/svg/filter.svg";
 import { FilterLabel } from "shared/components/FilterLabel/FilterLabel";
 import Loader from "shared/components/Loader/Loader";
+import BasketService from "service/BasketService/BasketService";
 
 export interface IState {
     [type: string]: string[];
@@ -46,6 +47,7 @@ export interface IProduct {
 }
 
 const PRODUCT_SREVICE = new ProductService();
+const BASKET_SERVICE = new BasketService();
 
 export function ShopPage() {
     const limitProducts = 8;
@@ -57,9 +59,20 @@ export function ShopPage() {
     const [activeButton, setActiveButton] = useState(false);
     const { categoryKey } = useParams();
     const [isLoad, setIsLoad] = useState(true);
+    const [productsInCart, setProductsInCart] = useState<string[]>([]);
     const title = categoryKey
         ? `${categoryKey.charAt(0).toUpperCase()}${categoryKey.slice(1)}`
         : "Shop";
+
+    // console.log(productsInCart);
+
+    useEffect(() => {
+        (async function getProductsInCart() {
+            const { lineItems } = await BASKET_SERVICE.getActiveCart();
+            const productId = lineItems.map((product) => product.productId);
+            setProductsInCart(productId);
+        })();
+    }, []);
 
     function collectParams({ param, type, inputFiled }: IQueryParams) {
         setObjParams((prevData) => {
@@ -236,43 +249,36 @@ export function ShopPage() {
                     />
                     <div className="shop-page__cards-container">
                         {products.map((product) => (
-                            <Link
+                            <ProductCard
+                                product={product}
+                                categoryKey={categoryKey}
+                                isInBasket={productsInCart.includes(product.id)}
+                                sale={!!product?.masterVariant?.prices[0]?.discounted}
                                 key={product.id}
-                                to={
-                                    categoryKey
-                                        ? `/shop/${categoryKey}/product/${product.id}`
-                                        : `/shop/product/${product.id}`
+                                // id={product.id}
+                                img={
+                                    product.masterVariant.images &&
+                                    product.masterVariant.images.length > 0
+                                        ? product.masterVariant.images[0].url
+                                        : img
                                 }
-                            >
-                                <ProductCard
-                                    sale={!!product?.masterVariant?.prices[0]?.discounted}
-                                    key={product.id}
-                                    id={product.id}
-                                    img={
-                                        product.masterVariant.images &&
-                                        product.masterVariant.images.length > 0
-                                            ? product.masterVariant.images[0].url
-                                            : img
-                                    }
-                                    title={product.name["en-US"]}
-                                    description={`${product.description["en-US"].slice(0, 60)}...`}
-                                    price={`$${
-                                        product?.masterVariant?.prices[0]?.discounted
-                                            ? product.masterVariant.prices[0].discounted.value
-                                                  .centAmount / 100
-                                            : product.masterVariant.prices[0].value.centAmount / 100
-                                    }`}
-                                    discountPrice={`${
-                                        product.masterVariant.prices &&
-                                        product?.masterVariant?.prices[0]?.discounted
-                                            ? `$${
-                                                  product.masterVariant.prices[0].value.centAmount /
-                                                  100
-                                              }`
-                                            : ""
-                                    }`}
-                                />
-                            </Link>
+                                title={product.name["en-US"]}
+                                description={`${product.description["en-US"].slice(0, 60)}...`}
+                                price={`$${
+                                    product?.masterVariant?.prices[0]?.discounted
+                                        ? product.masterVariant.prices[0].discounted.value
+                                              .centAmount / 100
+                                        : product.masterVariant.prices[0].value.centAmount / 100
+                                }`}
+                                discountPrice={`${
+                                    product.masterVariant.prices &&
+                                    product?.masterVariant?.prices[0]?.discounted
+                                        ? `$${
+                                              product.masterVariant.prices[0].value.centAmount / 100
+                                          }`
+                                        : ""
+                                }`}
+                            />
                         ))}
                     </div>
                     {isLoad && <Loader />}

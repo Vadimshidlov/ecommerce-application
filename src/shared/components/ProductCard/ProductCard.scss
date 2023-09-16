@@ -7,7 +7,7 @@
     position: relative;
     flex-direction: column;
     align-items: start;
-    justify-content: start;
+    justify-content: space-between;
     width: 248px;
     gap: 12px;
     transition: box-shadow 0.3s;
@@ -30,6 +30,7 @@
     @media (max-width: 768px) {
         width: 160px;
         padding: 0;
+        align-items: stretch;
 
         &:hover {
             box-shadow: none;
@@ -39,6 +40,12 @@
     @media (max-width: 380px) {
         width: 140px;
         padding: 0;
+    }
+
+    &__wrapper {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
     }
 
     &__img-wrapper {

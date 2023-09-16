@@ -14,9 +14,13 @@ import ProductService from "service/ProductService/ProductService";
 import ProductCard from "shared/components/ProductCard/ProductCard";
 import { IProduct } from "view/app-components/ShopPage/ShopPage";
 import img from "assets/no-img.png";
+import BasketService from "service/BasketService/BasketService";
+
+const BASKET_SERVICE = new BasketService();
 
 export default function MainPage() {
     const [products, setProducts] = useState<IProduct[]>([]);
+    const [productsInCart, setProductsInCart] = useState<string[]>([]);
     const [limit, setLimit] = useState(5);
 
     function setProductLimit() {
@@ -29,6 +33,14 @@ export default function MainPage() {
     }
 
     window.onresize = () => setProductLimit();
+
+    useEffect(() => {
+        (async function getProductsInCart() {
+            const { lineItems } = await BASKET_SERVICE.getActiveCart();
+            const productId = lineItems.map((product) => product.productId);
+            setProductsInCart(productId);
+        })();
+    }, []);
 
     useEffect(() => {
         setProductLimit();
@@ -120,35 +132,33 @@ export default function MainPage() {
                 </Text>
                 <div className="sale-products__wrapper">
                     {products.map((product) => (
-                        <Link key={product.id} to={`/shop/product/${product.id}`}>
-                            <ProductCard
-                                sale={!!product?.masterVariant?.prices[0]?.discounted}
-                                key={product.id}
-                                id={product.id}
-                                img={
-                                    product.masterVariant.images &&
-                                    product.masterVariant.images.length > 0
-                                        ? product.masterVariant.images[0].url
-                                        : img
-                                }
-                                title={product.name["en-US"]}
-                                description={`${product.description["en-US"].slice(0, 60)}...`}
-                                price={`$${
-                                    product?.masterVariant?.prices[0]?.discounted
-                                        ? product.masterVariant.prices[0].discounted.value
-                                              .centAmount / 100
-                                        : product.masterVariant.prices[0].value.centAmount / 100
-                                }`}
-                                discountPrice={`${
-                                    product.masterVariant.prices &&
-                                    product?.masterVariant?.prices[0]?.discounted
-                                        ? `$${
-                                              product.masterVariant.prices[0].value.centAmount / 100
-                                          }`
-                                        : ""
-                                }`}
-                            />
-                        </Link>
+                        <ProductCard
+                            product={product}
+                            isInBasket={productsInCart.includes(product.id)}
+                            sale={!!product?.masterVariant?.prices[0]?.discounted}
+                            key={product.id}
+                            id={product.id}
+                            img={
+                                product.masterVariant.images &&
+                                product.masterVariant.images.length > 0
+                                    ? product.masterVariant.images[0].url
+                                    : img
+                            }
+                            title={product.name["en-US"]}
+                            description={`${product.description["en-US"].slice(0, 60)}...`}
+                            price={`$${
+                                product?.masterVariant?.prices[0]?.discounted
+                                    ? product.masterVariant.prices[0].discounted.value.centAmount /
+                                      100
+                                    : product.masterVariant.prices[0].value.centAmount / 100
+                            }`}
+                            discountPrice={`${
+                                product.masterVariant.prices &&
+                                product?.masterVariant?.prices[0]?.discounted
+                                    ? `$${product.masterVariant.prices[0].value.centAmount / 100}`
+                                    : ""
+                            }`}
+                        />
                     ))}
                 </div>
             </section>
