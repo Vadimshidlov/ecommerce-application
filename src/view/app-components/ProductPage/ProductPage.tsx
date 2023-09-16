@@ -4,22 +4,21 @@ import ProductSwiper from "view/app-components/ProductPage/ProductSwiper";
 import ProductBody from "view/app-components/ProductPage/ProductBody";
 import useGetProductDate from "view/app-components/ProductPage/useGetProductDate";
 import { useParams } from "react-router-dom";
+import useGetProductBasketData from "view/app-components/ProductPage/useGetProductBasketData";
 
 function ProductPage() {
     const { productId } = useParams();
     const [checkedSize, setCheckedSize] = useState(0);
 
+    const { productData } = useGetProductDate(productId);
+
     const {
-        productData,
-        isInBasket,
-        // setIsInBasketHandler,
-        basketProductData,
-        lineItemId,
-        setLineItemId,
         basketQuantity,
         productVariantState,
         setProductVariantState,
-    } = useGetProductDate(checkedSize + 1, productId);
+        setIsInBasket,
+        lineItemId,
+    } = useGetProductBasketData(checkedSize + 1, productId);
 
     return productData ? (
         <div className="product__container">
@@ -32,7 +31,7 @@ function ProductPage() {
                 basketQuantity={basketQuantity}
                 // isInBasket={isInBasket}
                 lineItemId={lineItemId}
-                // setIsInBasketHandler={setIsInBasketHandler}
+                setIsInBasket={setIsInBasket}
                 setCheckedSize={setCheckedSize}
                 productVariantState={productVariantState}
                 setProductVariantState={setProductVariantState}

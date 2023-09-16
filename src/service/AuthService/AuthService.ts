@@ -14,6 +14,7 @@ export class AuthService {
     private AxiosAuthServiceApi = AxiosAuthService;
 
     public async createAnonymousToken(): Promise<void> {
+        console.log("createAnonymousToken");
         const tokenRequest = await this.AxiosAuthServiceApi.post<TokenResponseType>(
             {
                 params: {
@@ -31,6 +32,7 @@ export class AuthService {
         const scopeString = tokenRequest.data.scope;
         const anonIdArr = scopeString.split(" ");
         let idResult: string = "";
+
         anonIdArr.forEach((element) => {
             if (element.startsWith("anonymous_id")) {
                 element.indexOf(":");

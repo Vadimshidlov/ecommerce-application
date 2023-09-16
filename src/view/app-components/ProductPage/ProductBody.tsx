@@ -23,9 +23,9 @@ export type ProductBodyType = {
     checkedSize: number;
     basketQuantity: number;
     lineItemId: string;
-    // setIsInBasketHandler: (value: boolean) => Promise<void>;
     setCheckedSize: (value: number) => void;
     productVariantState: ProductVariantsBasketState;
+    setIsInBasket: React.Dispatch<React.SetStateAction<boolean>>;
     setProductVariantState: React.Dispatch<React.SetStateAction<ProductVariantsBasketState>>;
 };
 
@@ -38,12 +38,15 @@ function ProductBody({
     setCheckedSize,
     productVariantState,
     setProductVariantState,
+    setIsInBasket,
 }: ProductBodyType) {
     const axiosApi = useRef(AxiosSignUpService);
     const [categoriesName, setCategoriesName] = useState<string[]>();
     const BASKET_SERVICE_API = useRef(new BasketService());
     const [productCount, setProductCount] = useState<number>(basketQuantity);
     const { setBasketVersion } = BasketStore;
+
+    console.log(lineItemId, `lineItemId`);
 
     useEffect(() => {
         const getProductCategories = async () => {
@@ -119,6 +122,7 @@ function ProductBody({
                         [checkedSize + 1]: false,
                     }));
                     setProductCount(1);
+                    setIsInBasket(false);
 
                     removeProductMessage("Product is");
                 } catch (e) {
@@ -142,7 +146,9 @@ function ProductBody({
                         ...prevState,
                         [checkedSize + 1]: true,
                     }));
+
                     setProductCount(1);
+                    setIsInBasket(true);
                     // setIsInBasketHandler(true);
                     addProductMessage();
                 } catch (e) {
