@@ -35,7 +35,7 @@
         flex-direction: column;
         row-gap: 16px;
         max-width: 558px;
-        background-color: #ffffff89;
+        background-color: #ffffffa2;
         padding: 30px;
         border-radius: 6px;
         backdrop-filter: blur(5px);
@@ -181,15 +181,30 @@
         }
 
         #puma-logo {
-            padding: 24px 30px;
+            padding: 0 30px;
         }
     }
+}
+
+#categories-cards__item-1 {
+    background: url("../../../assets/t-shirts.png") center center/cover no-repeat;
+    grid-area: 1 / 1 / 3 / 2;
+}
+
+#categories-cards__item-2 {
+    background: url("../../../assets/sneakers.png") center 76% / cover no-repeat;
+    grid-area: 1 / 2 / 2 / 4;
+}
+
+#categories-cards__item-3 {
+    background: url("../../../assets/slippers.png") center 90% / cover no-repeat;
+    grid-area: 2 / 2 / 3 / 4;
 }
 
 .sale-products {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
     padding: 52px 0;
 
@@ -199,7 +214,6 @@
 
     &__wrapper {
         width: 100%;
-        // padding: 52px 0;
         margin-top: 20px;
         display: flex;
         flex-wrap: wrap;
@@ -220,23 +234,29 @@
     }
 }
 
-#categories-cards__item-1 {
-    background: url("../../../assets/t-shirts.png") center center/cover no-repeat;
-    grid-area: 1 / 1 / 3 / 2;
-    // width: 652px;
-    // height: 790px;
-}
+.promocode {
+    padding: 52px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 
-#categories-cards__item-2 {
-    background: url("../../../assets/sneakers.png") center 76% / cover no-repeat;
-    grid-area: 1 / 2 / 2 / 4;
-    // width: 652px;
-    // height: 379px;
-}
+    @media (max-width: 768px) {
+        padding: 40px 0;
+        flex-direction: column;
+        gap: 30px;
+    }
 
-#categories-cards__item-3 {
-    background: url("../../../assets/slippers.png") center 90% / cover no-repeat;
-    grid-area: 2 / 2 / 3 / 4;
-    // width: 652px;
-    // height: 379px;
+    &__item {
+        cursor: pointer;
+        width: 49%;
+        transition: transform 0.2s;
+
+        &:active {
+            transform: scale(0.99);
+        }
+
+        @media (max-width: 768px) {
+            width: 100%;
+        }
+    }
 }

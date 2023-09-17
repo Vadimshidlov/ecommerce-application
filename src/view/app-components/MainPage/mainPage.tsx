@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 import React, { useEffect, useState } from "react";
 import "view/app-components/MainPage/style.scss";
 import "react-toastify/dist/ReactToastify.css";
@@ -14,7 +15,11 @@ import ProductService from "service/ProductService/ProductService";
 import ProductCard from "shared/components/ProductCard/ProductCard";
 import { IProduct } from "view/app-components/ShopPage/ShopPage";
 import img from "assets/no-img.png";
+import promoImg1 from "assets/promocode1.png";
+import promoImg2 from "assets/promocode2.png";
 import BasketService from "service/BasketService/BasketService";
+import Loader from "shared/components/Loader/Loader";
+import { promocodeCopy } from "shared/utils/notifyMessages";
 
 const BASKET_SERVICE = new BasketService();
 const PRODUCT_SREVICE = new ProductService();
@@ -22,6 +27,7 @@ const PRODUCT_SREVICE = new ProductService();
 export default function MainPage() {
     const [products, setProducts] = useState<IProduct[]>([]);
     const [productsInCart, setProductsInCart] = useState<string[]>([]);
+    const [isLoad, setIsLoad] = useState(true);
     const [limit, setLimit] = useState(5);
 
     function setProductLimit() {
@@ -48,6 +54,7 @@ export default function MainPage() {
                 const productId = lineItems.map((product) => product.productId);
                 setProductsInCart(productId);
             })();
+            setIsLoad(false);
         }, 1000);
     }, [limit]);
 
@@ -76,18 +83,28 @@ export default function MainPage() {
             </section>
             <section className="categories-cards">
                 <div className="categories-cards__item" id="categories-cards__item-1">
-                    <div className="categories-cards__item-text">
-                        <Text
-                            classes={[
-                                "space-grotesk-500-font",
-                                "font-size_heading-5",
-                                "color_black",
-                            ]}
-                        >
-                            T-Shirts
-                        </Text>
-                        <Link to="/shop/t-shirt">Explore →</Link>
-                    </div>
+                    <Link to="/shop/t-shirt">
+                        <div className="categories-cards__item-text">
+                            <Text
+                                classes={[
+                                    "space-grotesk-500-font",
+                                    "font-size_heading-5",
+                                    "color_black",
+                                ]}
+                            >
+                                T-Shirts
+                            </Text>
+                            <Text
+                                classes={[
+                                    "space-grotesk-500-font",
+                                    "font-size_s",
+                                    "color_grey-dark",
+                                ]}
+                            >
+                                Explore →
+                            </Text>
+                        </div>
+                    </Link>
                 </div>
                 <div className="categories-cards__item" id="categories-cards__item-2">
                     <div className="categories-cards__item-text">
@@ -129,6 +146,7 @@ export default function MainPage() {
                 >
                     Sale products
                 </Text>
+                {isLoad && <Loader />}
                 <div className="sale-products__wrapper">
                     {products.map((product) => (
                         <ProductCard
@@ -190,6 +208,28 @@ export default function MainPage() {
                         <img src={supremeLogo} alt="supreme-logo" />
                     </div>
                 </div>
+            </section>
+            <section className="promocode">
+                <img
+                    src={promoImg2}
+                    alt="promokod"
+                    className="promocode__item"
+                    onClick={() => {
+                        navigator.clipboard.writeText("DELIVERY12");
+                        promocodeCopy();
+                    }}
+                    onKeyDown={() => {}}
+                />
+                <img
+                    src={promoImg1}
+                    alt="promokod"
+                    className="promocode__item"
+                    onClick={() => {
+                        navigator.clipboard.writeText("SALE15");
+                        promocodeCopy();
+                    }}
+                    onKeyDown={() => {}}
+                />
             </section>
         </main>
     );

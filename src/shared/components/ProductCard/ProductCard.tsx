@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import Text from "shared/components/Text/text";
 import { Button } from "shared/components/button/Button";
 import { IProduct } from "view/app-components/ShopPage/ShopPage";
+import { addProductMessage } from "shared/utils/notifyMessages";
 
 interface IProductCardType extends React.ComponentPropsWithRef<"div"> {
     img: string;
@@ -90,6 +91,7 @@ export default function ProductCard({
                     if (!isInBasketState) {
                         setIsInBasketState(!isInBasketState);
                         BASKET_SERVICE.addProductToBasket(product.id, 1, 1);
+                        addProductMessage();
                     }
                 }}
             />

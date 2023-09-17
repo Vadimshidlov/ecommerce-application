@@ -6,9 +6,9 @@ export function BasketButton() {
         <svg
             className="basket-button-box"
             xmlns="http://www.w3.org/2000/svg"
-            width="31"
-            height="31"
-            viewBox="0 0 28 28"
+            width="32"
+            height="32"
+            viewBox="0 -0.2 28 28"
             fill="none"
         >
             <path

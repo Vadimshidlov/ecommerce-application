@@ -54,7 +54,7 @@ export function ShopPage() {
     const [offset, setOffset] = useState(0);
     const [totalProducts, setTotalProducts] = useState(0);
     const [products, setProducts] = useState<IProduct[]>([]);
-    const [sortParams, setSortParams] = useState<string>("");
+    const [sortParams, setSortParams] = useState<string>("sort=price%20asc");
     const [objParams, setObjParams] = useState<IState>({});
     const [activeButton, setActiveButton] = useState(false);
     const { categoryKey } = useParams();
@@ -63,8 +63,6 @@ export function ShopPage() {
     const title = categoryKey
         ? `${categoryKey.charAt(0).toUpperCase()}${categoryKey.slice(1)}`
         : "Shop";
-
-    // console.log(productsInCart);
 
     useEffect(() => {
         (async function getProductsInCart() {
