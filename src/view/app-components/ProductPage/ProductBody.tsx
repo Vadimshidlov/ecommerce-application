@@ -23,7 +23,6 @@ export type ProductBodyType = {
     checkedSize: number;
     basketQuantity: number;
     lineItemId: string;
-    // setIsInBasketHandler: (value: boolean) => Promise<void>;
     setCheckedSize: (value: number) => void;
     productVariantState: ProductVariantsBasketState;
     setProductVariantState: React.Dispatch<React.SetStateAction<ProductVariantsBasketState>>;
@@ -33,17 +32,16 @@ function ProductBody({
     productResponse,
     checkedSize,
     basketQuantity,
-    // setIsInBasketHandler,
     lineItemId,
     setCheckedSize,
     productVariantState,
-    setProductVariantState,
+    setProductVariantState, // setIsInBasket,
 }: ProductBodyType) {
     const axiosApi = useRef(AxiosSignUpService);
     const [categoriesName, setCategoriesName] = useState<string[]>();
     const BASKET_SERVICE_API = useRef(new BasketService());
     const [productCount, setProductCount] = useState<number>(basketQuantity);
-    const { setBasketVersion } = BasketStore;
+    const { updateBasketStore } = BasketStore;
 
     useEffect(() => {
         const getProductCategories = async () => {
@@ -106,14 +104,15 @@ function ProductBody({
         try {
             if (productVariantState[checkedSize + 1]) {
                 try {
-                    await BASKET_SERVICE_API.current.removeProductFromBasket(
-                        lineItemId,
-                        basketQuantity,
-                        // productCount,
-                        checkedSize + 1,
-                    );
+                    const removeProductFromBasketResponse =
+                        await BASKET_SERVICE_API.current.removeProductFromBasket(
+                            lineItemId,
+                            basketQuantity,
+                            checkedSize + 1,
+                        );
 
-                    // setIsInBasketHandler(false);
+                    updateBasketStore(removeProductFromBasketResponse);
+
                     setProductVariantState((prevState) => ({
                         ...prevState,
                         [checkedSize + 1]: false,
@@ -136,14 +135,14 @@ function ProductBody({
                             checkedSize + 1,
                         );
 
-                    setBasketVersion(`${addProductToCartResponse.version}`);
+                    updateBasketStore(addProductToCartResponse);
 
                     setProductVariantState((prevState) => ({
                         ...prevState,
                         [checkedSize + 1]: true,
                     }));
+
                     setProductCount(1);
-                    // setIsInBasketHandler(true);
                     addProductMessage();
                 } catch (e) {
                     somethingWrongMessage();

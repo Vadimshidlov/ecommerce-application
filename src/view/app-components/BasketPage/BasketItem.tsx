@@ -6,6 +6,7 @@ import minusButton from "assets/svg/Minus.svg";
 import plusButton from "assets/svg/Plus.svg";
 import BasketService from "service/BasketService/BasketService";
 import { removeProductMessage, somethingWrongMessage } from "shared/utils/notifyMessages";
+import BasketStore from "store/basket-store";
 
 export type BasketItemPropsType = {
     lineItemData: LineItemsType;
@@ -15,6 +16,7 @@ export type BasketItemPropsType = {
 function BasketItem({ lineItemData, getBasketHandler }: BasketItemPropsType) {
     const LINE_ITEM_ID = lineItemData.id;
     const BASKET_SERVICE = useRef(new BasketService());
+    const { updateBasketStore } = BasketStore;
     const [countItem, setCountItem] = useState(Number(lineItemData.quantity));
     const discountPriceCent = lineItemData?.price?.discounted?.value?.centAmount;
     const discountPrice = discountPriceCent / 100;
@@ -23,7 +25,12 @@ function BasketItem({ lineItemData, getBasketHandler }: BasketItemPropsType) {
 
     const changeLineItemQuantityHandler = async (count: number) => {
         try {
-            await BASKET_SERVICE.current.changeLineItemQuantity(LINE_ITEM_ID, count);
+            const changeLineItemQuantity = await BASKET_SERVICE.current.changeLineItemQuantity(
+                LINE_ITEM_ID,
+                count,
+            );
+
+            updateBasketStore(changeLineItemQuantity);
         } catch (e) {
             console.log(e);
         }
@@ -83,7 +90,13 @@ function BasketItem({ lineItemData, getBasketHandler }: BasketItemPropsType) {
                         onClick={async () => {
                             if (countItem > 1) {
                                 setCountItem(countItem - 1);
-                                await changeLineItemQuantityHandler(countItem - 1);
+
+                                setTimeout(async () => {
+                                    await changeLineItemQuantityHandler(countItem - 1);
+                                }, 200);
+
+                                // await changeLineItemQuantityHandler(countItem - 1);
+
                                 getBasketHandler();
                             }
                         }}
@@ -95,7 +108,13 @@ function BasketItem({ lineItemData, getBasketHandler }: BasketItemPropsType) {
                         classes="quantity__button"
                         onClick={async () => {
                             setCountItem(countItem + 1);
-                            await changeLineItemQuantityHandler(countItem + 1);
+
+                            setTimeout(async () => {
+                                await changeLineItemQuantityHandler(countItem + 1);
+                            }, 200);
+
+                            // await changeLineItemQuantityHandler(countItem + 1);
+
                             getBasketHandler();
                         }}
                     />

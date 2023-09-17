@@ -17,6 +17,7 @@ import img from "assets/no-img.png";
 import BasketService from "service/BasketService/BasketService";
 
 const BASKET_SERVICE = new BasketService();
+const PRODUCT_SREVICE = new ProductService();
 
 export default function MainPage() {
     const [products, setProducts] = useState<IProduct[]>([]);
@@ -35,21 +36,19 @@ export default function MainPage() {
     window.onresize = () => setProductLimit();
 
     useEffect(() => {
-        (async function getProductsInCart() {
-            const { lineItems } = await BASKET_SERVICE.getActiveCart();
-            const productId = lineItems.map((product) => product.productId);
-            setProductsInCart(productId);
-        })();
-    }, []);
-
-    useEffect(() => {
         setProductLimit();
-        (async () => {
-            const PRODUCT_SREVICE = new ProductService();
-            const url = `filter=variants.prices.discounted:exists&limit=${limit}`;
-            const response = (await PRODUCT_SREVICE.getProductURL(url)).data;
-            setProducts([...response.results]);
-        })();
+        setTimeout(() => {
+            (async () => {
+                const url = `filter=variants.prices.discounted:exists&limit=${limit}`;
+                const response = (await PRODUCT_SREVICE.getProductURL(url)).data;
+                setProducts([...response.results]);
+            })();
+            (async function getProductsInCart() {
+                const { lineItems } = await BASKET_SERVICE.getCartById();
+                const productId = lineItems.map((product) => product.productId);
+                setProductsInCart(productId);
+            })();
+        }, 1000);
     }, [limit]);
 
     return (

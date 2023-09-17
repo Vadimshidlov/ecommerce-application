@@ -136,7 +136,7 @@ export function ShopPage() {
     useEffect(() => {
         const scrollEvent = () => {
             if (
-                window.innerHeight + window.scrollY >= document.body.offsetHeight &&
+                window.innerHeight + window.scrollY + 10 >= document.body.offsetHeight &&
                 products.length < totalProducts
             ) {
                 setOffset((prevState) => prevState + limitProducts);

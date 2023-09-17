@@ -1,16 +1,15 @@
 import { makeAutoObservable } from "mobx";
+import { BasketResponseType } from "view/app-components/BasketPage/BasketPage";
 
 class BasketStore {
-    private basketVersion = localStorage.getItem("basketVersion");
+    public basketStoreData: BasketResponseType | null = null;
 
     constructor() {
         makeAutoObservable(this);
     }
 
-    public getBasketVersion = () => this.basketVersion;
-
-    public setBasketVersion = (version: string): void => {
-        this.basketVersion = version;
+    public updateBasketStore = (value: BasketResponseType): void => {
+        this.basketStoreData = value;
     };
 }
 
