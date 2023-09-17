@@ -2,9 +2,9 @@ import { useAuth } from "auth-context";
 import React, { useRef } from "react";
 import { NavLink } from "react-router-dom";
 import { AuthService } from "service/AuthService/AuthService";
-import BasketService from "service/BasketService/BasketService";
 import { LoginStore } from "service/LoginStore/LoginStore";
 import "view/app-components/Profile/style.scss";
+import BasketService from "service/BasketService/BasketService";
 import BasketStore from "store/basket-store";
 
 export default function Navbar() {

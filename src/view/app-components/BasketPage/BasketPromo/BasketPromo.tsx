@@ -1,16 +1,33 @@
-import React, { useRef } from "react";
-import TextValidationError from "view/app-components/Registration/components/ErrorsComponents/TextValidationError";
+import React, { useRef, useState } from "react";
 import { Button } from "shared/components/button/Button";
 import { TextInput } from "shared/components/TextInput/TextInput";
 import BasketService from "service/BasketService/BasketService";
+import * as yup from "yup";
+import { promoCodeErrorMessage, promoCodeSuccessMessage } from "shared/utils/notifyMessages";
+import {
+    BasketResponseType,
+    DiscountCodesRemoveType,
+} from "view/app-components/BasketPage/BasketPage";
+
+export const promoCodeScheme = yup.object({
+    promocode: yup
+        .string()
+        .required("Please, write your promo code")
+        .min(3, "Very short promo code")
+        .max(20, "Very length promo code"),
+});
 
 export type BasketPromoPropsType = {
-    promoCode: string;
-    setPromoCode: React.Dispatch<React.SetStateAction<string>>;
+    basketData: BasketResponseType;
+    getBasketHandler: () => void;
 };
 
-function BasketPromo({ promoCode, setPromoCode }: BasketPromoPropsType) {
+function BasketPromo({ basketData, getBasketHandler }: BasketPromoPropsType) {
     const BASKET_SERVICE = useRef(new BasketService());
+    const [promoCode, setPromoCode] = useState<string>("");
+    const [promoError, setPromoError] = useState({
+        promocodeError: "",
+    });
 
     const promoCodeChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { value } = e.target;
@@ -21,11 +38,35 @@ function BasketPromo({ promoCode, setPromoCode }: BasketPromoPropsType) {
         e.preventDefault();
 
         try {
-            BASKET_SERVICE.current.addPromoCode(promoCode);
-            console.log("Promo Code Submit");
-        } catch (error) {
-            console.log(error);
+            if (promoCode === "") {
+                setPromoError({
+                    promocodeError: "Input is required field",
+                });
+
+                return;
+            }
+
+            const promoCodes: DiscountCodesRemoveType[] = [];
+            basketData?.discountCodes.forEach((discountCode) => {
+                promoCodes.push({
+                    action: "removeDiscountCode",
+                    discountCode: {
+                        typeId: discountCode.discountCode.typeId,
+                        id: discountCode.discountCode.id,
+                    },
+                });
+            });
+
+            await BASKET_SERVICE.current.removePromoCode(promoCodes);
+
+            await BASKET_SERVICE.current.addPromoCode(promoCode);
+
+            promoCodeSuccessMessage();
             setPromoCode("");
+            getBasketHandler();
+        } catch (error) {
+            setPromoCode("");
+            promoCodeErrorMessage();
         }
     };
 
@@ -34,15 +75,18 @@ function BasketPromo({ promoCode, setPromoCode }: BasketPromoPropsType) {
             <form className="promo-code__form" onSubmit={promoCodeSubmitHandler}>
                 <TextInput
                     type="text"
-                    name="firstname"
+                    name="promocode"
                     onChange={promoCodeChangeHandler}
-                    // onFocus={inputOnFocusHandler}
-                    id="fname"
+                    onFocus={() => {
+                        setPromoError({
+                            promocodeError: "",
+                        });
+                    }}
+                    id="pcode"
                     value={promoCode}
                     placeholder="Write your promo code..."
-                    validationError=""
+                    validationError={promoError.promocodeError || ""}
                 />
-                <TextValidationError errorMessage="" />
                 <Button
                     type="submit"
                     text="Apply"

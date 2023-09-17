@@ -116,3 +116,29 @@ export const promocodeCopy = () => {
         theme: "light",
     });
 };
+
+export const promoCodeErrorMessage = () => {
+    toast.error("Please, write existing promo code", {
+        position: "top-center",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+    });
+};
+
+export const promoCodeSuccessMessage = () => {
+    toast.success("Promo code was success applied", {
+        position: "top-center",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+    });
+};

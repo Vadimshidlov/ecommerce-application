@@ -6,7 +6,6 @@ import minusButton from "assets/svg/Minus.svg";
 import plusButton from "assets/svg/Plus.svg";
 import BasketService from "service/BasketService/BasketService";
 import { removeProductMessage, somethingWrongMessage } from "shared/utils/notifyMessages";
-import BasketStore from "store/basket-store";
 
 export type BasketItemPropsType = {
     lineItemData: LineItemsType;
@@ -16,21 +15,21 @@ export type BasketItemPropsType = {
 function BasketItem({ lineItemData, getBasketHandler }: BasketItemPropsType) {
     const LINE_ITEM_ID = lineItemData.id;
     const BASKET_SERVICE = useRef(new BasketService());
-    const { updateBasketStore } = BasketStore;
     const [countItem, setCountItem] = useState(Number(lineItemData.quantity));
     const discountPriceCent = lineItemData?.price?.discounted?.value?.centAmount;
     const discountPrice = discountPriceCent / 100;
+
     const realPriceCent = lineItemData.price.value.centAmount;
     const realPrice = realPriceCent / 100;
 
+    const promoCodePriceCent = lineItemData?.discountedPrice?.value?.centAmount;
+    const promoCodePrice = promoCodePriceCent / 100;
+
     const changeLineItemQuantityHandler = async (count: number) => {
         try {
-            const changeLineItemQuantity = await BASKET_SERVICE.current.changeLineItemQuantity(
-                LINE_ITEM_ID,
-                count,
-            );
+            await BASKET_SERVICE.current.changeLineItemQuantity(LINE_ITEM_ID, count);
 
-            updateBasketStore(changeLineItemQuantity);
+            getBasketHandler();
         } catch (e) {
             console.log(e);
         }
@@ -90,13 +89,7 @@ function BasketItem({ lineItemData, getBasketHandler }: BasketItemPropsType) {
                         onClick={async () => {
                             if (countItem > 1) {
                                 setCountItem(countItem - 1);
-
-                                setTimeout(async () => {
-                                    await changeLineItemQuantityHandler(countItem - 1);
-                                }, 200);
-
-                                // await changeLineItemQuantityHandler(countItem - 1);
-
+                                await changeLineItemQuantityHandler(countItem - 1);
                                 getBasketHandler();
                             }
                         }}
@@ -108,22 +101,38 @@ function BasketItem({ lineItemData, getBasketHandler }: BasketItemPropsType) {
                         classes="quantity__button"
                         onClick={async () => {
                             setCountItem(countItem + 1);
-
-                            setTimeout(async () => {
-                                await changeLineItemQuantityHandler(countItem + 1);
-                            }, 200);
-
-                            // await changeLineItemQuantityHandler(countItem + 1);
-
+                            await changeLineItemQuantityHandler(countItem + 1);
                             getBasketHandler();
                         }}
                     />
                 </div>
+                <div>
+                    {promoCodePrice ? (
+                        <div className="promocode__prices-block">
+                            <Text classes={["inter-600-font", "font-size_l", "page-title"]}>
+                                {`$ ${promoCodePrice}`}
+                            </Text>
+                            <Text
+                                classes={[
+                                    "inter-600-font",
+                                    "font-size_l",
+                                    "page-title",
+                                    "product__price-old",
+                                ]}
+                            >
+                                {`${discountPrice || realPrice}`}
+                            </Text>
+                        </div>
+                    ) : (
+                        <div>
+                            <Text classes={["inter-600-font", "font-size_l", "page-title"]}>
+                                {`$ ${discountPrice || realPrice}`}
+                            </Text>
+                        </div>
+                    )}
+                </div>
                 <Text classes={["inter-600-font", "font-size_l", "page-title"]}>
-                    {`$ ${discountPrice || realPrice}`}
-                </Text>
-                <Text classes={["inter-600-font", "font-size_l", "page-title"]}>
-                    {`$ ${countItem * (discountPrice || realPrice)}`}
+                    {`$ ${(countItem * (promoCodePrice || discountPrice || realPrice)).toFixed(2)}`}
                 </Text>
             </div>
         </div>

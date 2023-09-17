@@ -46,7 +46,7 @@ function useGetProductBasketData(
         };
 
         getProducts();
-    }, [navigate, updateBasketStore, variantId]);
+    }, [navigate, updateBasketStore]);
 
     useEffect(() => {
         if (basketStoreData) {
