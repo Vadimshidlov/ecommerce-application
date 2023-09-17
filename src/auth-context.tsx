@@ -35,6 +35,7 @@ function AuthStateProvider({ children }: AuthProviderProps) {
 
                 if (!isAnonToken) {
                     await AuthServiceApi.current.createAnonymousToken();
+
                     if (!localStorage.getItem("cartId")) {
                         const basketResponse = await basketService.current.createBasket();
                         updateBasketStore(basketResponse);

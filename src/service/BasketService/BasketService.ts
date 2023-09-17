@@ -1,4 +1,7 @@
-import { BasketResponseType } from "view/app-components/BasketPage/BasketPage";
+import {
+    BasketResponseType,
+    DiscountCodesRemoveType,
+} from "view/app-components/BasketPage/BasketPage";
 import AxiosApiService from "service/AxiosApiService/AxiosApiService";
 import { AuthDataStore } from "service/AuthDataStore/AuthDataStore";
 
@@ -170,5 +173,60 @@ export default class BasketService {
         );
 
         return removeLineItemsFromBasketResponse.data;
+    }
+
+    public async addPromoCode(codeValue: string): Promise<BasketResponseType | null> {
+        try {
+            const addPromoCodeResponse = await this.AXIOS_API_SERVICE.post<BasketResponseType>(
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                },
+
+                {
+                    version: +this.AUTH_DATA_STORE.getBasketVersion(),
+                    actions: [
+                        {
+                            action: "addDiscountCode",
+                            code: codeValue,
+                        },
+                    ],
+                },
+                `me/carts/${localStorage.getItem("cartId")}`,
+            );
+
+            this.AUTH_DATA_STORE.setBasketVersion(
+                JSON.stringify(addPromoCodeResponse.data.version),
+            );
+
+            return addPromoCodeResponse.data;
+        } catch (e) {
+            throw new Error();
+        }
+    }
+
+    public async removePromoCode(actions: DiscountCodesRemoveType[]): Promise<BasketResponseType> {
+        const removePromoCodeResponse = await this.AXIOS_API_SERVICE.post<BasketResponseType>(
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            },
+
+            {
+                version: +this.AUTH_DATA_STORE.getBasketVersion(),
+                actions,
+            },
+            `me/carts/${localStorage.getItem("cartId")}`,
+        );
+
+        if (removePromoCodeResponse.status !== 200) {
+            throw Error("Invalid operation");
+        }
+
+        this.AUTH_DATA_STORE.setBasketVersion(JSON.stringify(removePromoCodeResponse.data.version));
+
+        return removePromoCodeResponse.data;
     }
 }
