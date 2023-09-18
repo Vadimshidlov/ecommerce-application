@@ -3,7 +3,6 @@ import { AuthService } from "service/AuthService/AuthService";
 import { AuthDataStore } from "service/AuthDataStore/AuthDataStore";
 
 import { LoginStore } from "service/LoginStore/LoginStore";
-import BasketService from "service/BasketService/BasketService";
 import BasketStore from "store/basket-store";
 
 export type IsAuthType = boolean;
@@ -16,7 +15,7 @@ export type AuthProviderProps = { children: React.ReactNode };
 const AuthStateContext = React.createContext<AuthContextType | null>(null);
 
 function AuthStateProvider({ children }: AuthProviderProps) {
-    const [isAuth, setIsAuth] = useState<boolean>(false);
+   const [isAuth, setIsAuth] = useState<boolean>(false);
 
     const AuthServiceApi = useRef(new AuthService());
     const AuthDataStoreApi = useRef(AuthDataStore.getAuthDataStore());

@@ -15,13 +15,13 @@ export default function PageHeading({ navigation, title, description }: IPageHea
             <ul className="product__category-list">
                 <li>
                     <Link to="/">
-                        <span className="inter-400-font font-size_l color_blue-dark">Home</span>
+                        <span className="inter-400-font font-size_s color_blue-dark">Home</span>
                     </Link>
                 </li>
                 <li className="product__category-list__separator" />
                 <li>
                     <Link to="/shop">
-                        <span className="inter-400-font font-size_l color_blue-dark">Shop</span>
+                        <span className="inter-400-font font-size_s color_blue-dark">Shop</span>
                     </Link>
                 </li>
                 {navigation && (
@@ -29,7 +29,7 @@ export default function PageHeading({ navigation, title, description }: IPageHea
                         <li className="product__category-list__separator" />
                         <li>
                             <Link to={`/shop/${navigation}`}>
-                                <span className="inter-400-font font-size_l color_blue-dark">
+                                <span className="inter-400-font font-size_s color_blue-dark">
                                     {navigation}
                                 </span>
                             </Link>
