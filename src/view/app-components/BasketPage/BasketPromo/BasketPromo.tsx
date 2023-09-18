@@ -8,6 +8,7 @@ import {
     BasketResponseType,
     DiscountCodesRemoveType,
 } from "view/app-components/BasketPage/BasketPage";
+import Text from "shared/components/Text/text";
 
 export const promoCodeScheme = yup.object({
     promocode: yup
@@ -59,7 +60,6 @@ function BasketPromo({ basketData, getBasketHandler }: BasketPromoPropsType) {
                 });
             });
 
-            // if (promoCodes.length !== 0 && (promoCode === "SALE15" || promoCode === "OPEN20")) {
             if (promoCodes.length !== 0 && promoCodesList.includes(promoCode)) {
                 await BASKET_SERVICE.current.removePromoCode(promoCodes);
             }
@@ -76,7 +76,20 @@ function BasketPromo({ basketData, getBasketHandler }: BasketPromoPropsType) {
     };
 
     return (
-        <div>
+        <div className="promocode__container">
+            <Text
+                classes={[
+                    "space-grotesk-500-font",
+                    "font-size_2xl",
+                    "page-title",
+                    "basket__total-price",
+                ]}
+            >
+                Have a coupon?
+            </Text>
+            <Text classes={["inter-400-font", "font-size_m", "page-title", "basket__total-price"]}>
+                Add your code for an instant cart discount
+            </Text>
             <form className="promo-code__form" onSubmit={promoCodeSubmitHandler}>
                 <TextInput
                     type="text"

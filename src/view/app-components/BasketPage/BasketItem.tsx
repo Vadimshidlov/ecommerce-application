@@ -41,11 +41,11 @@ function BasketItem({ lineItemData, getBasketHandler }: BasketItemPropsType) {
                 <div className="basket__item-image">
                     <img src={lineItemData.variant.images[0].url} alt="" />
                 </div>
-                <div className="bakset__item-info">
+                <div className="basket__item-info">
                     <Text classes={["space-grotesk-500-font", "font-size_m", "page-title"]}>
                         {lineItemData.name["en-US"]}
                     </Text>
-                    <div className="bakset__item-attributes">
+                    <div className="basket__item-attributes">
                         {lineItemData.variant.attributes.map((attribute, index, lineItemsList) => (
                             <div key={attribute.name}>
                                 <Text
