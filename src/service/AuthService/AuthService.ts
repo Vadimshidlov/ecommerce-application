@@ -31,6 +31,7 @@ export class AuthService {
         const scopeString = tokenRequest.data.scope;
         const anonIdArr = scopeString.split(" ");
         let idResult: string = "";
+
         anonIdArr.forEach((element) => {
             if (element.startsWith("anonymous_id")) {
                 element.indexOf(":");

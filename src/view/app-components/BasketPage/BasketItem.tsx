@@ -18,12 +18,18 @@ function BasketItem({ lineItemData, getBasketHandler }: BasketItemPropsType) {
     const [countItem, setCountItem] = useState(Number(lineItemData.quantity));
     const discountPriceCent = lineItemData?.price?.discounted?.value?.centAmount;
     const discountPrice = discountPriceCent / 100;
+
     const realPriceCent = lineItemData.price.value.centAmount;
     const realPrice = realPriceCent / 100;
+
+    const promoCodePriceCent = lineItemData?.discountedPrice?.value?.centAmount;
+    const promoCodePrice = promoCodePriceCent / 100;
 
     const changeLineItemQuantityHandler = async (count: number) => {
         try {
             await BASKET_SERVICE.current.changeLineItemQuantity(LINE_ITEM_ID, count);
+
+            getBasketHandler();
         } catch (e) {
             console.log(e);
         }
@@ -35,11 +41,11 @@ function BasketItem({ lineItemData, getBasketHandler }: BasketItemPropsType) {
                 <div className="basket__item-image">
                     <img src={lineItemData.variant.images[0].url} alt="" />
                 </div>
-                <div className="bakset__item-info">
+                <div className="basket__item-info">
                     <Text classes={["space-grotesk-500-font", "font-size_m", "page-title"]}>
                         {lineItemData.name["en-US"]}
                     </Text>
-                    <div className="bakset__item-attributes">
+                    <div className="basket__item-attributes">
                         {lineItemData.variant.attributes.map((attribute, index, lineItemsList) => (
                             <div key={attribute.name}>
                                 <Text
@@ -100,11 +106,33 @@ function BasketItem({ lineItemData, getBasketHandler }: BasketItemPropsType) {
                         }}
                     />
                 </div>
+                <div>
+                    {promoCodePrice ? (
+                        <div className="promocode__prices-block">
+                            <Text classes={["inter-600-font", "font-size_l", "page-title"]}>
+                                {`$ ${promoCodePrice}`}
+                            </Text>
+                            <Text
+                                classes={[
+                                    "inter-600-font",
+                                    "font-size_l",
+                                    "page-title",
+                                    "product__price-old",
+                                ]}
+                            >
+                                {`${discountPrice || realPrice}`}
+                            </Text>
+                        </div>
+                    ) : (
+                        <div>
+                            <Text classes={["inter-600-font", "font-size_l", "page-title"]}>
+                                {`$ ${discountPrice || realPrice}`}
+                            </Text>
+                        </div>
+                    )}
+                </div>
                 <Text classes={["inter-600-font", "font-size_l", "page-title"]}>
-                    {`$ ${discountPrice || realPrice}`}
-                </Text>
-                <Text classes={["inter-600-font", "font-size_l", "page-title"]}>
-                    {`$ ${countItem * (discountPrice || realPrice)}`}
+                    {`$ ${(countItem * (promoCodePrice || discountPrice || realPrice)).toFixed(2)}`}
                 </Text>
             </div>
         </div>

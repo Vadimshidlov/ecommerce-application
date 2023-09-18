@@ -75,6 +75,14 @@ export function AuthForm() {
 
             navigate("/");
         } catch (error) {
+            if (error instanceof AxiosError && error.response?.status === 400) {
+                errorAuthorizationMessage();
+            }
+
+            if (error instanceof AxiosError && error.response?.status === 404) {
+                BASKET_SERVICE.current.createBasket();
+            }
+
             if (error instanceof Yup.ValidationError) {
                 error.inner.forEach((err) => {
                     if (err.path === "email") {
@@ -83,8 +91,6 @@ export function AuthForm() {
                         setPassError(err.message);
                     }
                 });
-            } else if (error instanceof AxiosError && error.response?.status === 400) {
-                errorAuthorizationMessage();
             }
         }
     };
