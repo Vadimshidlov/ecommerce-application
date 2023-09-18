@@ -23,6 +23,7 @@ export type BasketPromoPropsType = {
 };
 
 function BasketPromo({ basketData, getBasketHandler }: BasketPromoPropsType) {
+    const promoCodesList: string[] = ["SALE15", "DELIVERY12"];
     const BASKET_SERVICE = useRef(new BasketService());
     const [promoCode, setPromoCode] = useState<string>("");
     const [promoError, setPromoError] = useState({
@@ -47,6 +48,7 @@ function BasketPromo({ basketData, getBasketHandler }: BasketPromoPropsType) {
             }
 
             const promoCodes: DiscountCodesRemoveType[] = [];
+
             basketData?.discountCodes.forEach((discountCode) => {
                 promoCodes.push({
                     action: "removeDiscountCode",
@@ -57,7 +59,10 @@ function BasketPromo({ basketData, getBasketHandler }: BasketPromoPropsType) {
                 });
             });
 
-            await BASKET_SERVICE.current.removePromoCode(promoCodes);
+            // if (promoCodes.length !== 0 && (promoCode === "SALE15" || promoCode === "OPEN20")) {
+            if (promoCodes.length !== 0 && promoCodesList.includes(promoCode)) {
+                await BASKET_SERVICE.current.removePromoCode(promoCodes);
+            }
 
             await BASKET_SERVICE.current.addPromoCode(promoCode);
 
