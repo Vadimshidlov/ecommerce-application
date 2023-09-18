@@ -5,7 +5,7 @@ import { ReactComponent as GithubLogo } from "assets/svg/github-mark.svg";
 import { Link } from "react-router-dom";
 import { Person } from "view/app-components/About/about-utils";
 
-type Props = {
+type PersonType = {
     name: string;
     image: string;
     role: string;
@@ -13,7 +13,7 @@ type Props = {
     description: string;
 };
 
-function PersonItem(props: Props) {
+function PersonItem(props: PersonType) {
     console.log(props);
 
     return (

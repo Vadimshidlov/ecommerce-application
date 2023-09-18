@@ -20,6 +20,15 @@ import promoImg2 from "assets/promocode2.png";
 import BasketService from "service/BasketService/BasketService";
 import Loader from "shared/components/Loader/Loader";
 import { promocodeCopy } from "shared/utils/notifyMessages";
+// import StorageStore from "store/StorageStore";
+
+// interface IProductResponce {
+//     count: number;
+//     limit: number;
+//     offset: number;
+//     total: number;
+//     results:
+// }
 
 const BASKET_SERVICE: BasketService = new BasketService();
 const PRODUCT_SREVICE: ProductService = new ProductService();
@@ -28,6 +37,9 @@ export default function MainPage() {
     const [products, setProducts] = useState<IProduct[]>([]);
     const [productsInCart, setProductsInCart] = useState<string[]>([]);
     const [isLoad, setIsLoad] = useState<boolean>(true);
+
+    // console.log(StorageStore.getAnonymousAccessToken());
+
     // const [limit, setLimit] = useState<number>(5);
 
     // function setProductLimit() {
@@ -44,20 +56,24 @@ export default function MainPage() {
 
     useEffect(() => {
         const limit = window.innerWidth > 1352 ? 5 : 6;
+        setIsLoad(true);
+        const intervalId = setInterval(async () => {
+            if (localStorage.length >= 5) {
+                (async (): Promise<void> => {
+                    const url = `filter=variants.prices.discounted:exists&limit=${limit}`;
+                    const response = (await PRODUCT_SREVICE.getProductURL(url)).data;
+                    setProducts([...response.results]);
+                })();
+                (async function getProductsInCart() {
+                    const { lineItems } = await BASKET_SERVICE.getCartById();
+                    const productId = lineItems.map((product) => product.productId);
+                    setProductsInCart(productId);
+                })();
 
-        setTimeout((): void => {
-            (async (): Promise<void> => {
-                const url = `filter=variants.prices.discounted:exists&limit=${limit}`;
-                const response = (await PRODUCT_SREVICE.getProductURL(url)).data;
-                setProducts([...response.results]);
-            })();
-            (async function getProductsInCart() {
-                const { lineItems } = await BASKET_SERVICE.getCartById();
-                const productId = lineItems.map((product) => product.productId);
-                setProductsInCart(productId);
-            })();
-            setIsLoad(false);
-        }, 1000);
+                setIsLoad(false);
+                clearInterval(intervalId);
+            }
+        }, 100);
     }, []);
 
     return (
@@ -92,7 +108,7 @@ export default function MainPage() {
                                     "space-grotesk-500-font",
                                     "font-size_heading-5",
                                     "color_black",
-                                    "categories-cards__item-text-title",
+                                    "categories-cards__item-title",
                                 ]}
                             >
                                 T-Shirts
@@ -117,7 +133,7 @@ export default function MainPage() {
                                     "space-grotesk-500-font",
                                     "font-size_heading-5",
                                     "color_black",
-                                    "categories-cards__item-text-title",
+                                    "categories-cards__item-title",
                                 ]}
                             >
                                 Sneakers
@@ -142,7 +158,7 @@ export default function MainPage() {
                                     "space-grotesk-500-font",
                                     "font-size_heading-5",
                                     "color_black",
-                                    "categories-cards__item-text-title",
+                                    "categories-cards__item-title",
                                 ]}
                             >
                                 Slippers
