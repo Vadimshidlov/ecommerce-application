@@ -15,10 +15,11 @@ function ProductPage() {
     const { basketQuantity, productVariantState, setProductVariantState, lineItemId } =
         useGetProductBasketData(checkedSize + 1, productId);
 
+    const isSale = !!productData?.masterVariant?.prices[0]?.discounted;
     return productData ? (
-        <div className="product__container">
+        <div className="product__container container">
             <div className="swiper__container-two">
-                <ProductSwiper productResponse={productData} />
+                <ProductSwiper isSale={isSale} productResponse={productData} />
             </div>
             <ProductBody
                 productResponse={productData}

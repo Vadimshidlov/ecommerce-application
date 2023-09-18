@@ -1,6 +1,6 @@
 .page__header {
     padding: 60px 20px;
-    margin: 52px 0;
+    margin-bottom: 52px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -10,15 +10,25 @@
     border-radius: 6px;
     background: url("../../../assets/bg-page-header.png") center center/cover no-repeat;
 
+    @media (max-width: 480px) {
+        padding: 40px 20px;
+        margin: 0;
+    }
+
     .page__description {
         max-width: 600px;
         line-height: 30px;
+
+        @media (max-width: 480px) {
+            font-size: 12px;
+            line-height: 20px;
+        }
     }
 
     .product__category-list {
         display: flex;
         align-items: center;
-        column-gap: 3px;
+        column-gap: 5px;
         list-style-type: none;
         padding-left: 0;
         text-transform: capitalize;

@@ -1,0 +1,38 @@
+.loader {
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    column-gap: 10px;
+
+    &__item {
+        width: 10px;
+        height: 10px;
+        border-radius: 100%;
+        background: #121212;
+    }
+}
+
+#loader__item-1 {
+    animation: dots-move 1s 0.5s infinite;
+}
+
+#loader__item-2 {
+    animation: dots-move 1s infinite;
+}
+
+#loader__item-3 {
+    animation: dots-move 1s 0.5s infinite;
+}
+
+@keyframes dots-move {
+    0% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(10px);
+    }
+    100% {
+        transform: translateY(0);
+    }
+}

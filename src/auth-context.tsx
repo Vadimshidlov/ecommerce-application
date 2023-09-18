@@ -3,6 +3,7 @@ import { AuthService } from "service/AuthService/AuthService";
 import { AuthDataStore } from "service/AuthDataStore/AuthDataStore";
 
 import { LoginStore } from "service/LoginStore/LoginStore";
+import BasketService from "service/BasketService/BasketService";
 import BasketStore from "store/basket-store";
 
 export type IsAuthType = boolean;

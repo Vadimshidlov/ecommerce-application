@@ -7,30 +7,45 @@
     position: relative;
     flex-direction: column;
     align-items: start;
-    justify-content: start;
+    justify-content: space-between;
     width: 248px;
     gap: 12px;
+    transition: box-shadow 0.3s;
     cursor: pointer;
 
-    &:hover {
-        .product-card__img-wrapper img {
-            transform: scale(1.1);
+    @media (hover: hover) {
+        &:hover {
+            .product-card__img-wrapper img {
+                transform: scale(1.1);
+            }
+        }
+        &:hover {
+            box-shadow: 0 1px 6px #ccccccd2;
+
+            @media (max-width: 768) {
+            }
         }
     }
 
-    transition: box-shadow 0.3s;
-    &:hover {
-        box-shadow: 0 1px 6px #ccccccd2;
+    @media (max-width: 768px) {
+        width: 160px;
+        padding: 0;
+        align-items: stretch;
+
+        &:hover {
+            box-shadow: none;
+        }
     }
 
-    .sale__icon {
-        position: absolute;
-        top: 20px;
-        left: 20px;
-        padding: 4px 15px;
-        border-radius: 4px;
-        background-color: $color-green;
-        z-index: 2;
+    @media (max-width: 380px) {
+        width: 140px;
+        padding: 0;
+    }
+
+    &__wrapper {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
     }
 
     &__img-wrapper {
@@ -38,6 +53,16 @@
         height: 304px;
         border-radius: 6px;
         overflow: hidden;
+
+        @media (max-width: 768px) {
+            width: 160px;
+            height: 220px;
+        }
+
+        @media (max-width: 380px) {
+            width: 140px;
+            height: 220px;
+        }
 
         img {
             width: 100%;
@@ -48,14 +73,20 @@
         }
     }
 
-    .product-card__info {
+    &__info {
         display: flex;
         flex-direction: column;
         align-items: start;
         gap: 8px;
     }
 
-    .product-card__price {
+    &__description {
+        @media (max-width: 480px) {
+            display: none;
+        }
+    }
+
+    &__price {
         display: flex;
         align-items: center;
         justify-content: start;
@@ -64,5 +95,30 @@
 
     .discount-price {
         text-decoration: line-through;
+    }
+
+    &__button {
+        padding: 5px 15px;
+    }
+
+    &__button-inactive {
+        padding: 5px 15px;
+        opacity: 0.5;
+        cursor: auto;
+    }
+}
+
+.sale__icon {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    padding: 4px 15px;
+    border-radius: 4px;
+    background-color: $color-green;
+    z-index: 2;
+
+    @media (max-width: 768px) {
+        top: 10px;
+        left: 10px;
     }
 }

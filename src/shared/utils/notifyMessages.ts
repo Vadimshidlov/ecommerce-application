@@ -104,6 +104,19 @@ export const somethingWrongMessage = () => {
     });
 };
 
+export const promocodeCopy = () => {
+    toast.success(`Promocode copied successfully`, {
+        position: "top-center",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+    });
+};
+
 export const promoCodeErrorMessage = () => {
     toast.error("Please, write existing promo code", {
         position: "top-center",

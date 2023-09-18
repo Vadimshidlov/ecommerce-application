@@ -1,35 +1,55 @@
 .main-part {
-    background: url("../../../assets/home-image.png") center no-repeat;
-    background-size: cover;
-    height: 75vh;
-    padding-top: 3vh;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    height: calc(100vw * 0.7);
+    max-height: 600px;
+    column-gap: 32px;
 
-    @media (max-width: 590px) {
-        padding-top: 14vh;
+    @media (max-width: 768px) {
+        row-gap: 20px;
+        flex-direction: column;
+        align-items: flex-start;
+        height: auto;
+        padding-bottom: 40px;
     }
 
-    @media (max-width: 345px) {
-        padding-top: 18vh;
+    &__bg-img {
+        background: url("../../../assets/home-image-2.jpg") center center/cover no-repeat;
+        width: 100%;
+        height: 100%;
+        border-radius: 6px;
+        filter: grayscale(0.3);
+
+        @media (max-width: 768px) {
+            height: calc(100vw * 0.46);
+        }
     }
-}
 
-.some-content {
-    display: flex;
-    flex-direction: column;
-    row-gap: 1rem;
-}
+    &__info {
+        position: absolute;
+        display: flex;
+        top: 60px;
+        left: 60px;
+        flex-direction: column;
+        row-gap: 16px;
+        max-width: 558px;
+        background-color: #ffffffa2;
+        padding: 30px;
+        border-radius: 6px;
+        backdrop-filter: blur(5px);
+        -webkit-backdrop-filter: blur(5px);
 
-.some-content .button {
-    padding: 0.5rem;
-    width: 80%;
-}
-
-.main-part__info {
-    display: flex;
-    flex-direction: column;
-    row-gap: 8px;
-    max-width: 538px;
-    margin-bottom: 28px;
+        @media (max-width: 768px) {
+            position: static;
+            background-color: inherit;
+            padding: 0;
+            border-radius: 0;
+            backdrop-filter: none;
+            -webkit-backdrop-filter: none;
+        }
+    }
 }
 
 .button-shop {
@@ -43,9 +63,202 @@
     cursor: pointer;
 }
 
-.containter {
-    max-width: 1356px;
-    padding-left: 15px;
-    padding-right: 15px;
-    margin: 0 auto;
+.categories-cards {
+    padding: 52px 0;
+    display: grid;
+    height: calc(100vw * 0.7);
+    max-height: 1000px;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    grid-column-gap: 32px;
+    grid-row-gap: 32px;
+
+    @media (max-width: 768px) {
+        padding: 40px 0;
+    }
+
+    @media (max-width: 570px) {
+        display: flex;
+        flex-direction: column;
+        height: auto;
+    }
+
+    &__item {
+        padding: 48px;
+        background-color: #d6c9ad;
+        border-radius: 6px;
+
+        @media (max-width: 1000px) {
+            padding: 20px;
+        }
+
+        &-text {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #ffffffa3;
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            border-radius: 6px;
+            width: auto;
+
+            span {
+                display: block;
+            }
+        }
+
+        .categories-cards__item-title {
+            @media (max-width: 768px) {
+                font-size: 22px;
+            }
+        }
+    }
+}
+
+.brands-banner {
+    margin: 52px 0;
+    padding: 52px 0;
+    background-color: #f5f5f5;
+
+    @media (max-width: 768px) {
+        margin: 40px 0;
+    }
+
+    @media (max-width: 570px) {
+        background-color: inherit;
+        padding: 0;
+    }
+
+    &__wrapper {
+        padding: 0 52px;
+        display: flex;
+        align-items: center;
+        gap: 30px;
+        justify-content: space-between;
+        // flex-wrap: wrap;
+
+        @media (max-width: 960px) {
+            flex-direction: column;
+        }
+
+        @media (max-width: 570px) {
+            padding: 0;
+            gap: 24px 30px;
+        }
+    }
+
+    &__left-side {
+        display: flex;
+        flex-direction: column;
+        row-gap: 16px;
+        // max-width: 50%;
+
+        @media (max-width: 960px) {
+            align-items: center;
+        }
+
+        @media (max-width: 570px) {
+            align-items: flex-start;
+        }
+    }
+
+    &__right-side {
+        max-width: 640px;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        flex-wrap: wrap;
+        gap: 24px 80px;
+
+        @media (max-width: 960px) {
+            justify-content: space-between;
+            gap: 24px 30px;
+        }
+
+        @media (max-width: 570px) {
+            img {
+                width: 160px;
+                height: 60px;
+            }
+            gap: 24px 0;
+        }
+
+        #puma-logo {
+            padding: 0 30px;
+        }
+    }
+}
+
+#categories-cards__item-1 {
+    background: url("../../../assets/t-shirts.png") center center/cover no-repeat;
+    grid-area: 1 / 1 / 3 / 2;
+}
+
+#categories-cards__item-2 {
+    background: url("../../../assets/sneakers.png") center 76% / cover no-repeat;
+    grid-area: 1 / 2 / 2 / 4;
+}
+
+#categories-cards__item-3 {
+    background: url("../../../assets/slippers.png") center 90% / cover no-repeat;
+    grid-area: 2 / 2 / 3 / 4;
+}
+
+.sale-products {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 52px 0;
+
+    @media (max-width: 768px) {
+        padding: 40px 0;
+    }
+
+    &__wrapper {
+        width: 100%;
+        margin-top: 20px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 50px 0;
+
+        a {
+            text-decoration: none;
+        }
+
+        @media (max-width: 1352px) {
+            justify-content: space-around;
+        }
+
+        @media (max-width: 768px) {
+            gap: 50px 10px;
+        }
+    }
+}
+
+.promocode {
+    padding: 52px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    @media (max-width: 768px) {
+        padding: 40px 0;
+        flex-direction: column;
+        gap: 30px;
+    }
+
+    &__item {
+        cursor: pointer;
+        width: 49%;
+        transition: transform 0.2s;
+
+        &:active {
+            transform: scale(0.98);
+        }
+
+        @media (max-width: 768px) {
+            width: 100%;
+        }
+    }
 }

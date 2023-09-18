@@ -2,11 +2,11 @@ import React, { ChangeEvent } from "react";
 import Text from "shared/components/Text/text";
 
 interface ISorting {
-    count: number;
+    productsCount: number;
     onChangeSort: (param: string) => void;
 }
 
-export function Sorting({ count, onChangeSort }: ISorting) {
+export function Sorting({ productsCount, onChangeSort }: ISorting) {
     function clickOption(event: ChangeEvent<HTMLSelectElement>) {
         if (event.target.value === "price-asc") {
             onChangeSort("sort=price%20asc");
@@ -22,7 +22,7 @@ export function Sorting({ count, onChangeSort }: ISorting) {
     return (
         <div className="sorting">
             <Text classes={["inter-400-font", "font-size_m", "color_grey-dark"]}>{`${
-                count > 1 ? `${count} products` : `${count} product`
+                productsCount > 1 ? `${productsCount} products` : `${productsCount} product`
             }`}</Text>
             <div className="sorting__wrapper">
                 <Text classes={["inter-400-font", "font-size_m", "color_grey-dark"]}>Sort by:</Text>
