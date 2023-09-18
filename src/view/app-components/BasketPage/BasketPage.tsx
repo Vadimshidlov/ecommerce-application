@@ -158,11 +158,6 @@ function BasketPage() {
     const { updateBasketStore } = BasketStore;
 
     const getBasket = useCallback(async () => {
-    const [promoCode, setPromoCode] = useState<string>("");
-    const { getBasketVersion, setBasketVersion } = BasketStore;
-    const basketService = useRef(new BasketService());
-
-    const getBasket = useCallback(async () => {
         const basketResponse = await BASKET_SERVICE.current.getCartById();
         setBasketData(basketResponse);
 
@@ -192,10 +187,6 @@ function BasketPage() {
     useEffect(() => {
         getBasket();
     }, [getBasket]);
-
-    useEffect(() => {
-        console.log(promoCode, `promoCode value`);
-    }, [promoCode]);
 
     const clearBasketHandler = async () => {
         if (basketData) {

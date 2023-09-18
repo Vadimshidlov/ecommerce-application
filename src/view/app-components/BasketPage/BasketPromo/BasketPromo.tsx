@@ -117,4 +117,3 @@ function BasketPromo({ basketData, getBasketHandler }: BasketPromoPropsType) {
 }
 
 export default BasketPromo;
-
