@@ -129,3 +129,16 @@ export const promoCodeSuccessMessage = () => {
         theme: "light",
     });
 };
+
+export const haveAGoodDayMessage = () => {
+    toast.success("Have a good day, Bro! 🦄", {
+        position: "top-center",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+    });
+};
