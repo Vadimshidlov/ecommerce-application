@@ -16,7 +16,7 @@ export type AuthProviderProps = { children: React.ReactNode };
 const AuthStateContext = React.createContext<AuthContextType | null>(null);
 
 function AuthStateProvider({ children }: AuthProviderProps) {
-    const [isAuth, setIsAuth] = useState<boolean>(false);
+   const [isAuth, setIsAuth] = useState<boolean>(false);
 
     const AuthServiceApi = useRef(new AuthService());
     const AuthDataStoreApi = useRef(AuthDataStore.getAuthDataStore());

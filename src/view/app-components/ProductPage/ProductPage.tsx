@@ -16,7 +16,6 @@ function ProductPage() {
         useGetProductBasketData(checkedSize + 1, productId);
 
     const isSale = !!productData?.masterVariant?.prices[0]?.discounted;
-
     return productData ? (
         <div className="product__container container">
             <div className="swiper__container-two">
