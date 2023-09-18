@@ -273,7 +273,8 @@ function BasketPage() {
                         type="button"
                         text="Clear Basket"
                         textClasses={["space-grotesk-500-font", "font-size_l", "color_white"]}
-                        buttonClasses="button-shop basket__clear-btn"
+                        buttonClasses="basket__clear-button"
+                        // buttonClasses="button-shop basket__clear-btn"
                         onClick={clearBasketHandler}
                     />
                     <TableHead />
