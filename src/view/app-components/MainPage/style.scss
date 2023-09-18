@@ -103,7 +103,9 @@
 
             span {
                 display: block;
+            }
 
+            &-title {
                 @media (max-width: 768px) {
                     font-size: 22px;
                 }
@@ -252,7 +254,7 @@
         transition: transform 0.2s;
 
         &:active {
-            transform: scale(0.99);
+            transform: scale(0.98);
         }
 
         @media (max-width: 768px) {

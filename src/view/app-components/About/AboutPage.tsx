@@ -3,6 +3,7 @@ import "view/app-components/About/style.scss";
 import { ReactComponent as ReactLogo } from "assets/svg/rs_school.svg";
 import { Link } from "react-router-dom";
 import PersonItem from "view/app-components/About/PersonItem";
+import PageHeading from "shared/components/PageHeading/PageHeading";
 
 enum Person {
     Vadim = "Vadimshidlov",
@@ -39,16 +40,24 @@ function AboutPage() {
     ];
 
     return (
-        <div className="about-container">
-            <div className="team-container">
-                {people.map((person) => (
-                    <PersonItem {...person} key={person.id} />
-                ))}
+        <section className="about container">
+            <PageHeading
+                navigation=""
+                pageName="About"
+                title="About"
+                description="Welcome to our About Us page! Here you will find information about the developers who created this application."
+            />
+            <div className="about-container">
+                <div className="team-container">
+                    {people.map((person) => (
+                        <PersonItem {...person} key={person.id} />
+                    ))}
+                </div>
+                <Link to="https://rs.school" target="_blank">
+                    <ReactLogo className="rs-logo" width="200" />
+                </Link>
             </div>
-            <Link to="https://rs.school" target="_blank">
-                <ReactLogo className="rs-logo" width="200" />
-            </Link>
-        </div>
+        </section>
     );
 }
 

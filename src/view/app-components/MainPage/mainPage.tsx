@@ -21,30 +21,32 @@ import BasketService from "service/BasketService/BasketService";
 import Loader from "shared/components/Loader/Loader";
 import { promocodeCopy } from "shared/utils/notifyMessages";
 
-const BASKET_SERVICE = new BasketService();
-const PRODUCT_SREVICE = new ProductService();
+const BASKET_SERVICE: BasketService = new BasketService();
+const PRODUCT_SREVICE: ProductService = new ProductService();
 
 export default function MainPage() {
     const [products, setProducts] = useState<IProduct[]>([]);
     const [productsInCart, setProductsInCart] = useState<string[]>([]);
-    const [isLoad, setIsLoad] = useState(true);
-    const [limit, setLimit] = useState(5);
+    const [isLoad, setIsLoad] = useState<boolean>(true);
+    // const [limit, setLimit] = useState<number>(5);
 
-    function setProductLimit() {
-        if (window.innerWidth > 1352) {
-            setLimit(5);
-        }
-        if (window.innerWidth <= 1352) {
-            setLimit(6);
-        }
-    }
+    // function setProductLimit() {
+    //     if (window.innerWidth > 1352) {
+    //         setLimit(5);
+    //     }
+    //     if (window.innerWidth <= 1352) {
+    //         setLimit(6);
+    //     }
+    // }
+    // setProductLimit();
 
-    window.onresize = () => setProductLimit();
+    // window.onresize = (): void => setProductLimit();
 
     useEffect(() => {
-        setProductLimit();
-        setTimeout(() => {
-            (async () => {
+        const limit = window.innerWidth > 1352 ? 5 : 6;
+
+        setTimeout((): void => {
+            (async (): Promise<void> => {
                 const url = `filter=variants.prices.discounted:exists&limit=${limit}`;
                 const response = (await PRODUCT_SREVICE.getProductURL(url)).data;
                 setProducts([...response.results]);
@@ -56,7 +58,7 @@ export default function MainPage() {
             })();
             setIsLoad(false);
         }, 1000);
-    }, [limit]);
+    }, []);
 
     return (
         <main className="container">
@@ -90,6 +92,7 @@ export default function MainPage() {
                                     "space-grotesk-500-font",
                                     "font-size_heading-5",
                                     "color_black",
+                                    "categories-cards__item-text-title",
                                 ]}
                             >
                                 T-Shirts
@@ -97,7 +100,7 @@ export default function MainPage() {
                             <Text
                                 classes={[
                                     "space-grotesk-500-font",
-                                    "font-size_s",
+                                    "font-size_m",
                                     "color_grey-dark",
                                 ]}
                             >
@@ -107,32 +110,54 @@ export default function MainPage() {
                     </Link>
                 </div>
                 <div className="categories-cards__item" id="categories-cards__item-2">
-                    <div className="categories-cards__item-text">
-                        <Text
-                            classes={[
-                                "space-grotesk-500-font",
-                                "font-size_heading-5",
-                                "color_black",
-                            ]}
-                        >
-                            Sneakers
-                        </Text>
-                        <Link to="/shop/sneakers">Explore →</Link>
-                    </div>
+                    <Link to="/shop/sneakers">
+                        <div className="categories-cards__item-text">
+                            <Text
+                                classes={[
+                                    "space-grotesk-500-font",
+                                    "font-size_heading-5",
+                                    "color_black",
+                                    "categories-cards__item-text-title",
+                                ]}
+                            >
+                                Sneakers
+                            </Text>
+                            <Text
+                                classes={[
+                                    "space-grotesk-500-font",
+                                    "font-size_m",
+                                    "color_grey-dark",
+                                ]}
+                            >
+                                Explore →
+                            </Text>
+                        </div>
+                    </Link>
                 </div>
                 <div className="categories-cards__item" id="categories-cards__item-3">
-                    <div className="categories-cards__item-text">
-                        <Text
-                            classes={[
-                                "space-grotesk-500-font",
-                                "font-size_heading-5",
-                                "color_black",
-                            ]}
-                        >
-                            Slippers
-                        </Text>
-                        <Link to="/shop/slippers">Explore →</Link>
-                    </div>
+                    <Link to="/shop/slippers">
+                        <div className="categories-cards__item-text">
+                            <Text
+                                classes={[
+                                    "space-grotesk-500-font",
+                                    "font-size_heading-5",
+                                    "color_black",
+                                    "categories-cards__item-text-title",
+                                ]}
+                            >
+                                Slippers
+                            </Text>
+                            <Text
+                                classes={[
+                                    "space-grotesk-500-font",
+                                    "font-size_m",
+                                    "color_grey-dark",
+                                ]}
+                            >
+                                Explore →
+                            </Text>
+                        </div>
+                    </Link>
                 </div>
             </section>
             <section className="sale-products">
