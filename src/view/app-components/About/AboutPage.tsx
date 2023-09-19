@@ -21,9 +21,9 @@ function AboutPage() {
             image: "https://avatars.githubusercontent.com/u/82110760?v=4",
             role: "lead-developer",
             nickname: PersonList.Vadim,
-            develop: "Authorization page, products, bucket, components, services",
+            develop: "Authorization page, ecommercetools api, basket page, components, services",
             description:
-                "Vadim is 25 years old, he is from Belarus, Vitebsk. He enjoys spending time with family and friends, writing code, sports, fishing and animals. Vadim has been the driving force behind this project, ensuring that all pieces come together seamlessly. His effective leadership and coordination skills have been instrumental in the successful completion of this project. You can learn more about John’s work on his GitHub profile.",
+                "Vadim is 25 years old, he is from Belarus, Vitebsk. He enjoys spending time with family and friends, writing code, sports, fishing and animals. Vadim has been the driving force behind this project, ensuring that all pieces come together seamlessly. His effective leadership and coordination skills have been instrumental in the successful completion of this project. You can learn more about Vadim’s work on his GitHub profile.",
         },
         {
             id: 2,
@@ -31,7 +31,7 @@ function AboutPage() {
             image: "https://avatars.githubusercontent.com/u/94137961?v=4",
             role: "UX/UI designer, developer",
             nickname: PersonList.Maxim,
-            develop: "Login page, products catalog, components, adaptiv styles",
+            develop: "Login page, products catalog, components, ecommercetools api, adaptiv styles",
             description:
                 "Maxim is 29 years old, he is from Russia, Lipetsk. Maxim creative flair and attention to detail have resulted in an intuitive and aesthetically pleasing user interface. His designs have significantly enhanced the user experience on our platform. You can learn more about Maxim’s work on his GitHub profile.",
         },
@@ -41,7 +41,7 @@ function AboutPage() {
             image: "https://avatars.githubusercontent.com/u/61989351?v=4",
             role: "developer",
             nickname: PersonList.Vitali,
-            develop: "Pages main, profile, about",
+            develop: "Main page, profile page, about page",
             description:
                 "Vitaly is 36 years old, he is from Belarus, Minsk. Vitali’s meticulous testing and quality checks have ensured that our platform runs smoothly and efficiently. His dedication to quality has helped us deliver a bug-free shopping experience. You can learn more about Vitali’s work on his GitHub profile",
         },
@@ -51,8 +51,7 @@ function AboutPage() {
         <section className="about container">
             <PageHeading
                 navigation=""
-                pageName="About"
-                title="About"
+                title="About us"
                 description="Welcome to our About Us page! Here you will find information about the developers who created this application."
             />
             <div className="about__wrapper">

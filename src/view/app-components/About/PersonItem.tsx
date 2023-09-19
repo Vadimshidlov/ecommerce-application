@@ -14,8 +14,6 @@ type PersonType = {
 };
 
 function PersonItem(props: PersonType) {
-    console.log(props);
-
     return (
         <div className="person">
             <img className="avatar" src={`${props.image}`} alt="" />

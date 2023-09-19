@@ -50,9 +50,10 @@ function BasketItem({ lineItemData, getBasketHandler }: BasketItemPropsType) {
                             <div key={attribute.name}>
                                 <Text
                                     classes={[
-                                        "space-grotesk-500-font",
+                                        "inter-400-font",
                                         "font-size_s",
                                         "page-title",
+                                        "color_grey-dark",
                                     ]}
                                 >
                                     {index !== lineItemsList.length - 1
@@ -64,7 +65,7 @@ function BasketItem({ lineItemData, getBasketHandler }: BasketItemPropsType) {
                     </div>
                     <button
                         type="button"
-                        className="basket__item-remove font-size_s space-grotesk-500-font"
+                        className="basket__item-remove font-size_s space-grotesk-500-font color_black"
                         onClick={async () => {
                             try {
                                 await changeLineItemQuantityHandler(0);
@@ -106,32 +107,45 @@ function BasketItem({ lineItemData, getBasketHandler }: BasketItemPropsType) {
                         }}
                     />
                 </div>
-                <div>
-                    {promoCodePrice ? (
-                        <div className="promocode__prices-block">
-                            <Text classes={["inter-600-font", "font-size_l", "page-title"]}>
-                                {`$ ${promoCodePrice}`}
-                            </Text>
-                            <Text
-                                classes={[
-                                    "inter-600-font",
-                                    "font-size_l",
-                                    "page-title",
-                                    "product__price-old",
-                                ]}
-                            >
-                                {`${discountPrice || realPrice}`}
-                            </Text>
-                        </div>
-                    ) : (
-                        <div>
-                            <Text classes={["inter-600-font", "font-size_l", "page-title"]}>
-                                {`$ ${discountPrice || realPrice}`}
-                            </Text>
-                        </div>
-                    )}
-                </div>
-                <Text classes={["inter-600-font", "font-size_l", "page-title"]}>
+                {promoCodePrice ? (
+                    <div className="promocode__prices-block">
+                        <Text
+                            classes={[
+                                "inter-600-font",
+                                "font-size_l",
+                                "page-title",
+                                "color_blue-dark",
+                            ]}
+                        >
+                            {`$ ${promoCodePrice}`}
+                        </Text>
+                        <Text
+                            classes={[
+                                "inter-600-font",
+                                "font-size_l",
+                                "page-title",
+                                "product__price-old",
+                                "color_blue-dark",
+                            ]}
+                        >
+                            {`${discountPrice || realPrice}`}
+                        </Text>
+                    </div>
+                ) : (
+                    <div>
+                        <Text
+                            classes={[
+                                "inter-600-font",
+                                "font-size_l",
+                                "page-title",
+                                "color_blue-dark",
+                            ]}
+                        >
+                            {`$ ${discountPrice || realPrice}`}
+                        </Text>
+                    </div>
+                )}
+                <Text classes={["inter-600-font", "font-size_l", "page-title", "color_blue-dark"]}>
                     {`$ ${(countItem * (promoCodePrice || discountPrice || realPrice)).toFixed(2)}`}
                 </Text>
             </div>
