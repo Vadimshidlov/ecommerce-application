@@ -185,7 +185,7 @@ export default function MainPage() {
                         "color-black",
                     ]}
                 >
-                    Sale products
+                    Discounted products
                 </Text>
                 {isLoad && <Loader />}
                 <div className="sale-products__wrapper">

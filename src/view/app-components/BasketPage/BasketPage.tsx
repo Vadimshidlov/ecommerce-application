@@ -238,75 +238,81 @@ function BasketPage() {
             <div className="basket__container">
                 {basketData && basketData.lineItems.length !== 0 ? (
                     <>
-                        <BasketPromo basketData={basketData} getBasketHandler={getBasket} />
-                        {oldPrice ? (
-                            <div className="basket__total-prices">
-                                <Text
-                                    classes={[
-                                        "space-grotesk-500-font",
-                                        "font-size_heading-6",
-                                        "page-title",
-                                        "basket__total-price",
-                                    ]}
-                                >
-                                    {`Total price: $ ${totalPrice.toFixed(2)}`}
-                                </Text>
-                                <Text
-                                    classes={[
-                                        "space-grotesk-500-font",
-                                        "font-size_heading-6",
-                                        "page-title",
-                                        "basket__total-price",
-                                        "basket__total-price__old",
-                                    ]}
-                                >
-                                    {`${oldPrice.toFixed(2)}`}
-                                </Text>
-                            </div>
-                        ) : (
-                            <div>
-                                <Text
-                                    classes={[
-                                        "space-grotesk-500-font",
-                                        "font-size_heading-4",
-                                        "page-title",
-                                        "basket__total-price",
-                                    ]}
-                                >
-                                    {`Total price: $ ${totalPrice.toFixed(2)}`}
-                                </Text>
-                            </div>
-                        )}
-                        <div className="basket__buttons">
-                            <Button
-                                type="button"
-                                text="Clear Basket"
-                                textClasses={[
-                                    "space-grotesk-500-font",
-                                    "font-size_l",
-                                    "color_white",
-                                ]}
-                                buttonClasses="basket__clear-button"
-                                // buttonClasses="button-shop basket__clear-btn"
-                                onClick={clearBasketHandler}
-                            />
-                            <Button
-                                type="button"
-                                text="Checkout"
-                                textClasses={[
-                                    "space-grotesk-500-font",
-                                    "font-size_l",
-                                    "color_white",
-                                ]}
-                                buttonClasses="basket__clear-button"
-                                onClick={() => {
-                                    haveAGoodDayMessage();
-                                }}
-                            />
-                        </div>
-
                         <TableHead />
                         <BasketItems basketResponse={basketData} getBasketHandler={getBasket} />
+                        <div className="basket__bottom-info">
+                            <BasketPromo basketData={basketData} getBasketHandler={getBasket} />
+                            <div className="basket__bottom-info-right">
+                                {oldPrice ? (
+                                    <div className="basket__total-prices">
+                                        <Text
+                                            classes={[
+                                                "space-grotesk-500-font",
+                                                "font-size_2xl",
+                                                "page-title",
+                                                "color_blue-dark",
+                                                "basket__total-price",
+                                            ]}
+                                        >
+                                            {`Total price: $ ${totalPrice.toFixed(2)}`}
+                                        </Text>
+                                        <Text
+                                            classes={[
+                                                "space-grotesk-500-font",
+                                                "font-size_2xl",
+                                                "page-title",
+                                                "color_blue-dark",
+                                                "basket__total-price",
+                                                "basket__total-price__old",
+                                            ]}
+                                        >
+                                            {`${oldPrice.toFixed(2)}`}
+                                        </Text>
+                                    </div>
+                                ) : (
+                                    <div>
+                                        <Text
+                                            classes={[
+                                                "space-grotesk-500-font",
+                                                "font-size_2xl",
+                                                "page-title",
+                                                "color_blue-dark",
+                                                "basket__total-price",
+                                            ]}
+                                        >
+                                            {`Total price: $ ${totalPrice.toFixed(2)}`}
+                                        </Text>
+                                    </div>
+                                )}
+                                <div className="basket__buttons">
+                                    <Button
+                                        type="button"
+                                        text="Clear Basket"
+                                        textClasses={[
+                                            "space-grotesk-500-font",
+                                            "font-size_l",
+                                            "color_white",
+                                        ]}
+                                        buttonClasses="basket__clear-button"
+                                        // buttonClasses="button-shop basket__clear-btn"
+                                        onClick={clearBasketHandler}
+                                    />
+                                    <Button
+                                        type="button"
+                                        text="Checkout"
+                                        textClasses={[
+                                            "space-grotesk-500-font",
+                                            "font-size_l",
+                                            "color_white",
+                                        ]}
+                                        buttonClasses="basket__clear-button"
+                                        onClick={() => {
+                                            haveAGoodDayMessage();
+                                        }}
+                                    />
+                                </div>
+                            </div>
+                        </div>
                     </>
                 ) : (
                     <>
@@ -331,7 +337,7 @@ function BasketPage() {
                                         "font-size_l",
                                         "color_white",
                                     ]}
-                                    buttonClasses="button-shop"
+                                    buttonClasses="button"
                                 />
                             </NavLink>
                         </div>
