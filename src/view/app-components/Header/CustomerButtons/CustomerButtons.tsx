@@ -10,30 +10,32 @@ import { useBasketQuantity } from "providers/BasketItemsProvider";
 import BasketService from "service/BasketService/BasketService";
 
 export function CustomerButtons() {
-    const authContetxtApi = useAuth();
+    const { isAuth } = useAuth();
     const { quantity, setQuantity } = useBasketQuantity();
     const BASKET_SERVICE = useRef(new BasketService());
 
     useEffect(() => {
-        (async () => {
-            const basketResponse = await BASKET_SERVICE.current.getCartById();
-            setQuantity(basketResponse.lineItems.length);
-        })();
-    }, [setQuantity]);
+        const intervalId = setInterval(async () => {
+            if (localStorage.length >= 5) {
+                (async () => {
+                    const basketResponse = await BASKET_SERVICE.current.getCartById();
+                    setQuantity(basketResponse.lineItems.length);
+                })();
+
+                clearInterval(intervalId);
+            }
+        }, 100);
+    }, [setQuantity, isAuth]);
 
     return (
         <div className="customer-buttons">
-            <NavLink
-                to="/login"
-                className={`${!authContetxtApi?.isAuth ? "button-box" : ""}`}
-                hidden={!!authContetxtApi?.isAuth}
-            >
+            <NavLink to="/login" className={`${!isAuth ? "button-box" : ""}`} hidden={!!isAuth}>
                 <LoginButton />
             </NavLink>
             <NavLink
                 to="/profile/adresses"
-                className={`${authContetxtApi?.isAuth ? "button-box" : ""}`}
-                hidden={!authContetxtApi?.isAuth}
+                className={`${isAuth ? "button-box" : ""}`}
+                hidden={!isAuth}
             >
                 <UserButton />
             </NavLink>

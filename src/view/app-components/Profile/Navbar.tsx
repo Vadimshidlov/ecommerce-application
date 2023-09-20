@@ -6,11 +6,13 @@ import { LoginStore } from "service/LoginStore/LoginStore";
 import "view/app-components/Profile/style.scss";
 import BasketService from "service/BasketService/BasketService";
 import BasketStore from "store/basket-store";
+import { useBasketQuantity } from "providers/BasketItemsProvider";
 
 export default function Navbar() {
     const { setIsAuth } = useAuth();
     const basketService = useRef(new BasketService());
     const { updateBasketStore } = BasketStore;
+    const { setQuantity } = useBasketQuantity();
     const AuthServiceApi = new AuthService();
 
     const logoutHandler = async () => {
@@ -21,6 +23,8 @@ export default function Navbar() {
         setTimeout(async () => {
             const createBasketResponse = await basketService.current.createBasket();
             updateBasketStore(createBasketResponse);
+            const basketResponse = await basketService.current.getCartById();
+            setQuantity(basketResponse.lineItems.length);
         }, 100);
 
         setIsAuth(false);
