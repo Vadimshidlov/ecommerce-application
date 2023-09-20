@@ -4,15 +4,16 @@ import { BrowserRouter } from "react-router-dom";
 import App from "App";
 import "commonStyle/styles.scss";
 import { AuthStateProvider } from "auth-context";
-import { FilterProvider } from "providers/FilterProvider";
+// import { FilterProvider } from "providers/FilterProvider";
+import { BasketProvider } from "providers/BasketItemsProvider";
 
 const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
 root.render(
     <AuthStateProvider>
-        <FilterProvider>
+        <BasketProvider>
             <BrowserRouter>
                 <App />
             </BrowserRouter>
-        </FilterProvider>
+        </BasketProvider>
     </AuthStateProvider>,
 );
