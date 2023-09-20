@@ -5,6 +5,7 @@ import Text from "shared/components/Text/text";
 import { Button } from "shared/components/button/Button";
 import { IProduct } from "view/app-components/ShopPage/ShopPage";
 import { addProductMessage } from "shared/utils/notifyMessages";
+import { useBasketQuantity } from "providers/BasketItemsProvider";
 
 interface IProductCardType extends React.ComponentPropsWithRef<"div"> {
     img: string;
@@ -34,6 +35,7 @@ export default function ProductCard({
     ...rest
 }: IProductCardType) {
     const [isInBasketState, setIsInBasketState] = useState(isInBasket);
+    const { setQuantity } = useBasketQuantity();
 
     return (
         <div className="product-card" {...rest}>
@@ -92,6 +94,7 @@ export default function ProductCard({
                         setIsInBasketState(!isInBasketState);
                         BASKET_SERVICE.addProductToBasket(product.id, 1, 1);
                         addProductMessage();
+                        setQuantity((prevState) => prevState + 1);
                     }
                 }}
             />

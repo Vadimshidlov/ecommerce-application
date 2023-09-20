@@ -16,6 +16,7 @@ import BasketStore from "store/basket-store";
 import { AuthDataStore } from "service/AuthDataStore/AuthDataStore";
 import BasketPromo from "view/app-components/BasketPage/BasketPromo/BasketPromo";
 import PageHeading from "shared/components/PageHeading/PageHeading";
+import { useBasketQuantity } from "providers/BasketItemsProvider";
 
 export type DiscountCodesType = {
     discountCode: {
@@ -157,9 +158,12 @@ function BasketPage() {
     const [oldPrice, setOldPrice] = useState<number>(0);
     const { updateBasketStore } = BasketStore;
 
+    const { setQuantity } = useBasketQuantity();
+
     const getBasket = useCallback(async () => {
         const basketResponse = await BASKET_SERVICE.current.getCartById();
         setBasketData(basketResponse);
+        setQuantity(basketResponse.lineItems.length);
 
         updateBasketStore(basketResponse);
         const totalPriceResult = basketData?.totalPrice?.centAmount;
@@ -182,7 +186,7 @@ function BasketPage() {
         if (totalPriceResult) {
             setTotalPrice(totalPriceResult / 100);
         }
-    }, [basketData?.totalPrice?.centAmount, updateBasketStore]);
+    }, [basketData?.totalPrice?.centAmount, setQuantity, updateBasketStore]);
 
     useEffect(() => {
         getBasket();

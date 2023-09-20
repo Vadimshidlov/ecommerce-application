@@ -17,6 +17,7 @@ import {
     somethingWrongMessage,
 } from "shared/utils/notifyMessages";
 import BasketStore from "store/basket-store";
+import { useBasketQuantity } from "providers/BasketItemsProvider";
 
 export type ProductBodyType = {
     productResponse: ProductResponseType;
@@ -42,6 +43,7 @@ function ProductBody({
     const BASKET_SERVICE_API = useRef(new BasketService());
     const [productCount, setProductCount] = useState<number>(basketQuantity);
     const { updateBasketStore } = BasketStore;
+    const { setQuantity } = useBasketQuantity();
 
     useEffect(() => {
         const getProductCategories = async () => {
@@ -152,6 +154,9 @@ function ProductBody({
         } catch (error) {
             console.log(error);
         }
+
+        const basketResponse = await BASKET_SERVICE_API.current.getCartById();
+        setQuantity(basketResponse.lineItems.length);
     };
 
     return (

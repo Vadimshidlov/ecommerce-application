@@ -8,7 +8,7 @@ import { useParams } from "react-router-dom";
 import ProductService from "service/ProductService/ProductService";
 import filterIcon from "assets/svg/filter.svg";
 import { FilterLabel } from "shared/components/FilterLabel/FilterLabel";
-// import Loader from "shared/components/Loader/Loader";
+import Loader from "shared/components/Loader/Loader";
 import BasketService from "service/BasketService/BasketService";
 
 export interface IState {
@@ -58,7 +58,7 @@ export function ShopPage() {
     const [objParams, setObjParams] = useState<IState>({});
     const [activeButton, setActiveButton] = useState(false);
     const { categoryKey } = useParams();
-    // const [isLoad, setIsLoad] = useState(true);
+    const [isLoad, setIsLoad] = useState(true);
     const [productsInCart, setProductsInCart] = useState<string[]>([]);
     const title = categoryKey
         ? `${categoryKey.charAt(0).toUpperCase()}${categoryKey.slice(1)}`
@@ -138,7 +138,6 @@ export function ShopPage() {
                 products.length < totalProducts
             ) {
                 setOffset((prevState) => prevState + limitProducts);
-                // console.log("work");
             }
         };
 
@@ -148,12 +147,11 @@ export function ShopPage() {
     useEffect(() => {
         setProducts([]);
         setOffset(0);
-        console.log("first");
     }, [objParams, categoryKey, sortParams]);
 
     useEffect(() => {
-        (async function setParams() {
-            // setIsLoad(true);
+        const setParams = async () => {
+            setIsLoad(true);
             const keys: string[] = Object.keys(objParams);
             const params: string[] = [];
             const results: IProduct[] = [];
@@ -193,14 +191,18 @@ export function ShopPage() {
                 const response = (await PRODUCT_SREVICE.getProductURL(url)).data;
                 setTotalProducts(response.total);
                 results.push(...response.results);
+                if (offset > 0) {
+                    setProducts((prevState) => prevState.concat(response.results));
+                } else {
+                    setProducts(response.results);
+                }
             } else {
                 const response = (await PRODUCT_SREVICE.getAllProducts()).data;
                 setTotalProducts(response.total);
             }
-            setProducts((prevState) => prevState.concat(results));
-            // setIsLoad(false);
-        })();
-        console.log("second");
+            setIsLoad(false);
+        };
+        setParams();
     }, [categoryKey, objParams, offset, sortParams]);
 
     return (
@@ -257,7 +259,6 @@ export function ShopPage() {
                                 isInBasket={productsInCart.includes(product.id)}
                                 sale={!!product?.masterVariant?.prices[0]?.discounted}
                                 key={product.id}
-                                // id={product.id}
                                 img={
                                     product.masterVariant.images &&
                                     product.masterVariant.images.length > 0
@@ -283,7 +284,7 @@ export function ShopPage() {
                             />
                         ))}
                     </div>
-                    {/* {isLoad && <Loader />} */}
+                    {isLoad && <Loader />}
                 </div>
             </div>
         </section>
