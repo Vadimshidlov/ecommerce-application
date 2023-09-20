@@ -15,16 +15,23 @@ export function CustomerButtons() {
     const BASKET_SERVICE = useRef(new BasketService());
 
     useEffect(() => {
-        const intervalId = setInterval(async () => {
-            if (localStorage.length >= 5) {
-                (async () => {
-                    const basketResponse = await BASKET_SERVICE.current.getCartById();
-                    setQuantity(basketResponse.lineItems.length);
-                })();
+        if (isAuth) {
+            (async () => {
+                const basketResponse = await BASKET_SERVICE.current.getActiveCart();
+                setQuantity(basketResponse.lineItems.length);
+            })();
+        } else {
+            const intervalId = setInterval(async () => {
+                if (localStorage.length >= 5) {
+                    (async () => {
+                        const basketResponse = await BASKET_SERVICE.current.getCartById();
+                        setQuantity(basketResponse.lineItems.length);
+                    })();
 
-                clearInterval(intervalId);
-            }
-        }, 100);
+                    clearInterval(intervalId);
+                }
+            }, 100);
+        }
     }, [setQuantity, isAuth]);
 
     return (
