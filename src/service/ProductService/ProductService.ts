@@ -9,9 +9,9 @@ export default class ProductService {
 
     private readonly AUTH_SERVICE: AuthService = new AuthService();
 
-    private readonly API_URL: string = "https://api.europe-west1.gcp.commercetools.com";
+    private readonly PROJECT_KEY = process.env.REACT_APP_CTP_PROJECT_KEY ?? "";
 
-    private readonly PROJECT_KEY: string = "uwoc_ecm-app";
+    private readonly API_URL: string = "https://api.europe-west1.gcp.commercetools.com";
 
     private CATEGORIE_ID: string = "";
 

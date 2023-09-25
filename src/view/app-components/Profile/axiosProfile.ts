@@ -7,7 +7,8 @@ import {
 } from "view/app-components/Profile/profile-utils";
 
 const AUTH_DATA_STORE: AuthDataStore = new AuthDataStore();
-const urlAPI = "https://api.europe-west1.gcp.commercetools.com/uwoc_ecm-app/me";
+const PROJECT_KEY = process.env.REACT_APP_CTP_PROJECT_KEY ?? "";
+const urlAPI = `https://api.europe-west1.gcp.commercetools.com/${PROJECT_KEY}/me`;
 
 export async function getCustomer() {
     const token = AUTH_DATA_STORE.getAccessAuthToken();
