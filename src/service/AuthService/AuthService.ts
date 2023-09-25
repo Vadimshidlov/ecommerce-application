@@ -5,7 +5,7 @@ import { TokenResponseType } from "service/AuthService/types";
 export class AuthService {
     private readonly CTP_AUTH_URL = "https://auth.europe-west1.gcp.commercetools.com";
 
-    private readonly CTP_PROJECT_KEY = "uwoc_ecm-app";
+    private readonly CTP_PROJECT_KEY = process.env.REACT_APP_CTP_PROJECT_KEY;
 
     private readonly ANON_TOKEN_CONTENT_TYPE = "application/x-www-form-urlencoded";
 
@@ -18,7 +18,7 @@ export class AuthService {
             {
                 params: {
                     grant_type: "client_credentials",
-                    scope: `manage_project:uwoc_ecm-app view_audit_log:uwoc_ecm-app manage_api_clients:uwoc_ecm-app`,
+                    scope: `manage_project:${this.CTP_PROJECT_KEY} view_audit_log:${this.CTP_PROJECT_KEY} manage_api_clients:${this.CTP_PROJECT_KEY}`,
                 },
                 headers: {
                     "Content-Type": this.ANON_TOKEN_CONTENT_TYPE,

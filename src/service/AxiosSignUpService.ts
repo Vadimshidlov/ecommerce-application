@@ -13,7 +13,9 @@ class AxiosSignUpService {
 
     private readonly AuthDataStoreApi = new AuthDataStore();
 
-    private readonly API_URL = "https://api.europe-west1.gcp.commercetools.com/uwoc_ecm-app/";
+    private readonly CTP_PROJECT_KEY = process.env.REACT_APP_CTP_PROJECT_KEY ?? "";
+
+    private readonly API_URL = `https://api.europe-west1.gcp.commercetools.com/${this.CTP_PROJECT_KEY}/`;
 
     constructor() {
         this.request = axios.create({
