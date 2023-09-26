@@ -6,9 +6,11 @@ import { CustomerType, DataResponseType, LoginType } from "service/LoginService/
 export default class LoginService {
     private readonly AUTH_DATA_STORE: AuthDataStore = new AuthDataStore();
 
-    private readonly PROJECT_KEY: string = "uwoc_ecm-app";
+    private readonly CTP_PROJECT_KEY = process.env.REACT_APP_CTP_PROJECT_KEY ?? "";
 
-    private readonly SCOPES: string = "manage_project:uwoc_ecm-app";
+    private readonly PROJECT_KEY: string = this.CTP_PROJECT_KEY;
+
+    private readonly SCOPES: string = `manage_project:${this.CTP_PROJECT_KEY}`;
 
     private AxiosAuthServiceApi = AxiosAuthService;
 
@@ -46,9 +48,19 @@ export default class LoginService {
                     "Content-Type": "application/json",
                 },
             },
-            { email, password },
+            {
+                email,
+                password,
+                activeCartSignInMode: "MergeWithExistingCustomerCart",
+                anonymousCart: {
+                    id: `${localStorage.getItem("cartId")}`,
+                    typeId: "cart",
+                },
+            },
             "/login",
         );
+
+        this.AUTH_DATA_STORE.setBasketVersion(JSON.stringify(response.data.cart.version));
 
         if (response.status !== 200) {
             throw Error("User with such credentials was not found");

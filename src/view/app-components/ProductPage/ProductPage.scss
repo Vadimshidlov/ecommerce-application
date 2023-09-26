@@ -1,16 +1,21 @@
+@import "commonStyle/colors.scss";
+
 .product__container {
     display: flex;
-    padding: 52px 0;
     column-gap: 60px;
-    max-width: 920px;
-    padding-left: 10px;
-    padding-right: 10px;
+    max-width: 980px;
     margin: 0 auto;
+    margin-top: 52px;
     min-height: 500px;
 
     @media (max-width: 768px) {
+        margin-top: 0;
         display: flex;
         flex-direction: column;
+    }
+
+    .swiper {
+        border-radius: 6px;
     }
 
     .swiper__container-two {
@@ -55,6 +60,10 @@
         display: flex;
         flex-direction: column;
         justify-content: space-between;
+
+        @media (max-width: 768px) {
+            margin-top: 10px;
+        }
     }
 
     .product__category-list {
@@ -130,7 +139,7 @@
         font-style: normal;
         font-weight: 300;
         text-decoration: line-through;
-        margin-bottom: 15px;
+        // margin-bottom: 15px;
         opacity: 0.7;
     }
 
@@ -150,11 +159,7 @@
         object-fit: cover;
 
         @media (max-width: 768px) {
-            height: 25rem;
-        }
-
-        @media (max-width: 768px) {
-            height: 20rem;
+            height: 32rem;
         }
     }
 
@@ -180,7 +185,9 @@
         left: 0;
         width: 100vw;
         height: 100vh;
-        background-color: rgba(0, 0, 0, 0.7);
+        background-color: #5555556e;
+        backdrop-filter: blur(5px);
+        -webkit-backdrop-filter: blur(5px);
     }
 
     .swiper__close-btn {
@@ -223,7 +230,13 @@
     }
 
     .product__color__black {
-        background-color: black;
+        background-color: $color-black;
+        outline: 2px solid #ccc;
+        border: 1px solid #999;
+    }
+
+    .product__color__red {
+        background-color: rgba(255, 0, 0, 0.365);
         outline: 2px solid #ccc;
         border: 1px solid #999;
     }
@@ -234,26 +247,26 @@
         border: 1px solid #999;
     }
 
-    .product__color__brown {
-        background-color: brown;
+    .product__color__red {
+        background-color: $color-red;
         outline: 2px solid #ccc;
         border: 1px solid #999;
     }
 
     .product__color__blue {
-        background-color: blue;
+        background-color: $color-blue;
         outline: 2px solid #ccc;
         border: 1px solid #999;
     }
 
     .product__color__yellow {
-        background-color: yellow;
+        background-color: $color-yellow;
         outline: 2px solid #ccc;
         border: 1px solid #999;
     }
 
     .product__color__green {
-        background-color: green;
+        background-color: $color-green;
         outline: 2px solid #ccc;
         border: 1px solid #999;
     }
@@ -296,6 +309,10 @@
         background-color: #f5f5f5;
         padding: 12px 16px;
         margin-bottom: 16px;
+    }
+
+    .product__cart-count__disabled {
+        opacity: 0.8;
     }
 
     .product__cart-count__button-minus {

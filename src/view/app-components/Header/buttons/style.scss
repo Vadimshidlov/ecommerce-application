@@ -1,5 +1,4 @@
 .button-box {
-    // margin-right: 1rem;
     @media screen and (width < 760px) {
         margin-right: 0;
     }
@@ -8,22 +7,20 @@
 .button-box,
 .basket-button-box {
     cursor: pointer;
-    // opacity: 0.8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     transition: all 0.2s;
 }
 
-// .button-box:hover,
-// .basket-button-box:hover {
-//     opacity: 1;
-// }
-
 .circle {
-    width: 1.25rem;
-    height: 1.25rem;
-    background-color: black;
-    border-radius: 50%;
-    display: inline;
+    min-width: 22px;
+    padding: 2px 7px;
+    background: #121212;
+    border-radius: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     color: white;
     text-align: center;
-    opacity: 0.8;
 }

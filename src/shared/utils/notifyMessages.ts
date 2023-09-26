@@ -64,3 +64,94 @@ export const errorPasswordMessage = () => {
         theme: "light",
     });
 };
+
+export const removeProductMessage = (value: string) => {
+    toast.success(`${value} removed from the Basket`, {
+        position: "top-center",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+    });
+};
+
+export const addProductMessage = () => {
+    toast.success("Product is added to the Basket", {
+        position: "top-center",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+    });
+};
+
+export const somethingWrongMessage = () => {
+    toast.error("Something went wrong. Please, try again", {
+        position: "top-center",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+    });
+};
+
+export const promocodeCopy = () => {
+    toast.success(`Promocode copied successfully`, {
+        position: "top-center",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+    });
+};
+
+export const promoCodeErrorMessage = () => {
+    toast.error("Please, write existing promo code", {
+        position: "top-center",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+    });
+};
+
+export const promoCodeSuccessMessage = () => {
+    toast.success("Promo code was success applied", {
+        position: "top-center",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+    });
+};
+
+export const haveAGoodDayMessage = () => {
+    toast.success("Have a good day, Bro! 🦄", {
+        position: "top-center",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+    });
+};

@@ -7,6 +7,8 @@
 @import "shared/components/TextInput/TextInput.scss";
 @import "shared/components/ProductCard/ProductCard.scss";
 @import "shared/components/PageHeading/PageHeading.scss";
+@import "shared/components/FilterLabel/FilterLabel.scss";
+@import "shared/components/Loader/Loader.scss";
 @import "view/app-components/Header/NavPages/NavPages.scss";
 @import "view/app-components/AuthorizationForm/AuthForm.scss";
 @import "view/app-components/LoginPage/LoginPage.scss";
@@ -16,3 +18,4 @@
 @import "view/app-components/ShopPage/Sorting/Sorting.scss";
 @import "view/app-components/Footer/Footer.scss";
 @import "view/app-components/ProductPage/ProductPage.scss";
+@import "view/app-components/BasketPage/BasketPage.scss";

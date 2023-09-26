@@ -3,6 +3,8 @@ import { AuthService } from "service/AuthService/AuthService";
 import { AuthDataStore } from "service/AuthDataStore/AuthDataStore";
 
 import { LoginStore } from "service/LoginStore/LoginStore";
+import BasketService from "service/BasketService/BasketService";
+import BasketStore from "store/basket-store";
 
 export type IsAuthType = boolean;
 export type AuthContextType = {
@@ -18,6 +20,8 @@ function AuthStateProvider({ children }: AuthProviderProps) {
 
     const AuthServiceApi = useRef(new AuthService());
     const AuthDataStoreApi = useRef(AuthDataStore.getAuthDataStore());
+    const basketService = useRef(new BasketService());
+    const { updateBasketStore } = BasketStore;
 
     useEffect(() => {
         (async () => {
@@ -31,13 +35,18 @@ function AuthStateProvider({ children }: AuthProviderProps) {
 
                 if (!isAnonToken) {
                     await AuthServiceApi.current.createAnonymousToken();
+
+                    if (!localStorage.getItem("cartId")) {
+                        const basketResponse = await basketService.current.createBasket();
+                        updateBasketStore(basketResponse);
+                    }
                 }
             } else {
                 setIsAuth(true);
                 loginStore.setAuthStatus(true);
             }
         })();
-    }, [setIsAuth]);
+    }, [setIsAuth, updateBasketStore]);
 
     const value = useMemo(() => ({ isAuth, setIsAuth }), [isAuth]);
 

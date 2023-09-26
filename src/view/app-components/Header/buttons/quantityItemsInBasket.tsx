@@ -1,6 +1,8 @@
 import React from "react";
 import "view/app-components/Header/buttons/style.scss";
 
-export default function QuantityItemsInBasket() {
-    return <div className="circle">2</div>;
+type QuantityItemType = { quantity: number };
+
+export default function QuantityItemsInBasket({ quantity }: QuantityItemType) {
+    return <div className="circle font-size_s">{quantity}</div>;
 }

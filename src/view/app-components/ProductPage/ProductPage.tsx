@@ -4,22 +4,31 @@ import ProductSwiper from "view/app-components/ProductPage/ProductSwiper";
 import ProductBody from "view/app-components/ProductPage/ProductBody";
 import useGetProductDate from "view/app-components/ProductPage/useGetProductDate";
 import { useParams } from "react-router-dom";
+import useGetProductBasketData from "view/app-components/ProductPage/useGetProductBasketData";
 
 function ProductPage() {
     const { productId } = useParams();
-    const { productData } = useGetProductDate(productId);
-
     const [checkedSize, setCheckedSize] = useState(0);
 
+    const { productData } = useGetProductDate(productId);
+
+    const { basketQuantity, productVariantState, setProductVariantState, lineItemId } =
+        useGetProductBasketData(checkedSize + 1, productId);
+
+    const isSale = !!productData?.masterVariant?.prices[0]?.discounted;
     return productData ? (
-        <div className="product__container">
+        <div className="product__container container">
             <div className="swiper__container-two">
-                <ProductSwiper productResponse={productData} />
+                <ProductSwiper isSale={isSale} productResponse={productData} />
             </div>
             <ProductBody
                 productResponse={productData}
                 checkedSize={checkedSize}
+                basketQuantity={basketQuantity}
+                lineItemId={lineItemId}
                 setCheckedSize={setCheckedSize}
+                productVariantState={productVariantState}
+                setProductVariantState={setProductVariantState}
             />
         </div>
     ) : (
